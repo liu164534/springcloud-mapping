@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mapping-mapper" />
+        <module name="mapping-api" />
+        <module name="mapping-common" />
+        <module name="mapping-sub-provider-8081" />
+        <module name="mapping-sub-consumer-6081" />
+        <module name="mapping-zuul-4081" />
+        <module name="mapping-service" />
+        <module name="mapping-model" />
+        <module name="mapping-sub-eureka-7082" />
+        <module name="mapping-sub-eureka-7083" />
+        <module name="mapping-config" />
+        <module name="mapping-sub-eureka-7081" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mapping-system-consumer-6081" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

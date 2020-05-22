@@ -1,0 +1,44 @@
+子项目介绍：
+    1.common：公共项目
+        utils、静态常量、通用的controller、通用的注解(自定义的注解)、枚举状态。。
+        common项目永远不会有任何依赖，因为这是以一个通用项目
+    2.config :中间件的配置项目
+        这个项目一定要做成一个通用项目
+        但是这个项目必须有依赖：
+            这个项目中有可能会出现硬编码的问题--例如redis
+                有关于redis的的一些配置信息，好多配置的key都是固定的：“固定的key值”
+                需要使用静态常量或者是枚举，所以需要引用--common项目
+    3.eureka:注册中心
+         注册中心也得做到通用
+         注册中心没有依赖，将来一定会单独的放到服务器上，那个项目使用就进行注册或者发现
+         为了方便于横向扩展，包裹了一个父级项目：
+         springcvloud-mapping-eureka-management:pom工程(管理jar包)
+         引入eureka-serer包
+         方便与横向扩展以及jar包的复用
+
+    4.consumer（消费者）
+        为了方便横向扩展以及jar包的复用，也需要使用一个父级项目进行管理
+        consumer必然会产生依赖，因为目前springcloud使用的声明式服务调用（fegin）
+        依赖于api项目
+    5.provider（生产者）
+         为了方便横向扩展以及jar包的复用，也需要使用一个父级项目进行管理
+         需要依赖于service层
+
+    6.有关业务和数据持久化的项目
+     存放model，mapper，service，api的项目
+                springcloud-mapping-management:pom
+                    -- springcloud-mapping-model:jar:存放实体类以及po类型还有通用model
+                        这个model项目不需要产生任何的依赖
+                    -- springcloud-mapping-mapper:jar:存放mapper接口以及mapper.xml的地方
+                        这里会使用到数据源，所以动态数据源(多数据源切换)也会放在mapper项目中
+                        -- mapper需要依赖于model
+                    -- springcloud-mapping-service:jar:存放业务逻辑的地方
+                        -- service需要依赖于mapper
+                    -- springcloud-mapping-api:jar:声明式服务调用接口的地方
+
+            7.路由网关
+                 springcloud-mapping-zuul:jar
+                    这个路由中也可能使用到common中的工具类，静态常量，还是枚举...
+                    需要依赖于common项目
+                    TODO:
+                        其实路由还需要依赖，因为暂时没有用，用到的时候再添加api的依赖
