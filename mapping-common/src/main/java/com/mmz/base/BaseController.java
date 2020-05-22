@@ -201,8 +201,8 @@ public class BaseController {
      */
     protected ResultData generalFailed(){
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FALIED.getCode());
-        resultData.setMsg(LoginStatus.FALIED.getMsg());
+        resultData.setCode(LoginStatus.FAILED.getCode());
+        resultData.setMsg(LoginStatus.FAILED.getMsg());
         return resultData;
     }
 
@@ -215,7 +215,7 @@ public class BaseController {
      */
     protected ResultData generalFailed(String msg){
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FALIED.getCode());
+        resultData.setCode(LoginStatus.FAILED.getCode());
         resultData.setMsg(msg);
         return resultData;
     }
@@ -229,7 +229,7 @@ public class BaseController {
      */
     protected ResultData generalFailed(Object data){
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FALIED.getCode());
+        resultData.setCode(LoginStatus.FAILED.getCode());
         resultData.setData(data);
         return resultData;
     }
@@ -243,7 +243,7 @@ public class BaseController {
      */
     protected ResultData generalFailed(String msg,Object data){
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FALIED.getCode());
+        resultData.setCode(LoginStatus.FAILED.getCode());
         resultData.setMsg(msg);
         resultData.setData(data);
         return resultData;
