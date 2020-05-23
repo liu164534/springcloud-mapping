@@ -2,7 +2,7 @@ package com.mmz.staticstatus;
 
 /**
  * @program: spring-cloud-mapping
- * @description:
+ * @description: redis的静态常量
  * @author: Liu Xinpeng
  * @create: 2020-05-21 13:51
  **/

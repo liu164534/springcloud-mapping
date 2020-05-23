@@ -15,21 +15,35 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @create: 2020-05-21 14:17
  **/
 public class SpringContextUtils implements ApplicationContextAware {
-
+    
+    /**
+    * @Description: 构造器私有化，防止被实例化
+    * @Param: []
+    * @return:  
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/23
+    */
     private SpringContextUtils() {
-
+        throw new AssertionError();
     }
 
     private static ApplicationContext APPLICATIONCONTEXT = null;
     private static final ReadWriteLock READ_WRITE_LOCK = new ReentrantReadWriteLock();
 
+    /**
+    * @Description: TODO 重写方法，所以修饰符不能改变
+    * @Param: [applicationContext]
+    * @return: void
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/23
+    */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         APPLICATIONCONTEXT = applicationContext;
     }
 
 
-    public static ApplicationContext getApplicationContext() {
+    private static ApplicationContext getApplicationContext() {
         Lock lock = READ_WRITE_LOCK.readLock();
         lock.lock();
         try {

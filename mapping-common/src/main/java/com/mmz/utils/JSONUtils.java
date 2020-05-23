@@ -12,6 +12,18 @@ import java.util.List;
  * @create: 2020-05-21 14:07
  **/
 public class JSONUtils {
+
+
+    /**
+    * @Description: 生成一个私有的构造方法，防止被实例化
+    * @Param: []
+    * @return:
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/23
+    */
+    private JSONUtils() {
+        throw new AssertionError();
+    }
     // 1.定义私有静态常量ObjectMapper(命名规则：所有字母全部大写，单词与单词之间使用_连接)
     // ObjectMapper:就是fastjson包中进行类型转换的工具类
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -23,7 +35,7 @@ public class JSONUtils {
    * @Author: Liu Xinpeng
    * @Date: 2020/5/21
    */
-    public static String toJsonString(Object object) {
+   private static String toJsonString(Object object) {
         try {
             String jsonString = OBJECT_MAPPER.writeValueAsString(object);
             return jsonString;
@@ -44,7 +56,7 @@ public class JSONUtils {
     * @Author: Liu Xinpeng
     * @Date: 2020/5/21
     */
-    public static <T> T toObject(String jsonData, Class<T> beanType) {
+    private static <T> T toObject(String jsonData, Class<T> beanType) {
         try {
             T t = OBJECT_MAPPER.readValue(jsonData, beanType);
             return t;
@@ -61,7 +73,7 @@ public class JSONUtils {
    * @Author: Liu Xinpeng
    * @Date: 2020/5/21
    */
-    public static <T> List<T> toList(String jsonData, Class<T> beanType) {
+   private static <T> List<T> toList(String jsonData, Class<T> beanType) {
         // 1.为List集合添加一个指定的泛型
         // List  User.class ---> 通过constructParametricType方法把List和User合并，也就是说为List指定一个User对象的泛型(List<User>)
         JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, beanType);
