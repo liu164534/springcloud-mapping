@@ -35,7 +35,7 @@ public class JSONUtils {
    * @Author: Liu Xinpeng
    * @Date: 2020/5/21
    */
-   private static String toJsonString(Object object) {
+   public static String toJsonString(Object object) {
         try {
             String jsonString = OBJECT_MAPPER.writeValueAsString(object);
             return jsonString;
@@ -56,7 +56,7 @@ public class JSONUtils {
     * @Author: Liu Xinpeng
     * @Date: 2020/5/21
     */
-    private static <T> T toObject(String jsonData, Class<T> beanType) {
+    public static <T> T toObject(String jsonData, Class<T> beanType) {
         try {
             T t = OBJECT_MAPPER.readValue(jsonData, beanType);
             return t;
@@ -73,7 +73,7 @@ public class JSONUtils {
    * @Author: Liu Xinpeng
    * @Date: 2020/5/21
    */
-   private static <T> List<T> toList(String jsonData, Class<T> beanType) {
+   public static <T> List<T> toList(String jsonData, Class<T> beanType) {
         // 1.为List集合添加一个指定的泛型
         // List  User.class ---> 通过constructParametricType方法把List和User合并，也就是说为List指定一个User对象的泛型(List<User>)
         JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(List.class, beanType);

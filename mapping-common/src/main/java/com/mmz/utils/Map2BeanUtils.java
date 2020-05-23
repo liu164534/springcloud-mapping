@@ -40,7 +40,7 @@ public class Map2BeanUtils {
     * @Author: Liu Xinpeng
     * @Date: 2020/5/23
     */
-    private static <T> T map2Bean(Map<String, Object> map, Class<T> tClass) {
+    public static <T> T map2Bean(Map<String, Object> map, Class<T> tClass) {
         // 通过tClass类型获取泛型对象(获取当前所需要的对象--》但是这个对象是一个空对象)
         T instance = OBJENESIS.newInstance(tClass);
         MethodAccess methodAccess = CONCURRENT_HASH_MAP.get(tClass);

@@ -2,7 +2,10 @@ package com.mmz.base;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mmz.utils.Map2BeanUtils;
+import com.mmz.utils.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.Sqls;
@@ -10,6 +13,7 @@ import tk.mybatis.mapper.util.Sqls;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: spring-cloud-mapping
@@ -227,6 +231,28 @@ public abstract class BaseService<T> {
         List list = getMapper().selectByExample(example);
         return list;
     }
+    
+    /**
+    * @Description: 通过反射获取实例对象
+    * @Param: [map]
+    * @return: T 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/23
+    */
+    public T newInstance(Map map) {
+        return (T) Map2BeanUtils.map2Bean(map, getTypeArgument());
+    }
 
-    // TODO 获取spring容器方法和反射获取实例对象没有写
+    
+    /**
+    * @Description: 获取spring上下文(容器)
+    * @Param: []
+    * @return: org.springframework.context.ApplicationContext 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/23
+    */
+    public ApplicationContext getApplicationContext() {
+        return SpringContextUtils.getApplicationContext();
+    }
+
 }
