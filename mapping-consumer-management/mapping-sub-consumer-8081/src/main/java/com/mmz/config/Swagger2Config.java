@@ -50,8 +50,8 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("测绘管理系统")
-                .description("某市的测绘管理系统")
-                .contact(new Contact("Seven Lee", "http://www.seven.com", "sevenLee@Gmail.com"))
+                .description("mmz的测绘管理系统")
+                .contact(new Contact("Liu Xinpeng", "http://www.mmz.com", "liu164534@Gmail.com"))
                 .version("1.0")
                 .build();
     }
