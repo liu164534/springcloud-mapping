@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>mapping-sub-consumer-6081</module>
+        <module>mapping-sub-consumer-8081</module>
     </modules>
 
     <artifactId>mapping-consumer-management</artifactId>
