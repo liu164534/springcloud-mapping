@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @program: spring-cloud-mapping
@@ -19,7 +20,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
         RedisAutoConfiguration.class,
         RedisRepositoriesAutoConfiguration.class
 })
-//@MapperScan("com.mmz.mapper")
+@MapperScan("com.mmz.mapper")
 // 能够让注册中心发现，扫描到该服务 可以是其他的注册中心（eg:ZK）
 @EnableDiscoveryClient
 // 熔断器
