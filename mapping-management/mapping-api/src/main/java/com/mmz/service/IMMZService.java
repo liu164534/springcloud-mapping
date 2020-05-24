@@ -1,6 +1,10 @@
 package com.mmz.service;
 
+import com.mmz.model.User;
+import com.mmz.vo.TokenVo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @program: spring-cloud-mapping
@@ -28,4 +32,15 @@ import org.springframework.cloud.openfeign.FeignClient;
  */
 @FeignClient(value = "system-interface")
 public interface IMMZService {
+
+    
+    /**
+    * @Description: 执行登陆操作
+    * @Param: [user]
+    * @return: com.mmz.vo.TokenVo 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/24
+    */
+    @PostMapping("/doLogin")
+    TokenVo doLogin(@RequestBody User user);
 }
