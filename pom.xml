@@ -36,19 +36,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- mysql的去驱动包-->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.47</version>
             </dependency>
-            <!-- durid连接池的包 -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>1.1.20</version>
             </dependency>
-            <!-- mybatis和springboot集成包-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -108,12 +105,13 @@
                 <artifactId>commons-fileupload</artifactId>
                 <version>1.4</version>
             </dependency>
-            <!--  io-->
+
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.6</version>
             </dependency>
+
             <!-- file upload -->
 
             <!-- httpclient begin -->
@@ -140,13 +138,12 @@
             </dependency>
             <!-- joda time end -->
 
-            <!-- es搜索的包-->
             <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
                 <version>6.4.0</version>
             </dependency>
-            <!--  es客户端-->
+
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>transport</artifactId>
@@ -164,7 +161,7 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.8.1</version>
             </dependency>
-            <!-- httpclient-->
+
             <dependency>
                 <groupId>commons-httpclient</groupId>
                 <artifactId>commons-httpclient</artifactId>

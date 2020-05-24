@@ -26,7 +26,7 @@ public class Swagger2Config {
     /**
     * @Description: 创建了docker的bean
     * @Param: []
-    * @return: springfox.documentation.spring.web.plugins.Docket 
+    * @return: springfox.documentation.spring.web.plugins.Docket
     * @Author: Liu Xinpeng
     * @Date: 2020/5/22
     */
@@ -43,7 +43,7 @@ public class Swagger2Config {
     /**
     * @Description: API的基本信息，构建了整个项目的一些描述信息
     * @Param: []
-    * @return: springfox.documentation.service.ApiInfo 
+    * @return: springfox.documentation.service.ApiInfo
     * @Author: Liu Xinpeng
     * @Date: 2020/5/21
     */

@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.mmz</groupId>
-            <artifactId>mapping-config</artifactId>
+            <artifactId>mapping-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

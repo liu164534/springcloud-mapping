@@ -21,7 +21,6 @@
             <artifactId>mapping-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -36,5 +35,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
     </dependencies>
+
 
 </project>

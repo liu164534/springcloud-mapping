@@ -7,18 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="mapping-config" />
         <module name="mapping-mapper" />
         <module name="mapping-api" />
         <module name="mapping-common" />
         <module name="mapping-sub-provider-8081" />
+        <module name="mapping-service" />
         <module name="mapping-zuul-4081" />
         <module name="mapping-sub-consumer-8081" />
         <module name="mapping-model" />
-        <module name="mapping-sub-eureka-7081" />
-        <module name="mapping-sub-eureka-7083" />
         <module name="mapping-sub-eureka-7082" />
-        <module name="mapping-service" />
+        <module name="mapping-sub-eureka-7083" />
+        <module name="mapping-config" />
+        <module name="mapping-sub-eureka-7081" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

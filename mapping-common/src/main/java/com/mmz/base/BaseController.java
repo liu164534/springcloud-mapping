@@ -24,7 +24,7 @@ public class BaseController {
     * @Author: Liu Xinpeng
     * @Date: 2020/4/6
     */
-    protected ResultData success(){
+    protected ResultData loginSuccess(){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());
         resultData.setMsg(LoginStatus.LOGIN_SUCCESS.getMsg());
@@ -38,7 +38,7 @@ public class BaseController {
     * @Author: Liu Xinpeng
     * @Date: 2020/4/6
     */
-    protected ResultData success(String msg){
+    protected ResultData loginSuccess(String msg){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());
         resultData.setMsg(msg);
@@ -52,7 +52,7 @@ public class BaseController {
      * @Author: Liu Xinpeng
      * @Date: 2020/4/6
      */
-    protected ResultData success(Object data){
+    protected ResultData loginSuccess(Object data){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());
         resultData.setMsg(LoginStatus.LOGIN_SUCCESS.getMsg());
@@ -67,7 +67,7 @@ public class BaseController {
      * @Author: Liu Xinpeng
      * @Date: 2020/4/6
      */
-    protected ResultData success(String msg,Object data){
+    protected ResultData loginSuccess(String msg,Object data){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());
         resultData.setMsg(msg);
@@ -82,7 +82,7 @@ public class BaseController {
     * @Author: Liu Xinpeng
     * @Date: 2020/4/6
     */
-    protected ResultData failed(){
+    protected ResultData loginFailed(){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());
         resultData.setMsg(LoginStatus.LOGIN_FAILED.getMsg());
@@ -95,7 +95,7 @@ public class BaseController {
     * @Author: Liu Xinpeng
     * @Date: 2020/4/6
     */
-    protected ResultData failed(String msg){
+    protected ResultData loginFailed(String msg){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());
         resultData.setMsg(msg);
@@ -109,7 +109,22 @@ public class BaseController {
      * @Author: Liu Xinpeng
      * @Date: 2020/4/6
      */
-    protected ResultData failed(String msg,Object data){
+    protected ResultData loginFailed(Object data){
+        ResultData resultData = new ResultData();
+        resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());
+        resultData.setMsg(LoginStatus.LOGIN_FAILED.getMsg());
+        resultData.setData(data);
+        return resultData;
+    }
+
+    /**
+     * @Description: 登陆失败 使用系统消息 有返回值
+     * @Param: [msg]
+     * @return: com.exam.shiro.base.ResultData
+     * @Author: Liu Xinpeng
+     * @Date: 2020/4/6
+     */
+    protected ResultData loginFailed(String msg,Object data){
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());
         resultData.setMsg(msg);

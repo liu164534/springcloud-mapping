@@ -2,6 +2,7 @@ package com.mmz.redis;
 
 import com.mmz.utils.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisCluster;
 
 import static com.mmz.staticstatus.RedisProperties.*;
@@ -11,6 +12,7 @@ import static com.mmz.staticstatus.RedisProperties.*;
  * @author: Liu Xinpeng
  * @create: 2020-05-23 22:30
  **/
+@Service
 public class RedisService<T> {
 
     /**
