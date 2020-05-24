@@ -1,5 +1,7 @@
 package com.mmz.service;
 
+import com.mmz.base.BaseService;
+import com.mmz.model.User;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
  * @create: 2020-05-24 22:22
  **/
 @Service
-public class UserService {
+public class UserService extends BaseService<User> {
 
     /**
      * @Description:
