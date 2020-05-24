@@ -8,8 +8,6 @@ package com.mmz.status;
  **/
 public enum LoginStatus {
 
-    SUCCESS("20000","成功"),
-    FAILED("10000","失败"),
     LOGIN_SUCCESS("20001", "登录成功"),
     LOGIN_FAILED("10001", "登录失败"),
     USER_EXIST("20002", "用户存在"),

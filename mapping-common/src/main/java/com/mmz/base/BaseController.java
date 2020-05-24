@@ -1,5 +1,6 @@
 package com.mmz.base;
 
+import com.mmz.status.InsertStatus;
 import com.mmz.status.LoginStatus;
 import org.springframework.stereotype.Controller;
 
@@ -133,135 +134,73 @@ public class BaseController {
     }
     
     /**
-    * @Description:  注册时发送验证码，用户已经存在
+    * @Description:  注册时，验证用户是否存在
     * @Param: []
     * @return: com.exam.shiro.base.ResultData 
     * @Author: Liu Xinpeng
     * @Date: 2020/4/8
     */
-    protected ResultData userExist(){
+    protected ResultData userExist() { 
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.USER_EXIST.getCode());
         resultData.setMsg(LoginStatus.USER_EXIST.getMsg());
         return resultData;
     }
-
+    
     /**
-    * @Description: 通用的成功 使用系统消息
+    * @Description: 新增成功，不返回数据
     * @Param: []
-    * @return: com.exam.shiro.base.ResultData
+    * @return: com.mmz.base.ResultData 
     * @Author: Liu Xinpeng
-    * @Date: 2020/4/8
+    * @Date: 2020/5/24
     */
-    protected ResultData generalSuccess(){
+    protected ResultData insertSuccess() {
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.SUCCESS.getCode());
-        resultData.setMsg(LoginStatus.SUCCESS.getMsg());
+        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
+        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
         return resultData;
     }
 
     /**
-     * @Description: 通用的成功 使用自定义消息
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalSuccess(String msg){
+    * @Description: 新增成功，返回数据
+    * @Param: [data]
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/24
+    */
+    protected ResultData insertSuccess(Object data) {
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.SUCCESS.getCode());
-        resultData.setMsg(msg);
-        return resultData;
-    }
-
-    /**
-     * @Description: 通用的成功 有返回值
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalSuccess(Object data){
-        ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.SUCCESS.getCode());
+        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
+        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
         resultData.setData(data);
         return resultData;
     }
-
+    
     /**
-     * @Description: 通用的成功 使用自定义消息 有返回值
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalSuccess(String msg,Object data){
+    * @Description: 新增失败，不返回数据
+    * @Param: []
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/24
+    */
+    protected ResultData insertFailed() {
         ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.SUCCESS.getCode());
-        resultData.setMsg(msg);
+        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
+        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
+        return resultData;
+    }
+    /**
+    * @Description: 新增失败，返回数据
+    * @Param: [data]
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/5/24
+    */
+    protected ResultData insertFailed(Object data) {
+        ResultData resultData = new ResultData();
+        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
+        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
         resultData.setData(data);
         return resultData;
     }
-
-
-
-
-
-    /**
-     * @Description: 通用的失败 使用系统消息
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalFailed(){
-        ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FAILED.getCode());
-        resultData.setMsg(LoginStatus.FAILED.getMsg());
-        return resultData;
-    }
-
-    /**
-     * @Description: 通用的失败 使用自定义消息
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalFailed(String msg){
-        ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FAILED.getCode());
-        resultData.setMsg(msg);
-        return resultData;
-    }
-
-    /**
-     * @Description: 通用的失败 有返回值
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalFailed(Object data){
-        ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FAILED.getCode());
-        resultData.setData(data);
-        return resultData;
-    }
-
-    /**
-     * @Description: 通用的失败 使用自定义消息 有返回值
-     * @Param: []
-     * @return: com.exam.shiro.base.ResultData
-     * @Author: Liu Xinpeng
-     * @Date: 2020/4/8
-     */
-    protected ResultData generalFailed(String msg,Object data){
-        ResultData resultData = new ResultData();
-        resultData.setCode(LoginStatus.FAILED.getCode());
-        resultData.setMsg(msg);
-        resultData.setData(data);
-        return resultData;
-    }
-
 }

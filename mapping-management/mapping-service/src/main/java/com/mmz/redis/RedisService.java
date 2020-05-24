@@ -20,7 +20,6 @@ public class RedisService<T> {
      */
     @Autowired
     private JedisCluster jedisCluster;
-
     /**
     * @Description: 向redis中保存数据并设置失效时间
      *          key:redis中的key
