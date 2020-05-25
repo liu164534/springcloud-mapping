@@ -63,38 +63,54 @@ public class LoginService extends BaseService<User> {
             String setResultS = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
             // 返回值是OK
             if ("OK".equals(setResultS.toUpperCase())) {
-              return tokenVo
-                      .setIfSuccess(true)
-                      .setToken(token)
-                      .setRedisKey(String.valueOf(u.getId()));
+              // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
+              try{
+                // 获取当前用户的ip
+                String ip = IPUtils.getIp();
+                LoginLog loginLog = new LoginLog(u.getUsername(), DateUtils.getDate(), LOCATION, ip);
+                // 将用户的登陆信息存储到登陆日志
+                Integer addLogResult = addLoginLog(loginLog);
+                if (addLogResult == 0) {
+                  // 说明存储登陆日志时失败，所以从安全的角度，判定此次登陆失败
+                  tokenVo.setIfSuccess(false)
+                          .setToken(null)
+                          .setRedisKey(null);
+                }
+                return tokenVo
+                        .setIfSuccess(true)
+                        .setToken(token)
+                        .setRedisKey(String.valueOf(u.getId()));
+              } catch (UnknownHostException uhe) {
+                uhe.printStackTrace();
+              }
             }
           }
           // 说明这个key已经存在
           String setResultS = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
           // 返回值是OK
           if ("OK".equals(setResultS.toUpperCase())) {
-            return tokenVo
-                    .setIfSuccess(true)
-                    .setToken(token)
-                    .setRedisKey(String.valueOf(u.getId()));
+            // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
+            try{
+              // 获取当前用户的ip
+              String ip = IPUtils.getIp();
+              LoginLog loginLog = new LoginLog(u.getUsername(), DateUtils.getDate(), LOCATION, ip);
+              // 将用户的登陆信息存储到登陆日志
+              Integer addLogResult = addLoginLog(loginLog);
+              if (addLogResult == 0) {
+                // 说明存储登陆日志时失败，所以从安全的角度，判定此次登陆失败
+                tokenVo.setIfSuccess(false)
+                        .setToken(null)
+                        .setRedisKey(null);
+              }
+              return tokenVo
+                      .setIfSuccess(true)
+                      .setToken(token)
+                      .setRedisKey(String.valueOf(u.getId()));
+            } catch (UnknownHostException uhe) {
+              uhe.printStackTrace();
+            }
           }
         }
-      }
-      // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
-      try{
-        // 获取当前用户的ip
-        String ip = IPUtils.getIp();
-        LoginLog loginLog = new LoginLog(u.getUsername(), DateUtils.getDate(), LOCATION, ip);
-        // 将用户的登陆信息存储到登陆日志
-        Integer addLogResult = addLoginLog(loginLog);
-        if (addLogResult == 0) {
-        // 说明存储登陆日志时失败，所以从安全的角度，判定此次登陆失败
-          tokenVo.setIfSuccess(false)
-                  .setToken(null)
-                  .setRedisKey(null);
-        }
-      } catch (UnknownHostException uhe) {
-        uhe.printStackTrace();
       }
     }
     return tokenVo;
