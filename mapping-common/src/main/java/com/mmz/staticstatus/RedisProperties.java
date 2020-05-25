@@ -8,9 +8,15 @@ package com.mmz.staticstatus;
  **/
 public class RedisProperties {
 
+    // 不存在这个key才创建
     public static final String NX = "nx";
-    public static final String PX = "px";
+    // 存在这个key才创建
     public static final String XX = "xx";
+    // 秒
     public static final String EX = "ex";
+    // 毫秒
+    public static final String PX = "px";
     public static final String NO = "no";
+    // 默认的value值
+    public static final String VALUE = "mmz";
 }

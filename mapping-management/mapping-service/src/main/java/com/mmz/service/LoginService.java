@@ -9,8 +9,7 @@ import com.mmz.vo.TokenVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.mmz.staticstatus.RedisProperties.EX;
-import static com.mmz.staticstatus.RedisProperties.XX;
+import static com.mmz.staticstatus.RedisProperties.*;
 /**
  * @program: spring-cloud-mapping
  * @description:
@@ -42,18 +41,31 @@ public class LoginService extends BaseService<User> {
         int updateResult = userMapper.updateByPrimaryKey(u);
         // 5.判断token值是否更新成功
         if (updateResult > 0) {
-          /**
-           * 说明token更新成功，需要返回token的值，因为以后每个方法都会去查询这个token的值， 频繁的查询数据库会影响系统的效率，所以存在缓存里边(redis)
-           * 并设置响应的失效时间 在这里设置的是只有在redsi中存在这个key才可以修改，失效时间的格式为秒 TODO 所以在添加用户的时候，需要将用户的ID作为key存到redis中
-           */
-          // TODO 这个地方失败了
-          String setResult = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
-          // TODO 这里 "OK"一定会返回，需要测试
-          if ("OK".equals(setResult.toUpperCase()) || "1".equals(setResult)) {
+          // 由于用户登陆的时候存的token值设置了失效时间，失效时间过了之后就无法操作这个key了，所以将用户ID作为key存进去
+          String setResultF = redisService.set(String.valueOf(u.getId()), token, NX,EX,null);
+          // 判断当这个key不存在的时候才会存入成功
+          if ("OK".equals(setResultF)) {
+            /**
+             * 说明token更新成功，需要返回token的值，因为以后每个方法都会去查询这个token的值， 频繁的查询数据库会影响系统的效率，所以存在缓存里边(redis)
+             * 并设置响应的失效时间 在这里设置的是只有在redsi中存在这个key才可以修改，失效时间的格式为秒
+             */
+            String setResultS = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
+            // 返回值是OK
+            if ("OK".equals(setResultS.toUpperCase())) {
+              return tokenVo
+                      .setIfSuccess(true)
+                      .setToken(token)
+                      .setRedisKey(String.valueOf(u.getId()));
+            }
+          }
+          // 说明这个key已经存在
+          String setResultS = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
+          // 返回值是OK
+          if ("OK".equals(setResultS.toUpperCase())) {
             return tokenVo
-                .setIfSuccess(true)
-                .setToken(token)
-                .setRedisKey(String.valueOf(u.getId()));
+                    .setIfSuccess(true)
+                    .setToken(token)
+                    .setRedisKey(String.valueOf(u.getId()));
           }
         }
       }
