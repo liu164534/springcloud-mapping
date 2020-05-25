@@ -1,14 +1,21 @@
 package com.mmz.service;
 
 import com.mmz.base.BaseService;
+import com.mmz.mapper.LoginLogMapper;
 import com.mmz.mapper.UserMapper;
+import com.mmz.model.LoginLog;
 import com.mmz.model.User;
 import com.mmz.redis.RedisService;
+import com.mmz.utils.DateUtils;
 import com.mmz.utils.IDUtils;
+import com.mmz.utils.IPUtils;
 import com.mmz.vo.TokenVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.UnknownHostException;
+
+import static com.mmz.staticstatus.LocationProperties.LOCATION;
 import static com.mmz.staticstatus.RedisProperties.*;
 /**
  * @program: spring-cloud-mapping
@@ -19,7 +26,11 @@ import static com.mmz.staticstatus.RedisProperties.*;
 @Service
 public class LoginService extends BaseService<User> {
 
-  @Autowired private UserMapper userMapper;
+  @Autowired 
+  private UserMapper userMapper;
+  
+  @Autowired
+  private LoginLogMapper loginLogMapper;
 
   /**
    * @Description: 执行登陆操作 @Param: [user, redisService]
@@ -69,7 +80,36 @@ public class LoginService extends BaseService<User> {
           }
         }
       }
+      // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
+      try{
+        // 获取当前用户的ip
+        String ip = IPUtils.getIp();
+        LoginLog loginLog = new LoginLog(u.getUsername(), DateUtils.getDate(), LOCATION, ip);
+        // 将用户的登陆信息存储到登陆日志
+        Integer addLogResult = addLoginLog(loginLog);
+        if (addLogResult == 0) {
+        // 说明存储登陆日志时失败，所以从安全的角度，判定此次登陆失败
+          tokenVo.setIfSuccess(false)
+                  .setToken(null)
+                  .setRedisKey(null);
+        }
+      } catch (UnknownHostException uhe) {
+        uhe.printStackTrace();
+      }
     }
     return tokenVo;
   }
+
+  
+  /**
+  * @Description: 将用户的登陆信息存储到登陆日志表
+  * @Param: [loginLog]
+  * @return: java.lang.Integer 
+  * @Author: Liu Xinpeng
+  * @Date: 2020/5/25
+  */
+  public Integer addLoginLog(LoginLog loginLog){
+    return loginLogMapper.insert(loginLog);
+  }
+
 }
