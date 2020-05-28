@@ -1,7 +1,7 @@
 package com.mmz.annotation;
 
 import com.mmz.model.User;
-import com.mmz.service.IMMZService;
+import com.mmz.service.IUserService;
 import com.mmz.utils.DateUtils;
 import com.mmz.utils.IPUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import static com.mmz.staticstatus.LocationProperties.LOCATION;
 public class LogAspect {
 
     @Autowired
-    private IMMZService immzService;
+    private IUserService IUserService;
 
     /**
     * @Description:
@@ -119,7 +119,7 @@ public class LogAspect {
         map.put("location",LOCATION);
         map.put("operationType", operationType);
         map.put("operationName", operationName);
-        immzService.addLoginLog(map);
+        IUserService.addLoginLog(map);
     System.out.println(user.getUsername());
         // 如果不return则永远不会返回目标controller
         return result;

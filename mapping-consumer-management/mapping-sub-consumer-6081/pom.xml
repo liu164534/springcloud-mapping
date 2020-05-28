@@ -9,15 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-        </dependency>
-    </dependencies>
 
 
-    <artifactId>mapping-sub-consumer-8081</artifactId>
+    <artifactId>mapping-sub-consumer-6081</artifactId>
 
 
 </project>

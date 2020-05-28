@@ -34,7 +34,7 @@ import java.util.Map;
  * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性
  */
 @FeignClient(value = "system-interface")
-public interface IMMZService {
+public interface IUserService {
 
     
     /**

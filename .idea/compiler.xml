@@ -14,8 +14,8 @@
         <module name="mapping-sub-provider-8081" />
         <module name="mapping-service" />
         <module name="mapping-zuul-4081" />
-        <module name="mapping-sub-consumer-8081" />
         <module name="mapping-model" />
+        <module name="mapping-sub-consumer-6081" />
         <module name="mapping-sub-eureka-7083" />
         <module name="mapping-sub-eureka-7082" />
         <module name="mapping-sub-eureka-7081" />

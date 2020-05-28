@@ -4,7 +4,7 @@ import com.mmz.annotation.LoginLogAnnotation;
 import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.User;
-import com.mmz.service.IMMZService;
+import com.mmz.service.IUserService;
 import com.mmz.vo.TokenVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,14 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController extends BaseController {
 
     @Autowired
-    private IMMZService immzService;
+    private IUserService IUserService;
+
 
     @PostMapping("/doLogin")
     @ApiOperation(value = "登陆功能" ,notes = "用户执行登陆的功能")
     @LoginLogAnnotation(operationType = "登陆操作",operationName = "管理员登陆")
     public ResultData doLogin(@RequestBody User user) {
-    System.out.println("的梦华录");
-        TokenVo tokenVo = immzService.doLogin(user);
+        TokenVo tokenVo = IUserService.doLogin(user);
         // 通过往redis存储token值得结果来验证用户是否登陆成功
         if (tokenVo.getIfSuccess()) {
             return super.loginSuccess(tokenVo.getToken());
