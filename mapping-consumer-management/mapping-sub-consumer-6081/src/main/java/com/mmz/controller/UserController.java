@@ -3,7 +3,7 @@ package com.mmz.controller;
 import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.User;
-import com.mmz.service.IMMZService;
+import com.mmz.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ import java.util.List;
 @Api(value = "用户管理", tags = "对用户进行接口")
 public class UserController extends BaseController {
     @Autowired
-    IMMZService immzService;
+    private IUserService iUserService;
     /**
     * @Description: 查询所有用户
     * @Param: []
@@ -33,9 +33,9 @@ public class UserController extends BaseController {
     @GetMapping("getAllUserInfo")
     public ResultData getAllUserInfo()
     {
-        List<User> allUserInfo = immzService.getAllUserInfo();
+        List<User> allUserInfo = iUserService.getAllUserInfo();
         if (!" ".equals(allUserInfo) && null != allUserInfo) {
-            return super.selectSuccesss(immzService.getAllUserInfo());
+            return super.selectSuccesss(iUserService.getAllUserInfo());
         } else {
             return super.selectFailed();
         }
