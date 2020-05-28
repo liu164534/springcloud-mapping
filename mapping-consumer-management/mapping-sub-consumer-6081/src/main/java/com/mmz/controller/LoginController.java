@@ -35,7 +35,7 @@ public class LoginController extends BaseController {
         TokenVo tokenVo = IUserService.doLogin(user);
         // 通过往redis存储token值得结果来验证用户是否登陆成功
         if (tokenVo.getIfSuccess()) {
-            return super.loginSuccess(tokenVo.getToken());
+            return super.loginSuccess("登陆成功",tokenVo.getToken());
         }
         return super.loginFailed();
     }

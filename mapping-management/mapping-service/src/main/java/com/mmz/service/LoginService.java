@@ -1,7 +1,7 @@
 package com.mmz.service;
 
 import com.mmz.base.BaseService;
-import com.mmz.mapper.UserMapper;
+import com.mmz.mapper.UserInfoMapper;
 import com.mmz.model.User;
 import com.mmz.redis.RedisService;
 import com.mmz.utils.IDUtils;
@@ -20,7 +20,7 @@ import static com.mmz.staticstatus.RedisProperties.*;
 public class LoginService extends BaseService<User> {
 
   @Autowired 
-  private UserMapper userMapper;
+  private UserInfoMapper userMapper;
   /**
    * @Description: 执行登陆操作 @Param: [user, redisService]
    *
