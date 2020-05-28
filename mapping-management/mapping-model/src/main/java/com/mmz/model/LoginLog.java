@@ -39,4 +39,15 @@ public class LoginLog implements Serializable {
     @Column(name = "IP")
     private String ip;
 
+    /**
+     * 操作的类型
+     */
+    @Column(name = "OPERATION_TYPE")
+    private String operationType;
+
+    /**
+     * 操作的名称
+     */
+    @Column(name = "OPERATION_NAME")
+    private String operationName;
 }

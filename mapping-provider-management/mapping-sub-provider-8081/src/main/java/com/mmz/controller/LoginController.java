@@ -33,7 +33,7 @@ public class LoginController {
     */
     @PostMapping("/doLogin")
     public TokenVo doLogin(@RequestBody User user) {
-        return loginService.doLogin(user, redisService);
+        return loginService. doLogin(user, redisService);
     }
 
 }

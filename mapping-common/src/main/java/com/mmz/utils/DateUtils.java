@@ -29,7 +29,7 @@ public class DateUtils {
     * @Author: Liu Xinpeng
     * @Date: 2020/5/25
     */
-    public static String getDate() {
+    public static final String getDate() {
         // 设置日期得格式
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         String formatDate = simpleDateFormat.format(new Date());

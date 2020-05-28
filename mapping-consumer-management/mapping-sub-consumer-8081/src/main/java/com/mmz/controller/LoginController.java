@@ -1,5 +1,6 @@
 package com.mmz.controller;
 
+import com.mmz.annotation.LoginLogAnnotation;
 import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.User;
@@ -28,7 +29,9 @@ public class LoginController extends BaseController {
 
     @PostMapping("/doLogin")
     @ApiOperation(value = "登陆功能" ,notes = "用户执行登陆的功能")
+    @LoginLogAnnotation(operationType = "登陆操作",operationName = "管理员登陆")
     public ResultData doLogin(@RequestBody User user) {
+    System.out.println("的梦华录");
         TokenVo tokenVo = immzService.doLogin(user);
         // 通过往redis存储token值得结果来验证用户是否登陆成功
         if (tokenVo.getIfSuccess()) {

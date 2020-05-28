@@ -1,21 +1,14 @@
 package com.mmz.service;
 
 import com.mmz.base.BaseService;
-import com.mmz.mapper.LoginLogMapper;
 import com.mmz.mapper.UserMapper;
-import com.mmz.model.LoginLog;
 import com.mmz.model.User;
 import com.mmz.redis.RedisService;
-import com.mmz.utils.DateUtils;
 import com.mmz.utils.IDUtils;
-import com.mmz.utils.IPUtils;
 import com.mmz.vo.TokenVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.UnknownHostException;
-
-import static com.mmz.staticstatus.LocationProperties.LOCATION;
 import static com.mmz.staticstatus.RedisProperties.*;
 /**
  * @program: spring-cloud-mapping
@@ -28,14 +21,12 @@ public class LoginService extends BaseService<User> {
 
   @Autowired 
   private UserMapper userMapper;
-  
-  @Autowired
-  private LoginLogMapper loginLogMapper;
-
   /**
    * @Description: 执行登陆操作 @Param: [user, redisService]
    *
-   * @return: com.mmz.vo.TokenVo @Author: Liu Xinpeng @Date: 2020/5/24
+   * @return: com.mmz.vo.TokenVo
+   * @Author: Liu Xinpeng
+   * @Date: 2020/5/24
    */
   public TokenVo doLogin(User user, RedisService redisService) {
     TokenVo tokenVo = new TokenVo();
@@ -53,7 +44,7 @@ public class LoginService extends BaseService<User> {
         // 5.判断token值是否更新成功
         if (updateResult > 0) {
           // 由于用户登陆的时候存的token值设置了失效时间，失效时间过了之后就无法操作这个key了，所以将用户ID作为key存进去
-          String setResultF = redisService.set(String.valueOf(u.getId()), token, NX,EX,null);
+          String setResultF = redisService.set(String.valueOf(u.getId()), token, NX, EX, null);
           // 判断当这个key不存在的时候才会存入成功
           if ("OK".equals(setResultF)) {
             /**
@@ -63,26 +54,10 @@ public class LoginService extends BaseService<User> {
             String setResultS = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
             // 返回值是OK
             if ("OK".equals(setResultS.toUpperCase())) {
-              // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
-              try{
-                // 获取当前用户的ip
-                String ip = IPUtils.getIp();
-                LoginLog loginLog = new LoginLog(u.getUsername(), DateUtils.getDate(), LOCATION, ip);
-                // 将用户的登陆信息存储到登陆日志
-                Integer addLogResult = addLoginLog(loginLog);
-                if (addLogResult == 0) {
-                  // 说明存储登陆日志时失败，所以从安全的角度，判定此次登陆失败
-                  tokenVo.setIfSuccess(false)
-                          .setToken(null)
-                          .setRedisKey(null);
-                }
-                return tokenVo
-                        .setIfSuccess(true)
-                        .setToken(token)
-                        .setRedisKey(String.valueOf(u.getId()));
-              } catch (UnknownHostException uhe) {
-                uhe.printStackTrace();
-              }
+              return tokenVo
+                  .setIfSuccess(true)
+                  .setToken(token)
+                  .setRedisKey(String.valueOf(u.getId()));
             }
           }
           // 说明这个key已经存在
@@ -90,42 +65,15 @@ public class LoginService extends BaseService<User> {
           // 返回值是OK
           if ("OK".equals(setResultS.toUpperCase())) {
             // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
-            try{
-              // 获取当前用户的ip
-              String ip = IPUtils.getIp();
-              LoginLog loginLog = new LoginLog(u.getUsername(), DateUtils.getDate(), LOCATION, ip);
-              // 将用户的登陆信息存储到登陆日志
-              Integer addLogResult = addLoginLog(loginLog);
-              if (addLogResult == 0) {
-                // 说明存储登陆日志时失败，所以从安全的角度，判定此次登陆失败
-                tokenVo.setIfSuccess(false)
-                        .setToken(null)
-                        .setRedisKey(null);
-              }
-              return tokenVo
-                      .setIfSuccess(true)
-                      .setToken(token)
-                      .setRedisKey(String.valueOf(u.getId()));
-            } catch (UnknownHostException uhe) {
-              uhe.printStackTrace();
-            }
+            return tokenVo
+                .setIfSuccess(true)
+                .setToken(token)
+                .setRedisKey(String.valueOf(u.getId()));
           }
         }
       }
     }
     return tokenVo;
-  }
-
-  
-  /**
-  * @Description: 将用户的登陆信息存储到登陆日志表
-  * @Param: [loginLog]
-  * @return: java.lang.Integer 
-  * @Author: Liu Xinpeng
-  * @Date: 2020/5/25
-  */
-  public Integer addLoginLog(LoginLog loginLog){
-    return loginLogMapper.insert(loginLog);
   }
 
 }
