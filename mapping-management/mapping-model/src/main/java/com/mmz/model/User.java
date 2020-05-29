@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 @Table(name = "t_user")
 @Data
@@ -52,7 +52,7 @@ public class User extends BaseModel implements Serializable {
      * 最近访问时间
      */
     @Column(name = "last_login_time")
-    private Date lastLoginTime;
+    private String lastLoginTime;
 
     /**
      * 性别 0男 1女 2保密

@@ -51,14 +51,12 @@ public abstract class CommonController<T> extends BaseController {
     * @Date: 2020/5/28
     */
     public ResultData add(@RequestBody Map map) {
-        ResultData resultData = new ResultData();
         // 执行新增之前的钩子函数
         beforeAdd(map);
         // 将传入的map类型转换成对应的实体类型
         T instance = getBaseService().newInstance(map);
         try{
             Integer insertResult = getBaseService().add(instance);
-            System.out.println("日志");
             if (insertResult > 0) {
                 // 说明新增成功
                 afterAdd(map);

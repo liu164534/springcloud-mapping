@@ -14,7 +14,7 @@
     <result column="status" property="status" jdbcType="CHAR" />
     <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
-    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="VARCHAR" />
     <result column="ssex" property="ssex" jdbcType="CHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="avatar" property="avatar" jdbcType="VARCHAR" />

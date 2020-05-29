@@ -17,8 +17,6 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mmz.staticstatus.LocationProperties.LOCATION;
-
 /**
  * @program: spring-cloud-mapping
  * @description: 日志的aop
@@ -63,10 +61,8 @@ public class LogAspect {
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws ClassNotFoundException, UnknownHostException{
         // 1.定义返回值
         Object result = null;
-    System.out.println("22");
         try {
             result = proceedingJoinPoint.proceed();
-      System.out.println("1");
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -83,7 +79,6 @@ public class LogAspect {
         //4 .TODO 获取Ip地址
 
             String ip = IPUtils.getIp();
-    System.out.println(ip);
         //5.获取operationType和operationName
         // 获取方法所属类的全限定名
         String className = proceedingJoinPoint.getTarget().getClass().getName();
@@ -93,8 +88,8 @@ public class LogAspect {
         Class targetClass = Class.forName(className);
         // 获取目标类中的所有方法
         Method[] methods = targetClass.getMethods();
-        String operationType = "";
-        String operationName = "";
+        String operationType = "2";
+        String operationName = "2";
 
         // 通过循环来进行对比判断
         for (Method method : methods) {
@@ -116,11 +111,9 @@ public class LogAspect {
         map.put("username", user.getUsername());
         map.put("loginTime",date);
         map.put("ip", ip);
-        map.put("location",LOCATION);
         map.put("operationType", operationType);
         map.put("operationName", operationName);
         IUserService.addLoginLog(map);
-    System.out.println(user.getUsername());
         // 如果不return则永远不会返回目标controller
         return result;
     }
