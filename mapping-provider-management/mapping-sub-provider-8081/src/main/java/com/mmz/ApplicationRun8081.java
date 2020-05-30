@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.ComponentScan;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -26,7 +25,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableDiscoveryClient
 // 熔断器
 @EnableCircuitBreaker
-@ComponentScan("com.mmz.*")
 public class ApplicationRun8081 {
   public static void main(String[] args) {
       SpringApplication.run(ApplicationRun8081.class, args);

@@ -1,9 +1,7 @@
 package com.mmz.service;
 
 import com.mmz.base.BaseService;
-import com.mmz.mapper.LoginLogMapper;
 import com.mmz.model.LoginLog;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +12,5 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class LoginLogService extends BaseService<LoginLog> {
-    @Autowired
-    private LoginLogMapper loginLogMapper;
+
 }

@@ -64,7 +64,6 @@ public class LoginService extends BaseService<User> {
           String setResultS = redisService.set(String.valueOf(u.getId()), token, XX, EX, 1800);
           // 返回值是OK
           if ("OK".equals(setResultS.toUpperCase())) {
-            // 此时说明用户已经登陆成功，将用户信息存储到登陆日志表种
             return tokenVo
                 .setIfSuccess(true)
                 .setToken(token)
