@@ -29,6 +29,7 @@ public class UserService extends BaseService<User> {
      * @Date: 2020/5/24
      */
     public List<User> getAllUserInfo() {
+        System.out.println("management-Service");
         List<User> userList = userInfoMapper.selectAll();
         if (userList == null || userList.size() < 1) {
             return null;

@@ -31,6 +31,7 @@ public class UserController {
     */
     @GetMapping("getAllUserInfo")
     public List<User> getAllUserInfo() {
+        System.out.println("provider-Contorller");
         List<User> userInfo = userService.getAllUserInfo();
         if (!" ".equals(userInfo) && null != userInfo) {
             return userInfo;

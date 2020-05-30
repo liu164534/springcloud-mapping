@@ -33,6 +33,7 @@ public class UserController extends BaseController {
     @GetMapping("getAllUserInfo")
     public ResultData getAllUserInfo()
     {
+        System.out.println("consumer-Controller");
         List<User> allUserInfo = iUserService.getAllUserInfo();
         if (!" ".equals(allUserInfo) && null != allUserInfo) {
             return super.selectSuccesss(iUserService.getAllUserInfo());
