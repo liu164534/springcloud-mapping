@@ -191,7 +191,7 @@ public abstract class BaseService<T> {
     * @Date: 2020/5/20
     */
     private Class<T> getTypeArgument() {
-        if (null == cache) {
+        if(null == cache) {
             cache = (Class<T>) ((ParameterizedType)(this.getClass().getGenericSuperclass())).getActualTypeArguments()[0];
         }
         return cache;

@@ -42,7 +42,6 @@ public class SpringContextUtils implements ApplicationContextAware {
         APPLICATIONCONTEXT = applicationContext;
     }
 
-
     public static ApplicationContext getApplicationContext() {
         Lock lock = READ_WRITE_LOCK.readLock();
         lock.lock();

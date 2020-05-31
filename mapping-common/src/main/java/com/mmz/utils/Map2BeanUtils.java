@@ -55,14 +55,14 @@ public class Map2BeanUtils {
              */
             // TODO 获取下一步的get和set方法 (防止为空，所以再进行一次验证)
             CONCURRENT_HASH_MAP.putIfAbsent(tClass, methodAccess);
-            // 循环数据
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                // 通过循环可以获取到Map中的各种数据，通过setter方法进行赋值
-                String setMethodName = setMethodName(entry.getKey());
-                int index = methodAccess.getIndex(setMethodName, entry.getValue().getClass());
-                // method.invoke() 用来执行某个对象的目标方法
-                methodAccess.invoke(instance, index, entry.getValue());
-            }
+        }
+        // 循环数据
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            // 通过循环可以获取到Map中的各种数据，通过setter方法进行赋值
+            String setMethodName = setMethodName(entry.getKey());
+            int index = methodAccess.getIndex(setMethodName, entry.getValue().getClass());
+            // method.invoke() 用来执行某个对象的目标方法
+            methodAccess.invoke(instance, index, entry.getValue());
         }
         return instance;
     }

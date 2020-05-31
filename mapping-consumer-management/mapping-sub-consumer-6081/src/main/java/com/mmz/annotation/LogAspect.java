@@ -88,8 +88,8 @@ public class LogAspect {
         Class targetClass = Class.forName(className);
         // 获取目标类中的所有方法
         Method[] methods = targetClass.getMethods();
-        String operationType = "2";
-        String operationName = "2";
+        String operationType = "";
+        String operationName = "";
 
         // 通过循环来进行对比判断
         for (Method method : methods) {
@@ -111,6 +111,7 @@ public class LogAspect {
         map.put("username", user.getUsername());
         map.put("loginTime",date);
         map.put("ip", ip);
+        map.put("location", "河南");
         map.put("operationType", operationType);
         map.put("operationName", operationName);
         IUserService.addLoginLog(map);
