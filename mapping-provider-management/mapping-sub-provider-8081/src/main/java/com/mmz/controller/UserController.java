@@ -7,6 +7,7 @@ import com.mmz.model.User;
 import com.mmz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -38,5 +39,11 @@ public class UserController {
         } else {
             return null;
         }
+    }
+    @PostMapping("insertUser")
+    public Boolean insertUser(User user){
+        System.out.println("provider-Contorller");
+        return userService.insertUserInfo(user);
+
     }
 }

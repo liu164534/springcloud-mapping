@@ -22,7 +22,7 @@ public class UserService extends BaseService<User> {
     private UserInfoMapper userInfoMapper;
 
     /**
-     * @Description:
+     * @Description:获取用户信息
      * @Param: []
      * @return: boolean
      * @Author: Mr.miao
@@ -35,5 +35,21 @@ public class UserService extends BaseService<User> {
             return null;
         }
         return userList;
+    }
+    /**
+    * @Description: 增加用户
+    * @Param: [user]
+    * @return: java.lang.Boolean
+    * @Author: Mr.miao
+    * @Date: 2020/5/31
+    */
+    public Boolean insertUserInfo(User user){
+        System.out.println("management-Service");
+        Integer i=userInfoMapper.insert(user);
+        if (i < 1) {
+            return false;
+        }else {
+            return true;
+        }
     }
 }

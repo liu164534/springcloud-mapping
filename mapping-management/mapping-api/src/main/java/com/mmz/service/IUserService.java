@@ -67,4 +67,14 @@ public interface IUserService {
      */
     @GetMapping("getAllUserInfo")
     List<User> getAllUserInfo();
+
+    /**
+    * @Description: 添加用户信息
+    * @Param: [user]
+    * @return: java.lang.Boolean
+    * @Author: Mr.miao
+    * @Date: 2020/5/31
+    */
+    @PostMapping("insertUser")
+    Boolean insertUser(User user);
 }

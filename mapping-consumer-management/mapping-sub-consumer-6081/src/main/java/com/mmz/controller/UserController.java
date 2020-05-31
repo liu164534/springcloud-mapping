@@ -1,5 +1,6 @@
 package com.mmz.controller;
 
+import com.mmz.annotation.LoginLogAnnotation;
 import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.User;
@@ -7,6 +8,8 @@ import com.mmz.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,5 +44,23 @@ public class UserController extends BaseController {
             return super.selectFailed();
         }
 
+    }
+    /**
+    * @Description: 添加用户
+    * @Param: [user]
+    * @return: com.mmz.base.ResultData
+    * @Author: Mr.miao
+    * @Date: 2020/5/31
+    */
+
+    @LoginLogAnnotation(operationName = "管理员",operationType = "添加")
+    @PostMapping("insertUser")
+    public ResultData insertUser(@RequestBody  User user){
+        Boolean aBoolean = iUserService.insertUser(user);
+        if (aBoolean){
+            return super.insertSuccess();
+        }else {
+            return super.insertFailed();
+        }
     }
 }
