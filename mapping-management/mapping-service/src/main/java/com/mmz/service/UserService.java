@@ -52,4 +52,20 @@ public class UserService extends BaseService<User> {
             return true;
         }
     }
+    /**
+    * @Description: 修改用户信息
+    * @Param: [user]
+    * @return: java.lang.Boolean
+    * @Author: Mr.miao
+    * @Date: 2020/6/1
+    */
+    public Boolean updateUserInfoById(User user){
+        System.out.println("management-Service----"+user);
+        Integer i=userInfoMapper.updateByPrimaryKey(user);
+        if (i < 1) {
+            return false;
+        }else {
+            return true;
+        }
+    }
 }

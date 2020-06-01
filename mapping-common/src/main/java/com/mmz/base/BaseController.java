@@ -3,6 +3,7 @@ package com.mmz.base;
 import com.mmz.status.InsertStatus;
 import com.mmz.status.LoginStatus;
 import com.mmz.status.SelectStatus;
+import com.mmz.status.UpdateStatus;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -221,6 +222,7 @@ public class BaseController {
         resultData.setData(data);
         return resultData;
     }
+
     /**
      * @Description: 查询失败，返回数据
      * @Param: [data]
@@ -235,6 +237,7 @@ public class BaseController {
         resultData.setData(data);
         return resultData;
     }
+
     /**
      * @Description: 查询失败，不返回数据
      * @Param: [data]
@@ -246,6 +249,64 @@ public class BaseController {
         ResultData resultData = new ResultData();
         resultData.setCode(SelectStatus.SELECT_FAILED.getCode());
         resultData.setMsg(SelectStatus.SELECT_FAILED.getMsg());
+        return resultData;
+    }
+
+    /**
+     * @Description: 修改成功，不返回数据
+     * @Param: []
+     * @return: com.mmz.base.ResultData
+     * @Author: Mr.miao
+     * @Date: 2020/6/1
+     */
+    protected ResultData updatetSuccess() {
+        ResultData resultData = new ResultData();
+        resultData.setCode(UpdateStatus.UPDATE_SUCCESS.getCode());
+        resultData.setMsg(UpdateStatus.UPDATE_SUCCESS.getMsg());
+        return resultData;
+    }
+
+    /**
+     * @Description: 修改成功，返回数据
+     * @Param: [data]
+     * @return: com.mmz.base.ResultData
+     * @Author: Mr.miao
+     * @Date: 2020/6/1
+     */
+    protected ResultData updateSuccess(Object data) {
+        ResultData resultData = new ResultData();
+        resultData.setCode(UpdateStatus.UPDATE_SUCCESS.getCode());
+        resultData.setMsg(UpdateStatus.UPDATE_SUCCESS.getMsg());
+        resultData.setData(data);
+        return resultData;
+    }
+
+    /**
+     * @Description: 修改失败，不返回数据
+     * @Param: []
+     * @return: com.mmz.base.ResultData
+     * @Author: Mr.miao
+     * @Date: 2020/6/1
+     */
+    protected ResultData updateFailed() {
+        ResultData resultData = new ResultData();
+        resultData.setCode(UpdateStatus.UPDATE_FAILED.getCode());
+        resultData.setMsg(UpdateStatus.UPDATE_FAILED.getMsg());
+        return resultData;
+    }
+
+    /**
+     * @Description: 修改失败，返回数据
+     * @Param: [data]
+     * @return: com.mmz.base.ResultData
+     * @Author: Mr.miao
+     * @Date: 2020/6/1
+     */
+    protected ResultData updateFailed(Object data) {
+        ResultData resultData = new ResultData();
+        resultData.setCode(UpdateStatus.UPDATE_FAILED.getCode());
+        resultData.setMsg(UpdateStatus.UPDATE_FAILED.getMsg());
+        resultData.setData(data);
         return resultData;
     }
 }
