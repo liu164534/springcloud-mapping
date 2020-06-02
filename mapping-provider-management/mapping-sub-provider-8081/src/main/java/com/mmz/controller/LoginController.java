@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
 
 /**
  * @program: spring-cloud-mapping
@@ -33,6 +38,16 @@ public class LoginController {
     */
     @PostMapping("/doLogin")
     public TokenVo doLogin(@RequestBody User user) {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Enumeration<String> headerNames =
+                attributes.getRequest().getHeaderNames();
+        LinkedHashMap map = new LinkedHashMap();
+        while (headerNames.hasMoreElements()) {
+            String key = headerNames.nextElement();
+            String value = attributes.getRequest().getHeader(key);
+            map.put(key, value);
+        }
+        System.out.println(map);
         return loginService.doLogin(user, redisService);
     }
 

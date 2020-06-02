@@ -3,7 +3,7 @@ package com.mmz.status;
 /**
  * @program: springcloud-mapping
  * @description: 查询返回信息的枚举
- * @author: Mr.Miao
+ * @author: ly
  * @create: 2020-05-28 14:51
  **/
 public enum SelectStatus {
