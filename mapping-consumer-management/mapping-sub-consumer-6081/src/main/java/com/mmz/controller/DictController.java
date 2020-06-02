@@ -4,11 +4,11 @@ package com.mmz.controller;
 import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.Dict;
-import com.mmz.service.IDictService;
+import com.mmz.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.mmz.service.IDictService;
+
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ import java.util.List;
 public class DictController extends BaseController {
 
   @Autowired
-  private IDictService iDictService;
+  private IUserService iUserService;
 
   //    /**
   //     * @author Jia Hao Hao
@@ -52,7 +52,7 @@ public class DictController extends BaseController {
   @GetMapping("/selectAllDictInfo")
   public ResultData selectAllDictInfo() {
     // 获取字典信息
-    List<Dict> dictList = iDictService.selectAllDictInfo();
+    List<Dict> dictList = iUserService.selectAllDictInfo();
     // 判断是否获取到数据
     if (!"".equals(dictList) && null != dictList) {
       // 有数据则返回
@@ -73,7 +73,7 @@ public class DictController extends BaseController {
   @PostMapping("/insertDictInfo")
   public ResultData insertDictInfo(@RequestBody Dict dict) {
     // 添加字典信息
-    Boolean aBoolean = iDictService.insertDictInfo(dict);
+    Boolean aBoolean = iUserService.insertDictInfo(dict);
     if (aBoolean) {
       // 返回成功
       return super.insertSuccess();
@@ -93,7 +93,7 @@ public class DictController extends BaseController {
   @DeleteMapping("/deleteDictInfo")
   public ResultData deleteDictInfo(@RequestBody List<Object> ids) {
     // 批量删除字典信息
-    Integer integer = iDictService.deleteDictInfo(ids);
+    Integer integer = iUserService.deleteDictInfo(ids);
     if (integer > 0) {
       return super.insertSuccess();
     }
@@ -111,7 +111,7 @@ public class DictController extends BaseController {
   @DeleteMapping("/deleteDictId")
   public ResultData deleteDictId(@RequestBody Dict dict) {
     // 批量删除字典信息
-    Integer integer = iDictService.deleteDictId(dict);
+    Integer integer = iUserService.deleteDictId(dict);
     if (integer > 0) {
       return super.insertSuccess();
     }
@@ -129,7 +129,7 @@ public class DictController extends BaseController {
   @PostMapping("/selectDictId")
   public ResultData selectDictId(@RequestBody Dict dict) {
     // 根据id查询字典信息
-    Dict dict1 = iDictService.selectDictId(dict);
+    Dict dict1 = iUserService.selectDictId(dict);
     if (!"".equals(dict1) && null != dict1) {
       // 查询成功返回数据
       return super.selectSuccess(dict1);
@@ -149,7 +149,7 @@ public class DictController extends BaseController {
   @PutMapping("/updateDictInfo")
   public ResultData updateDictInfo(@RequestBody Dict dict) {
     // 根据id修改字典信息
-    Integer integer = iDictService.updateDictInfo(dict);
+    Integer integer = iUserService.updateDictInfo(dict);
     if (integer > 0) {
       return super.insertSuccess();
     }
