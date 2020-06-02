@@ -21,4 +21,8 @@
     <result column="token" property="token" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="CHAR" />
   </resultMap>
+  <insert id="insertUseGeneratedKeys" parameterType="com.mmz.model.User"  useGeneratedKeys="true" keyProperty="id" >
+insert into t_user values(null,#{username},#{password},#{deptId},#{email},#{mobile},1,#{createTime},#{modifyTime},
+#{lastLoginTime},#{ssex},#{description},#{avatar},#{token},#{type})
+  </insert>
 </mapper>

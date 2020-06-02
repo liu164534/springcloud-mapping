@@ -66,7 +66,6 @@ public class UserController {
     @PostMapping("updateUser")
     public Boolean updateUserInfoById(@RequestBody User user){
         System.out.println("provider-Contorller----"+user);
-
         user.setCreateTime("2020-06-01");
         return userService.updateUserInfoById(user);
 

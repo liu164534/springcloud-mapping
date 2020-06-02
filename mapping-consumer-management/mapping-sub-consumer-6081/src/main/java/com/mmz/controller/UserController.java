@@ -56,7 +56,7 @@ public class UserController extends BaseController {
      * @Date: 2020/5/31
      */
 
-    @LoginLogAnnotation(operationName = "管理员", operationType = "添加")
+    @LoginLogAnnotation(operationName = "苗管理员", operationType = "添加")
     @PostMapping("insertUser")
     public ResultData insertUser(@RequestBody User user) {
 
@@ -77,11 +77,12 @@ public class UserController extends BaseController {
      * @Author: Mr.miao
      * @Date: 2020/6/1
      */
+
+    @LoginLogAnnotation(operationName = "苗管理员", operationType = "修改")
     @PostMapping("updateUser")
     public ResultData updateUserInfoById(@RequestBody User user) {
 
         System.out.println("consumer-Controller-----"+user);
-        user.setCreateTime("2020-06-01");
         Boolean aBoolean = iUserService.insertUser(user);
         if (aBoolean) {
             return super.updatetSuccess();
