@@ -1,12 +1,11 @@
 package com.mmz.service;
 
 import com.mmz.base.ResultData;
+import com.mmz.model.Dict;
 import com.mmz.model.User;
 import com.mmz.vo.TokenVo;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -87,4 +86,81 @@ public interface IUserService {
      */
     @PostMapping("updateUser")
     Boolean updateUserInfoById(@RequestBody User user);
+
+//    /**
+//     * @author Jia Hao Hao
+//     * @param
+//     * @date 2020/5/29
+//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+//     * @description 分页获取字典表数据
+//     * @throws
+//     **/
+//    @PostMapping("/selectDictInfo")
+//    PageInfo<Dict> selectDictInfo(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/29
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 获取所有字典表数据
+     * @throws
+     **/
+    @GetMapping("/selectAllDictInfo")
+    List<Dict> selectAllDictInfo();
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return int
+     * @throws
+     * @description 新增字典信息
+     **/
+    @PostMapping("/insertDictInfo")
+    Boolean insertDictInfo(@RequestBody Dict dict);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return int
+     * @throws
+     * @description 批量删除字典信息
+     **/
+    @DeleteMapping("/deleteDictInfo")
+    Integer deleteDictInfo(@RequestBody List<Object> ids);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return java.lang.Boolean
+     * @throws
+     * @description 根据id删除字典信息
+     **/
+    @DeleteMapping("/deleteDictId")
+    Integer deleteDictId(@RequestBody Dict dict);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return java.lang.Boolean
+     * @throws
+     * @description 根据id查询字典信息
+     **/
+    @PostMapping("/selectDictId")
+    Dict selectDictId(@RequestBody Dict dict);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return java.lang.Boolean
+     * @throws
+     * @description 根据id修改字典信息
+     **/
+    @PutMapping("/updateDictInfo")
+    Integer updateDictInfo(@RequestBody Dict dict);
 }
