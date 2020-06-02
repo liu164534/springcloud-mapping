@@ -40,7 +40,7 @@ public class BaseController {
      * @return: com.exam.shiro.base.ResultData
      * @Author: Liu Xinpeng
      * @Date: 2020/4/6
-     */
+     *
     protected ResultData loginSuccess(String msg) {
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());
@@ -212,7 +212,7 @@ public class BaseController {
      * @Description: 查询成功，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
     protected ResultData selectSuccess(Object data) {
@@ -227,7 +227,7 @@ public class BaseController {
      * @Description: 查询成功，不返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
     protected ResultData selectSuccess() {
@@ -241,7 +241,7 @@ public class BaseController {
      * @Description: 查询失败，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
     protected ResultData selectFailed(Object data) {
@@ -256,7 +256,7 @@ public class BaseController {
      * @Description: 查询失败，不返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
     protected ResultData selectFailed() {
@@ -270,7 +270,7 @@ public class BaseController {
      * @Description: 修改成功，不返回数据
      * @Param: []
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateSuccess() {
@@ -284,7 +284,7 @@ public class BaseController {
      * @Description: 修改成功，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateSuccess(Object data) {
@@ -299,7 +299,7 @@ public class BaseController {
      * @Description: 修改失败，不返回数据
      * @Param: []
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateFailed() {
@@ -313,7 +313,7 @@ public class BaseController {
      * @Description: 修改失败，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateFailed(Object data) {
