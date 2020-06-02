@@ -8,7 +8,7 @@ import tk.mybatis.mapper.common.Mapper;
 /**
  * @program: springcloud-mapping
  * @description: 用户管理
- * @author: Mr.Miao
+ * @author: ly
  * @create: 2020-05-28 13:59
  **/
 

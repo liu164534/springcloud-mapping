@@ -51,7 +51,7 @@ public class SpringContextUtils implements ApplicationContextAware {
             } else {
                 return null;
             }
-        } finally {
+    } finally {
             lock.unlock();
         }
     }

@@ -4,7 +4,9 @@ import com.mmz.base.ResultData;
 import com.mmz.model.Dict;
 import com.mmz.model.User;
 import com.mmz.vo.TokenVo;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.Map;
  * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性
  */
 @FeignClient(value = "system-interface")
+@Component
 public interface IUserService {
 
 
@@ -45,6 +48,7 @@ public interface IUserService {
      * @Date: 2020/5/24
      */
     @PostMapping("/doLogin")
+    @HystrixCommand
     TokenVo doLogin(@RequestBody User user);
 
     /**
@@ -87,7 +91,7 @@ public interface IUserService {
     @PostMapping("updateUser")
     Boolean updateUserInfoById(@RequestBody User user);
 
-//    /**
+    //    /**
 //     * @author Jia Hao Hao
 //     * @param
 //     * @date 2020/5/29
@@ -163,4 +167,5 @@ public interface IUserService {
      **/
     @PutMapping("/updateDictInfo")
     Integer updateDictInfo(@RequestBody Dict dict);
+
 }

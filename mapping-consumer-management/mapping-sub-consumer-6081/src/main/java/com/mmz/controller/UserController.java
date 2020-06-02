@@ -6,20 +6,18 @@ import com.mmz.base.ResultData;
 import com.mmz.model.User;
 import com.mmz.service.IUserService;
 import io.swagger.annotations.Api;
-import javafx.scene.chart.PieChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
  * @program: springcloud-mapping
  * @description: 用户管理
- * @author: Mr.Miao
+ * @author: ly
  * @create: 2020-05-28 14:16
  **/
 @RestController
@@ -32,7 +30,7 @@ public class UserController extends BaseController {
      * @Description: 查询所有用户
      * @Param: []
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: ly
      * @Date: 2020/5/28
      */
     //@LoginLogAnnotation(operationName = "管理员",operationType = "查询")   查询操作不需要记录
@@ -41,7 +39,7 @@ public class UserController extends BaseController {
         System.out.println("consumer-Controller");
         List<User> allUserInfo = iUserService.getAllUserInfo();
         if (!" ".equals(allUserInfo) && null != allUserInfo) {
-            return super.selectSuccesss(iUserService.getAllUserInfo());
+            return super.selectSuccess(iUserService.getAllUserInfo());
         } else {
             return super.selectFailed();
         }
@@ -52,7 +50,7 @@ public class UserController extends BaseController {
      * @Description: 添加用户
      * @Param: [user]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: ly
      * @Date: 2020/5/31
      */
 
@@ -74,7 +72,7 @@ public class UserController extends BaseController {
      * @Description: 修改用户信息
      * @Param: [user]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: ly
      * @Date: 2020/6/1
      */
 
@@ -85,7 +83,7 @@ public class UserController extends BaseController {
         System.out.println("consumer-Controller-----"+user);
         Boolean aBoolean = iUserService.insertUser(user);
         if (aBoolean) {
-            return super.updatetSuccess();
+            return super.selectSuccess();
         } else {
             return super.updateFailed();
         }

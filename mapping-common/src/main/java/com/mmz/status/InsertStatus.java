@@ -8,8 +8,8 @@ package com.mmz.status;
  **/
 public enum InsertStatus {
 
-    INSERT_SUCCESS("20003","新增成功"),
-    INSERT_FAILED("10006","新增失败");
+    INSERT_SUCCESS("20004","新增成功"),
+    INSERT_FAILED("10007","新增失败");
 
     InsertStatus(String code, String msg) {
         this.code = code;
