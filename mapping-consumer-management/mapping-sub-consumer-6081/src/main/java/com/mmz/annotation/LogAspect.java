@@ -1,7 +1,6 @@
 package com.mmz.annotation;
 
 import com.mmz.model.User;
-import com.mmz.service.IUserService;
 import com.mmz.utils.DateUtils;
 import com.mmz.utils.IPUtils;
 import lombok.extern.slf4j.Slf4j;
