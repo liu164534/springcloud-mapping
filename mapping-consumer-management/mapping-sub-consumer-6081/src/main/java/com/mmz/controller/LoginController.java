@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController extends BaseController {
 
     @Autowired
-    private IUserService IUserService;
+    private com.mmz.service.IUserService IUserService;
 
 
     @PostMapping("/doLogin")

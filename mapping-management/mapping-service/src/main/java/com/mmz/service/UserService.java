@@ -24,7 +24,7 @@ public class UserService extends BaseService<User> {
      * @Description:获取用户信息
      * @Param: []
      * @return: boolean
-     * @Author: ly
+     * @Author: Mr.miao
      * @Date: 2020/5/24
      */
     public List<User> getAllUserInfo() {
@@ -39,7 +39,7 @@ public class UserService extends BaseService<User> {
     * @Description: 增加用户
     * @Param: [user]
     * @return: java.lang.Boolean
-    * @Author: ly
+    * @Author: Mr.miao
     * @Date: 2020/5/31
     */
     public Boolean insertUserInfo(User user){
@@ -55,7 +55,7 @@ public class UserService extends BaseService<User> {
     * @Description: 修改用户信息
     * @Param: [user]
     * @return: java.lang.Boolean
-    * @Author: ly
+    * @Author: Mr.miao
     * @Date: 2020/6/1
     */
     public Boolean updateUserInfoById(User user){
