@@ -5,6 +5,7 @@ import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.User;
 import com.mmz.vo.TokenVo;
+import com.mmz.service.IUserService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController extends BaseController {
 
     @Autowired
-    private com.mmz.service.IUserService IUserService;
+    private IUserService IUserService;
 
 
     @PostMapping("/doLogin")
