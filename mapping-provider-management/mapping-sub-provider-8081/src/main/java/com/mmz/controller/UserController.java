@@ -1,8 +1,5 @@
 package com.mmz.controller;
 
-import com.mmz.base.BaseService;
-import com.mmz.base.ResultData;
-import com.mmz.mapper.UserInfoMapper;
 import com.mmz.model.User;
 import com.mmz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
  * @program: springcloud-mapping
  * @description: 用户管理
- * @author: Mr.Miao
+ * @author: ly
  * @create: 2020-05-28 17:02
  **/
 @RestController
@@ -29,7 +25,7 @@ public class UserController {
     * @Description: 获取用户信息
     * @Param: []
     * @return: java.util.List<com.mmz.model.User>
-    * @Author: Mr.miao
+    * @Author: ly
     * @Date: 2020/5/28
     */
     @GetMapping("getAllUserInfo")
@@ -46,7 +42,7 @@ public class UserController {
     * @Description: 添加用户
     * @Param: [user]
     * @return: java.lang.Boolean
-    * @Author: Mr.miao
+    * @Author: ly
     * @Date: 2020/6/1
     */
     @PostMapping("insertUser")
@@ -60,7 +56,7 @@ public class UserController {
     * @Description: 修改用户信息
     * @Param: [user]
     * @return: java.lang.Boolean
-    * @Author: Mr.miao
+    * @Author: ly
     * @Date: 2020/6/1
     */
     @PostMapping("updateUser")

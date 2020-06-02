@@ -3,7 +3,6 @@ package com.mmz.service;
 import com.mmz.base.BaseService;
 import com.mmz.mapper.UserInfoMapper;
 import com.mmz.model.User;
-import com.mmz.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * @program: springcloud-mapping
  * @description: 用户服务层
- * @author: Mr.Miao
+ * @author: ly
  * @create: 2020-05-24 22:22
  **/
 @Service

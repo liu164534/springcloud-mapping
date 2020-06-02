@@ -3,7 +3,7 @@ package com.mmz.status;
 /**
  * @program: springcloud-mapping
  * @description: 修改返回类型的枚举
- * @author: Mr.Miao
+ * @author: Liu Xinpeng
  * @create: 2020-06-01 20:10
  **/
 public enum  UpdateStatus {

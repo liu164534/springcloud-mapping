@@ -43,6 +43,7 @@ public class Map2BeanUtils {
     public static <T> T map2Bean(Map<String, Object> map, Class<T> tClass) {
         // 通过tClass类型获取泛型对象(获取当前所需要的对象--》但是这个对象是一个空对象)
         T instance = OBJENESIS.newInstance(tClass);
+        // 判断当前线程池中又没有这个方法
         MethodAccess methodAccess = CONCURRENT_HASH_MAP.get(tClass);
         if (null == methodAccess) {
             // TODO 由于通过传入类型泛型获取的对象是一个空对象，所以再对该对象赋予一次类型

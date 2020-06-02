@@ -4,8 +4,8 @@ import com.mmz.annotation.LoginLogAnnotation;
 import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.User;
-import com.mmz.service.IUserService;
 import com.mmz.vo.TokenVo;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController extends BaseController {
 
     @Autowired
-    private IUserService IUserService;
+    private com.mmz.service.IUserService IUserService;
 
 
     @PostMapping("/doLogin")
     @ApiOperation(value = "登陆功能" ,notes = "用户执行登陆的功能")
     @LoginLogAnnotation(operationType = "登陆操作",operationName = "管理员登陆")
+    //@ApiImplicitParams({@ApiImplicitParam(name = "jwt-token", value = "jwt-token", required = true, dataType = "string", paramType = "header")})
+    @HystrixCommand
     public ResultData doLogin(@RequestBody User user) {
         TokenVo tokenVo = IUserService.doLogin(user);
         // 通过往redis存储token值得结果来验证用户是否登陆成功

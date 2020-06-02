@@ -40,7 +40,7 @@ public class BaseController {
      * @return: com.exam.shiro.base.ResultData
      * @Author: Liu Xinpeng
      * @Date: 2020/4/6
-     */
+     *
     protected ResultData loginSuccess(String msg) {
         ResultData resultData = new ResultData();
         resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());
@@ -212,10 +212,10 @@ public class BaseController {
      * @Description: 查询成功，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
-    protected ResultData selectSuccesss(Object data) {
+    protected ResultData selectSuccess(Object data) {
         ResultData resultData = new ResultData();
         resultData.setCode(SelectStatus.SELECT_SUCCESS.getCode());
         resultData.setMsg(SelectStatus.SELECT_SUCCESS.getMsg());
@@ -224,10 +224,24 @@ public class BaseController {
     }
 
     /**
+     * @Description: 查询成功，不返回数据
+     * @Param: [data]
+     * @return: com.mmz.base.ResultData
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/28
+     */
+    protected ResultData selectSuccess() {
+        ResultData resultData = new ResultData();
+        resultData.setCode(SelectStatus.SELECT_SUCCESS.getCode());
+        resultData.setMsg(SelectStatus.SELECT_SUCCESS.getMsg());
+        return resultData;
+    }
+
+    /**
      * @Description: 查询失败，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
     protected ResultData selectFailed(Object data) {
@@ -242,7 +256,7 @@ public class BaseController {
      * @Description: 查询失败，不返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/5/28
      */
     protected ResultData selectFailed() {
@@ -256,10 +270,10 @@ public class BaseController {
      * @Description: 修改成功，不返回数据
      * @Param: []
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
-    protected ResultData updatetSuccess() {
+    protected ResultData updateSuccess() {
         ResultData resultData = new ResultData();
         resultData.setCode(UpdateStatus.UPDATE_SUCCESS.getCode());
         resultData.setMsg(UpdateStatus.UPDATE_SUCCESS.getMsg());
@@ -270,7 +284,7 @@ public class BaseController {
      * @Description: 修改成功，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateSuccess(Object data) {
@@ -285,7 +299,7 @@ public class BaseController {
      * @Description: 修改失败，不返回数据
      * @Param: []
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateFailed() {
@@ -299,13 +313,71 @@ public class BaseController {
      * @Description: 修改失败，返回数据
      * @Param: [data]
      * @return: com.mmz.base.ResultData
-     * @Author: Mr.miao
+     * @Author: Liu Xinpeng
      * @Date: 2020/6/1
      */
     protected ResultData updateFailed(Object data) {
         ResultData resultData = new ResultData();
         resultData.setCode(UpdateStatus.UPDATE_FAILED.getCode());
         resultData.setMsg(UpdateStatus.UPDATE_FAILED.getMsg());
+        resultData.setData(data);
+        return resultData;
+    }
+
+    /**
+     * @Description: 删除成功，不返回数据
+     * @Param: []
+     * @return: com.mmz.base.ResultData
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/24
+     */
+    protected ResultData deleteSuccess() {
+        ResultData resultData = new ResultData();
+        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
+        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
+        return resultData;
+    }
+
+    /**
+     * @Description:  删除成功，返回数据
+     * @Param: [data]
+     * @return: com.mmz.base.ResultData
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/24
+     */
+    protected ResultData deleteSuccess(Object data) {
+        ResultData resultData = new ResultData();
+        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
+        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
+        resultData.setData(data);
+        return resultData;
+    }
+
+    /**
+     * @Description: 删除失败，不返回数据
+     * @Param: []
+     * @return: com.mmz.base.ResultData
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/24
+     */
+    protected ResultData deleteFailed() {
+        ResultData resultData = new ResultData();
+        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
+        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
+        return resultData;
+    }
+
+    /**
+     * @Description: 删除失败，返回数据
+     * @Param: [data]
+     * @return: com.mmz.base.ResultData
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/24
+     */
+    protected ResultData deleteFailed(Object data) {
+        ResultData resultData = new ResultData();
+        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
+        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
         resultData.setData(data);
         return resultData;
     }

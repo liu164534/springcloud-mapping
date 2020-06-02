@@ -1,0 +1,43 @@
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile default=\"true\" name=\"Default\" enabled=\"true\" />\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"mapping-mapper\" />\r\n        <module name=\"mapping-api\" />\r\n        <module name=\"mapping-common\" />\r\n        <module name=\"mapping-sub-provider-8081\" />\r\n        <module name=\"mapping-service\" />\r\n        <module name=\"mapping-zuul-4081\" />\r\n        <module name=\"mapping-sub-consumer-8081\" />\r\n        <module name=\"mapping-model\" />\r\n        <module name=\"mapping-sub-eureka-7082\" />\r\n        <module name=\"mapping-sub-consumer-6081\" />\r\n        <module name=\"mapping-sub-eureka-7083\" />\r\n        <module name=\"mapping-config\" />\r\n        <module name=\"mapping-sub-eureka-7081\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n    <bytecodeTargetLevel>\r\n      <module name=\"mapping-system-consumer-6081\" target=\"1.5\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision f5f7dbe2cb0416344b8fe640505837ceab51d4a8)
++++ .idea/compiler.xml	(date 1591017898878)
+@@ -7,23 +7,21 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+-        <module name="mapping-mapper" />
+-        <module name="mapping-api" />
+-        <module name="mapping-common" />
+-        <module name="mapping-sub-provider-8081" />
++        <module name="mapping-sub-consumer-6081" />
+         <module name="mapping-service" />
+-        <module name="mapping-zuul-4081" />
+-        <module name="mapping-sub-consumer-8081" />
+         <module name="mapping-model" />
+         <module name="mapping-sub-eureka-7082" />
+-        <module name="mapping-sub-consumer-6081" />
+-        <module name="mapping-sub-eureka-7083" />
+         <module name="mapping-config" />
++        <module name="mapping-feign" />
+         <module name="mapping-sub-eureka-7081" />
++        <module name="mapping-sub-provider-8081" />
++        <module name="mapping-common" />
++        <module name="mapping-sub-consumer-8081" />
++        <module name="mapping-api" />
++        <module name="mapping-zuul-4081" />
++        <module name="mapping-mapper" />
++        <module name="mapping-sub-eureka-7083" />
+       </profile>
+     </annotationProcessing>
+-    <bytecodeTargetLevel>
+-      <module name="mapping-system-consumer-6081" target="1.5" />
+-    </bytecodeTargetLevel>
+   </component>
+ </project>
+\ No newline at end of file

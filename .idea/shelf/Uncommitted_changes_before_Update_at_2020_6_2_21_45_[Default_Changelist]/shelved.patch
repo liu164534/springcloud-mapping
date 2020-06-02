@@ -1,0 +1,985 @@
+Index: mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/base/CommonController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.base;\r\n\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.context.request.RequestAttributes;\r\nimport org.springframework.web.context.request.RequestContextHolder;\r\nimport org.springframework.web.context.request.ServletRequestAttributes;\r\n\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpSession;\r\nimport java.util.Map;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description:\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-24 14:34\r\n **/\r\npublic abstract class CommonController<T> extends BaseController {\r\n\r\n    /**\r\n    * @Description: 钩子函数，在新增之前执行的内容\r\n    * @Param: [map]\r\n    * @return: void\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/24\r\n    */\r\n    protected void beforeAdd(Map map) {\r\n        // TODO 钩子函数，插入之前需要执行的操作\r\n    }\r\n    \r\n    /**\r\n    * @Description: 钩子函数新增之后执行的内容\r\n    * @Param: [map]\r\n    * @return: void \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/24\r\n    */\r\n    protected void afterAdd(Map map) {\r\n        // TODO 钩子函数，新增之后执行的内容\r\n    }\r\n\r\n    // TODO 这个方法不明白什么意思\r\n    public abstract BaseService<T> getBaseService();\r\n\r\n\r\n    /**\r\n    * @Description: 新增数据\r\n    * @Param: [map]\r\n    * @return: com.mmz.base.ResultData \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/28\r\n    */\r\n    public ResultData add(@RequestBody Map map) {\r\n    System.out.println(map);\r\n        // 执行新增之前的钩子函数\r\n        beforeAdd(map);\r\n        // 将传入的map类型转换成对应的实体类型\r\n        // TODO 这个地方转换异常了\r\n        T instance = getBaseService().newInstance(map);\r\n    System.out.println(instance);\r\n        try{\r\n            Integer insertResult = getBaseService().add(instance);\r\n            if (insertResult > 0) {\r\n                // 说明新增成功\r\n                afterAdd(map);\r\n                return insertSuccess();\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return insertFailed();\r\n    }\r\n\r\n\r\n    // TODO delete, batchDelete, update, getOne, getList, getListByPage(不带条件的分页查询)\r\n    /**\r\n    * @Description: 防止数据不安全，所以不能直接在controoller中的某个方法中直接接收HttpServletReques对象\r\n     *              必须要从本地当前线程中获取对象\r\n     *              TODO 没有理解\r\n    * @Param: []\r\n    * @return: javax.servlet.http.HttpServletRequest\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/24\r\n    */\r\n    public HttpServletRequest getHttpServletRequest() {\r\n        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();\r\n        ServletRequestAttributes servletRequestAttributes;\r\n        if (requestAttributes instanceof ServletRequestAttributes) {\r\n            servletRequestAttributes = (ServletRequestAttributes) requestAttributes;\r\n            return servletRequestAttributes.getRequest();\r\n        }\r\n        return null;\r\n    }\r\n\r\n    /**\r\n    * @Description: 获取当前客户端传递的session对象，如果不存在则会重新创建一个\r\n    * @Param: []\r\n    * @return: javax.servlet.http.HttpSession\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/24\r\n    */\r\n     public HttpSession getSession() {\r\n        return getHttpServletRequest().getSession();\r\n     }\r\n\r\n     /**\r\n     * @Description: 获取当前客户端的session，如果不存在直接返回null\r\n     * @Param: []\r\n     * @return: javax.servlet.http.HttpSession\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n     public HttpSession getExistSession() {\r\n         return getHttpServletRequest().getSession(false);\r\n     }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/base/CommonController.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/base/CommonController.java	(date 1591084418479)
+@@ -51,13 +51,10 @@
+     * @Date: 2020/5/28
+     */
+     public ResultData add(@RequestBody Map map) {
+-    System.out.println(map);
+         // 执行新增之前的钩子函数
+         beforeAdd(map);
+         // 将传入的map类型转换成对应的实体类型
+-        // TODO 这个地方转换异常了
+         T instance = getBaseService().newInstance(map);
+-    System.out.println(instance);
+         try{
+             Integer insertResult = getBaseService().add(instance);
+             if (insertResult > 0) {
+Index: mapping-management/mapping-service/src/main/java/com/mmz/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.service;\r\n\r\nimport com.mmz.base.BaseService;\r\nimport com.mmz.mapper.UserInfoMapper;\r\nimport com.mmz.model.User;\r\nimport com.mmz.redis.RedisService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n/**\r\n * @program: springcloud-mapping\r\n * @description: 用户服务层\r\n * @author: Mr.Miao\r\n * @create: 2020-05-24 22:22\r\n **/\r\n@Service\r\npublic class UserService extends BaseService<User> {\r\n\r\n    @Autowired\r\n    private UserInfoMapper userInfoMapper;\r\n\r\n    /**\r\n     * @Description:获取用户信息\r\n     * @Param: []\r\n     * @return: boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/24\r\n     */\r\n    public List<User> getAllUserInfo() {\r\n        System.out.println(\"management-Service\");\r\n        List<User> userList = userInfoMapper.selectAll();\r\n        if (userList == null || userList.size() < 1) {\r\n            return null;\r\n        }\r\n        return userList;\r\n    }\r\n    /**\r\n    * @Description: 增加用户\r\n    * @Param: [user]\r\n    * @return: java.lang.Boolean\r\n    * @Author: Mr.miao\r\n    * @Date: 2020/5/31\r\n    */\r\n    public Boolean insertUserInfo(User user){\r\n        System.out.println(\"management-Service\");\r\n        Integer i=userInfoMapper.insert(user);\r\n        if (i < 1) {\r\n            return false;\r\n        }else {\r\n            return true;\r\n        }\r\n    }\r\n    /**\r\n    * @Description: 修改用户信息\r\n    * @Param: [user]\r\n    * @return: java.lang.Boolean\r\n    * @Author: Mr.miao\r\n    * @Date: 2020/6/1\r\n    */\r\n    public Boolean updateUserInfoById(User user){\r\n        System.out.println(\"management-Service----\"+user);\r\n        Integer i=userInfoMapper.updateByPrimaryKey(user);\r\n        if (i < 1) {\r\n            return false;\r\n        }else {\r\n            return true;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-service/src/main/java/com/mmz/service/UserService.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-management/mapping-service/src/main/java/com/mmz/service/UserService.java	(date 1591091145441)
+@@ -3,7 +3,6 @@
+ import com.mmz.base.BaseService;
+ import com.mmz.mapper.UserInfoMapper;
+ import com.mmz.model.User;
+-import com.mmz.redis.RedisService;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+ 
+@@ -12,7 +11,7 @@
+ /**
+  * @program: springcloud-mapping
+  * @description: 用户服务层
+- * @author: Mr.Miao
++ * @author: ly
+  * @create: 2020-05-24 22:22
+  **/
+ @Service
+@@ -25,7 +24,7 @@
+      * @Description:获取用户信息
+      * @Param: []
+      * @return: boolean
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/24
+      */
+     public List<User> getAllUserInfo() {
+@@ -40,7 +39,7 @@
+     * @Description: 增加用户
+     * @Param: [user]
+     * @return: java.lang.Boolean
+-    * @Author: Mr.miao
++    * @Author: ly
+     * @Date: 2020/5/31
+     */
+     public Boolean insertUserInfo(User user){
+@@ -56,7 +55,7 @@
+     * @Description: 修改用户信息
+     * @Param: [user]
+     * @return: java.lang.Boolean
+-    * @Author: Mr.miao
++    * @Author: ly
+     * @Date: 2020/6/1
+     */
+     public Boolean updateUserInfoById(User user){
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server.port=6081\r\nserver.servlet.context-path=/\r\n\r\n\r\n#配置eureka的命名空间,需要通过注册中心来寻找provider\r\neureka.client.service-url.defaultZone=http://eureka01:7081/eureka,http://eureka02:7082/eureka,http://eureka03:7083/eureka\r\n\r\n#consumer不需要向注册中心进行注册\r\neureka.client.register-with-eureka=false\r\n\r\n#开启feign对hystrix的支持\r\nfeign.hystrix.enabled=true\r\n#使用CGLIB代理，默认false使用JDK代理\r\nspring.aop.proxy-target-class=true\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>GBK
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/resources/config/application.properties	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/resources/config/application.properties	(date 1591091961222)
+@@ -8,7 +8,18 @@
+ #consumer不需要向注册中心进行注册
+ eureka.client.register-with-eureka=false
+ 
+-#开启feign对hystrix的支持
+-feign.hystrix.enabled=true
++#开启feign对hystrix的支持，测试阶段关闭熔断
++feign.hystrix.enabled=false
++
++#关闭ribbon中使用eureka
++#ribbon.eureka.enabled=false
++
++
++#设置存储token的请求头信息
++jwt.header=tokenHeader
++#hystrix调用方法的超时时间，默认是1000毫秒
++#hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=50000
++#加上这个就可以获取到HttpServletRequest
++hystrix.command.default.execution.isolation.strategy=SEMAPHORE
+ #使用CGLIB代理，默认false使用JDK代理
+ spring.aop.proxy-target-class=true
+Index: mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.service;\r\n\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.model.User;\r\nimport com.mmz.vo.TokenVo;\r\nimport org.springframework.cloud.openfeign.FeignClient;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: fallbackFactory:就是用来实现熔断的，在实际开发过程中，开发阶段不能开启熔断\r\n * 因为一旦开启了熔断，整个系统运行过程中异常就不再抛出，不方便调试BUG\r\n * <p>\r\n * <p>\r\n * 实际开发中需要注意的东西：\r\n * 无论是springcloud1.x版本还是2.x版本\r\n * 一旦使用feign来传递参数的时候，都需要注意以下两点：\r\n * 1.如果是简单的数据类型（java8大基本数据类型--基本数据类型的包装类也可以，String）-->需要使用注解@RequestParm\r\n * 基本数据类型可以传多个，也就是说一个方法的参数中可以使用多个@PRequestParm注解\r\n * <p>\r\n * 2.如果是传递包装类型（List,Map,Vo,Po）,只能传递一个，而且必须使用@RequestBody注解\r\n * <p>\r\n * 也就是说最终把这些参数值传递到provider项目的controller中，所以provider的controller中也必须使用相同的注解\r\n * 而且provider要和api中的方法一模一样（方法名、返回值类型、参数类型。。）\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-20 16:09\r\n **/\r\n\r\n/**\r\n * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性\r\n */\r\n@FeignClient(value = \"system-interface\")\r\npublic interface IUserService {\r\n\r\n\r\n    /**\r\n     * @Description: 执行登陆操作\r\n     * @Param: [user]\r\n     * @return: com.mmz.vo.TokenVo\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    @PostMapping(\"/doLogin\")\r\n    TokenVo doLogin(@RequestBody User user);\r\n\r\n    /**\r\n     * @Description: 添加登陆日志\r\n     * @Param: [map]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/28\r\n     */\r\n    @PostMapping(\"/addLoginLog\")\r\n    ResultData addLoginLog(@RequestBody Map map);\r\n\r\n    /**\r\n     * @Description: 查询用户信息\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    @GetMapping(\"getAllUserInfo\")\r\n    List<User> getAllUserInfo();\r\n\r\n    /**\r\n     * @Description: 添加用户信息\r\n     * @Param: [user]\r\n     * @return: java.lang.Boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/31\r\n     */\r\n    @PostMapping(\"insertUser\")\r\n    Boolean insertUser(@RequestBody User user);\r\n\r\n    /**\r\n     * @Description: 修改用户信息\r\n     * @Param: [user]\r\n     * @return: java.lang.Boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    @PostMapping(\"updateUser\")\r\n    Boolean updateUserInfoById(@RequestBody User user);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java	(date 1591090788105)
+@@ -3,7 +3,9 @@
+ import com.mmz.base.ResultData;
+ import com.mmz.model.User;
+ import com.mmz.vo.TokenVo;
++import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+ import org.springframework.cloud.openfeign.FeignClient;
++import org.springframework.stereotype.Component;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+@@ -35,6 +37,7 @@
+  * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性
+  */
+ @FeignClient(value = "system-interface")
++@Component
+ public interface IUserService {
+ 
+ 
+@@ -46,6 +49,7 @@
+      * @Date: 2020/5/24
+      */
+     @PostMapping("/doLogin")
++    @HystrixCommand
+     TokenVo doLogin(@RequestBody User user);
+ 
+     /**
+@@ -62,7 +66,7 @@
+      * @Description: 查询用户信息
+      * @Param: []
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/28
+      */
+     @GetMapping("getAllUserInfo")
+@@ -72,7 +76,7 @@
+      * @Description: 添加用户信息
+      * @Param: [user]
+      * @return: java.lang.Boolean
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/31
+      */
+     @PostMapping("insertUser")
+@@ -82,9 +86,10 @@
+      * @Description: 修改用户信息
+      * @Param: [user]
+      * @return: java.lang.Boolean
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/6/1
+      */
+     @PostMapping("updateUser")
+     Boolean updateUserInfoById(@RequestBody User user);
++
+ }
+\ No newline at end of file
+Index: mapping-common/src/main/java/com/mmz/utils/Map2BeanUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.utils;\r\n\r\n\r\nimport com.esotericsoftware.reflectasm.MethodAccess;\r\nimport org.objenesis.ObjenesisStd;\r\n\r\nimport java.util.Map;\r\nimport java.util.concurrent.ConcurrentHashMap;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: map和bean转化的实体类\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-21 14:13\r\n **/\r\npublic class Map2BeanUtils {\r\n\r\n    /**\r\n    * @Description: 构造器私有化，方式被实例化\r\n    * @Param: []\r\n    * @return:\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    private Map2BeanUtils() {\r\n        throw new AssertionError();\r\n    }\r\n\r\n    // 使用高性能的java实例化工具\r\n    private final static ObjenesisStd OBJENESIS = new ObjenesisStd(true);\r\n    // StringBuffer 的性能比StringBulider ,但是StringBuffer是线程安全的\r\n    private final static StringBuffer STRING_BUFFER = new StringBuffer();\r\n    // 使用Map集合作为本地缓存池使用 (也必须要保证线程安全)\r\n    private final static ConcurrentHashMap<Class, MethodAccess> CONCURRENT_HASH_MAP =\r\n            new ConcurrentHashMap<Class, MethodAccess>();\r\n    /**\r\n    * @Description: 把map转换成bean对象\r\n    * @Param: [map, tClass]\r\n    * @return: T\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    public static <T> T map2Bean(Map<String, Object> map, Class<T> tClass) {\r\n        // 通过tClass类型获取泛型对象(获取当前所需要的对象--》但是这个对象是一个空对象)\r\n        T instance = OBJENESIS.newInstance(tClass);\r\n        MethodAccess methodAccess = CONCURRENT_HASH_MAP.get(tClass);\r\n        if (null == methodAccess) {\r\n            // TODO 由于通过传入类型泛型获取的对象是一个空对象，所以再对该对象赋予一次类型\r\n            methodAccess = MethodAccess.get(tClass);\r\n            /**\r\n             * Map中是以key和value存在的\r\n             * map.put(\"username\", \"zhangsan\");\r\n             * map.put(\"username\", \"lisi\");--->lisi就把zhangsan覆盖了\r\n             * map.putIfAbsent(\"username\", \"wangwu\");--->wangwu并不会存放，因为username这个key已经存在\r\n             */\r\n            // TODO 获取下一步的get和set方法 (防止为空，所以再进行一次验证)\r\n            CONCURRENT_HASH_MAP.putIfAbsent(tClass, methodAccess);\r\n        }\r\n        // 循环数据\r\n        for (Map.Entry<String, Object> entry : map.entrySet()) {\r\n            // 通过循环可以获取到Map中的各种数据，通过setter方法进行赋值\r\n            String setMethodName = setMethodName(entry.getKey());\r\n            int index = methodAccess.getIndex(setMethodName, entry.getValue().getClass());\r\n            // method.invoke() 用来执行某个对象的目标方法\r\n            methodAccess.invoke(instance, index, entry.getValue());\r\n        }\r\n        return instance;\r\n    }\r\n\r\n    /**\r\n    * @Description: 通过字段获取set方法的方法名\r\n    * @Param: [fieldName]\r\n    * @return: java.lang.String\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    private static String setMethodName(String fieldName) {\r\n        // 通过字段，然后进行拼接，获取方法名，fieldName-->bookName->setBookName\r\n        // 所以首先将该字段的首字母大写，然后直接拼接就可以获取方法名\r\n        String updateCaseName = firstToUpdateCase(fieldName);\r\n        // 确保StringBuffer中没有任何数据\r\n        STRING_BUFFER.setLength(0);\r\n        // 拼接set方法\r\n        return STRING_BUFFER.append(\"set\").append(updateCaseName).toString();\r\n    }\r\n\r\n    /**\r\n    * @Description: 将String类型字段的首字母转换大写\r\n    * @Param: [field]\r\n    * @return: java.lang.String\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    private static String firstToUpdateCase(String field){\r\n        // 截取字符串中第一个字符并转为大写，和后边的字符进行拼接之后返回\r\n        return field.substring(0,1).toUpperCase() + field.substring(1);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/utils/Map2BeanUtils.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/utils/Map2BeanUtils.java	(date 1591084418537)
+@@ -43,6 +43,7 @@
+     public static <T> T map2Bean(Map<String, Object> map, Class<T> tClass) {
+         // 通过tClass类型获取泛型对象(获取当前所需要的对象--》但是这个对象是一个空对象)
+         T instance = OBJENESIS.newInstance(tClass);
++        // 判断当前线程池中又没有这个方法
+         MethodAccess methodAccess = CONCURRENT_HASH_MAP.get(tClass);
+         if (null == methodAccess) {
+             // TODO 由于通过传入类型泛型获取的对象是一个空对象，所以再对该对象赋予一次类型
+Index: mapping-common/src/main/java/com/mmz/status/UpdateStatus.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.status;\r\n\r\n/**\r\n * @program: springcloud-mapping\r\n * @description: 修改返回类型的枚举\r\n * @author: Mr.Miao\r\n * @create: 2020-06-01 20:10\r\n **/\r\npublic enum  UpdateStatus {\r\n    UPDATE_SUCCESS(\"20004\",\"修改成功\"),\r\n    UPDATE_FAILED(\"10007\",\"修改失败\");\r\n\r\n    UpdateStatus(String code, String msg) {\r\n        this.code = code;\r\n        this.msg = msg;\r\n    }\r\n\r\n    private String code;\r\n    private String msg;\r\n\r\n    public String getCode() {\r\n        return code;\r\n    }\r\n\r\n    public String getMsg() {\r\n        return msg;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/status/UpdateStatus.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/status/UpdateStatus.java	(date 1591090788273)
+@@ -3,7 +3,7 @@
+ /**
+  * @program: springcloud-mapping
+  * @description: 修改返回类型的枚举
+- * @author: Mr.Miao
++ * @author: ly
+  * @create: 2020-06-01 20:10
+  **/
+ public enum  UpdateStatus {
+Index: mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.controller;\r\n\r\nimport com.mmz.base.BaseService;\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.mapper.UserInfoMapper;\r\nimport com.mmz.model.User;\r\nimport com.mmz.service.UserService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\nimport java.sql.Date;\r\nimport java.util.List;\r\n\r\n/**\r\n * @program: springcloud-mapping\r\n * @description: 用户管理\r\n * @author: Mr.Miao\r\n * @create: 2020-05-28 17:02\r\n **/\r\n@RestController\r\npublic class UserController {\r\n    @Autowired\r\n    UserService userService;\r\n\r\n    /**\r\n    * @Description: 获取用户信息\r\n    * @Param: []\r\n    * @return: java.util.List<com.mmz.model.User>\r\n    * @Author: Mr.miao\r\n    * @Date: 2020/5/28\r\n    */\r\n    @GetMapping(\"getAllUserInfo\")\r\n    public List<User> getAllUserInfo() {\r\n        System.out.println(\"provider-Contorller\");\r\n        List<User> userInfo = userService.getAllUserInfo();\r\n        if (!\" \".equals(userInfo) && null != userInfo) {\r\n            return userInfo;\r\n        } else {\r\n            return null;\r\n        }\r\n    }\r\n    /**\r\n    * @Description: 添加用户\r\n    * @Param: [user]\r\n    * @return: java.lang.Boolean\r\n    * @Author: Mr.miao\r\n    * @Date: 2020/6/1\r\n    */\r\n    @PostMapping(\"insertUser\")\r\n    public Boolean insertUser(@RequestBody User user){\r\n        System.out.println(\"provider-Contorller-----\"+user);\r\n        user.setCreateTime(\"2020-06-01\");\r\n        return userService.insertUserInfo(user);\r\n\r\n    }\r\n    /**\r\n    * @Description: 修改用户信息\r\n    * @Param: [user]\r\n    * @return: java.lang.Boolean\r\n    * @Author: Mr.miao\r\n    * @Date: 2020/6/1\r\n    */\r\n    @PostMapping(\"updateUser\")\r\n    public Boolean updateUserInfoById(@RequestBody User user){\r\n        System.out.println(\"provider-Contorller----\"+user);\r\n\r\n        user.setCreateTime(\"2020-06-01\");\r\n        return userService.updateUserInfoById(user);\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/UserController.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/UserController.java	(date 1591090881188)
+@@ -1,8 +1,5 @@
+ package com.mmz.controller;
+ 
+-import com.mmz.base.BaseService;
+-import com.mmz.base.ResultData;
+-import com.mmz.mapper.UserInfoMapper;
+ import com.mmz.model.User;
+ import com.mmz.service.UserService;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -11,13 +8,12 @@
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RestController;
+ 
+-import java.sql.Date;
+ import java.util.List;
+ 
+ /**
+  * @program: springcloud-mapping
+  * @description: 用户管理
+- * @author: Mr.Miao
++ * @author: ly
+  * @create: 2020-05-28 17:02
+  **/
+ @RestController
+@@ -29,7 +25,7 @@
+     * @Description: 获取用户信息
+     * @Param: []
+     * @return: java.util.List<com.mmz.model.User>
+-    * @Author: Mr.miao
++    * @Author: ly
+     * @Date: 2020/5/28
+     */
+     @GetMapping("getAllUserInfo")
+@@ -46,7 +42,7 @@
+     * @Description: 添加用户
+     * @Param: [user]
+     * @return: java.lang.Boolean
+-    * @Author: Mr.miao
++    * @Author: ly
+     * @Date: 2020/6/1
+     */
+     @PostMapping("insertUser")
+@@ -60,7 +56,7 @@
+     * @Description: 修改用户信息
+     * @Param: [user]
+     * @return: java.lang.Boolean
+-    * @Author: Mr.miao
++    * @Author: ly
+     * @Date: 2020/6/1
+     */
+     @PostMapping("updateUser")
+Index: mapping-common/src/main/java/com/mmz/utils/SpringContextUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.utils;\r\n\r\nimport org.springframework.beans.BeansException;\r\nimport org.springframework.context.ApplicationContext;\r\nimport org.springframework.context.ApplicationContextAware;\r\n\r\nimport java.util.concurrent.locks.Lock;\r\nimport java.util.concurrent.locks.ReadWriteLock;\r\nimport java.util.concurrent.locks.ReentrantReadWriteLock;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: 获取spring容器的工具类\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-21 14:17\r\n **/\r\npublic class SpringContextUtils implements ApplicationContextAware {\r\n    \r\n    /**\r\n    * @Description: 构造器私有化，防止被实例化\r\n    * @Param: []\r\n    * @return:  \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    private SpringContextUtils() {\r\n        throw new AssertionError();\r\n    }\r\n\r\n    private static ApplicationContext APPLICATIONCONTEXT = null;\r\n    private static final ReadWriteLock READ_WRITE_LOCK = new ReentrantReadWriteLock();\r\n\r\n    /**\r\n    * @Description: TODO 重写方法，所以修饰符不能改变\r\n    * @Param: [applicationContext]\r\n    * @return: void\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    @Override\r\n    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {\r\n        APPLICATIONCONTEXT = applicationContext;\r\n    }\r\n\r\n    public static ApplicationContext getApplicationContext() {\r\n        Lock lock = READ_WRITE_LOCK.readLock();\r\n        lock.lock();\r\n        try {\r\n            if(null != APPLICATIONCONTEXT) {\r\n                return APPLICATIONCONTEXT;\r\n            } else {\r\n                return null;\r\n            }\r\n        } finally {\r\n            lock.unlock();\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/utils/SpringContextUtils.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/utils/SpringContextUtils.java	(date 1591090716648)
+@@ -51,7 +51,7 @@
+             } else {
+                 return null;
+             }
+-        } finally {
++    } finally {
+             lock.unlock();
+         }
+     }
+Index: mapping-common/src/main/java/com/mmz/utils/DateUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.utils;\r\n\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.Date;\r\nimport static com.mmz.staticstatus.DateProperties.*;\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: 将时间转换成String类型\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-25 22:30\r\n **/\r\npublic class DateUtils {\r\n\r\n    /**\r\n    * @Description: 防止被创建实例\r\n    * @Param: []\r\n    * @return:\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/25\r\n    */\r\n    private DateUtils(){\r\n        throw new AssertionError();\r\n    }\r\n    \r\n    /**\r\n    * @Description: 将时间以对应得格式转换成String类型\r\n    * @Param: [date]\r\n    * @return: java.lang.String \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/25\r\n    */\r\n    public static final String getDate() {\r\n        // 设置日期得格式\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);\r\n        String formatDate = simpleDateFormat.format(new Date());\r\n        return formatDate;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/utils/DateUtils.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/utils/DateUtils.java	(date 1591084418547)
+@@ -1,6 +1,7 @@
+ package com.mmz.utils;
+ 
+ import java.text.SimpleDateFormat;
++import java.util.Calendar;
+ import java.util.Date;
+ import static com.mmz.staticstatus.DateProperties.*;
+ /**
+@@ -23,16 +24,125 @@
+     }
+     
+     /**
+-    * @Description: 将时间以对应得格式转换成String类型
++    * @Description: 获取当前系统时间，精确到秒
+     * @Param: [date]
+     * @return: java.lang.String 
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/25
+     */
+-    public static final String getDate() {
+-        // 设置日期得格式
++    public static final String getDateTime() {
++        // 设置日期的格式
+         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
+         String formatDate = simpleDateFormat.format(new Date());
+         return formatDate;
+     }
+-}
+\ No newline at end of file
++
++
++    /**
++    * @Description: 获取当前系统时间，精确到天
++    * @Param: []
++    * @return: java.lang.String
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/1
++    */
++    public static final String getDate() {
++        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD);
++        String formatDate = simpleDateFormat.format(new Date());
++        return formatDate;
++    }
++
++    /**
++    * @Description: 默认按照YYYY_MM_DD_HH_MM_SS的格式进行转换
++    * @Param: [date]
++    * @return: java.lang.String
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/1
++    */
++    public static final String formatDate(Object date) {
++        if (null == date) {
++            return null;
++        } else {
++            return formatDate(date, YYYY_MM_DD_HH_MM_SS);
++        }
++    }
++    /**
++    * @Description: 按照指定的格式对日期进行转换
++    * @Param: [date, formatType]
++    * @return: java.lang.String
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/1
++    */
++    public static final String formatDate(Object date, String formatType) {
++        if (null == date) {
++            return null;
++        } else {
++            if (StringUtils.isNotEmpty(formatType)) {
++                // 说明传递了具体的格式，需要按照传递的格式进行转换
++                SimpleDateFormat format = new SimpleDateFormat(formatType);
++                return format.format(date);
++            } else {
++                // 说明没有传递具体的格式类型，所以按照默认的格式进行转换
++                // 这里直接返回null容易出现类型转换异常
++                return formatDate(date);
++            }
++        }
++    }
++
++    /**
++    * @Description: 获取当前年数
++    * @Param: []
++    * @return: java.lang.Integer
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/1
++    */
++    public static Integer getCurrentYear() {
++        return Calendar.getInstance().get(Calendar.YEAR);
++    }
++
++    /**
++    * @Description: 将传递的时间参数，转换成对应单位的格式
++    * @Param: [millisecond]
++    * @return: java.lang.String
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/1
++    */
++    public static String formatDateAgo(long millisecond) {
++        StringBuilder stringBuilder = new StringBuilder();
++        if (1000 > millisecond) {
++            // 说明传递的时间单位为毫秒
++            stringBuilder.append(millisecond).append("毫秒");
++        } else {
++            // 说明传进来的long类型的毫秒数大于1000
++            // 设置对应的时间格式
++            // 毫秒
++            Integer ss =1000;
++            // 分钟
++            Integer mi = ss * 60;
++            // 小时
++            Integer hh = mi * 60;
++            // 天
++            Integer dd = hh * 24;
++
++            Long day = millisecond / dd;
++            Long hour = (millisecond - day * dd) / hh;
++            Long minute = (millisecond - day * dd - hour * hh) / mi;
++            Long second = (millisecond - day * dd - hour *hh - minute * mi) / ss;
++            if (day > 365) {
++                return formatDate(new Date(millisecond), "yyyy年MM月dd日 HH时mm分ss秒");
++            }
++            if(day > 0) {
++                stringBuilder.append(day).append("天");
++            }
++            if(hour > 0) {
++                stringBuilder.append(hour).append("小时");
++            }
++            if(minute > 0) {
++                stringBuilder.append(minute).append("分钟");
++            }
++            if(second > 0) {
++                stringBuilder.append(second).append("秒");
++            }
++        }
++        return stringBuilder.toString();
++    }
++}
+Index: mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/LoginController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.controller;\r\n\r\nimport com.mmz.model.User;\r\nimport com.mmz.redis.RedisService;\r\nimport com.mmz.service.LoginService;\r\nimport com.mmz.vo.TokenVo;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: privoder的登陆controller\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-24 17:36\r\n **/\r\n@RestController\r\npublic class LoginController {\r\n\r\n    @Autowired\r\n    private LoginService loginService;\r\n\r\n    @Autowired\r\n    private RedisService redisService;\r\n    \r\n    /**\r\n    * @Description: 执行登陆操作\r\n    * @Param: [user]\r\n    * @return: com.mmz.vo.TokenVo \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/24\r\n    */\r\n    @PostMapping(\"/doLogin\")\r\n    public TokenVo doLogin(@RequestBody User user) {\r\n        return loginService.doLogin(user, redisService);\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/LoginController.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/LoginController.java	(date 1591084418490)
+@@ -8,6 +8,11 @@
+ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.context.request.RequestContextHolder;
++import org.springframework.web.context.request.ServletRequestAttributes;
++
++import java.util.Enumeration;
++import java.util.LinkedHashMap;
+ 
+ /**
+  * @program: spring-cloud-mapping
+@@ -33,6 +38,16 @@
+     */
+     @PostMapping("/doLogin")
+     public TokenVo doLogin(@RequestBody User user) {
++        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
++        Enumeration<String> headerNames =
++                attributes.getRequest().getHeaderNames();
++        LinkedHashMap map = new LinkedHashMap();
++        while (headerNames.hasMoreElements()) {
++            String key = headerNames.nextElement();
++            String value = attributes.getRequest().getHeader(key);
++            map.put(key, value);
++        }
++        System.out.println(map);
+         return loginService.doLogin(user, redisService);
+     }
+ 
+Index: mapping-common/src/main/java/com/mmz/status/SelectStatus.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.status;\r\n\r\n/**\r\n * @program: springcloud-mapping\r\n * @description: 查询返回信息的枚举\r\n * @author: Mr.Miao\r\n * @create: 2020-05-28 14:51\r\n **/\r\npublic enum SelectStatus {\r\n\r\n    SELECT_SUCCESS(\"20004\", \"查询成功\"),\r\n    SELECT_FAILED(\"10007\", \"查询失败\");\r\n\r\n    SelectStatus(String code, String msg) {\r\n        this.code = code;\r\n        this.msg = msg;\r\n    }\r\n\r\n    private String code;\r\n    private String msg;\r\n\r\n    public String getCode() {\r\n        return code;\r\n    }\r\n\r\n    public String getMsg() {\r\n        return msg;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/status/SelectStatus.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/status/SelectStatus.java	(date 1591090788161)
+@@ -3,7 +3,7 @@
+ /**
+  * @program: springcloud-mapping
+  * @description: 查询返回信息的枚举
+- * @author: Mr.Miao
++ * @author: ly
+  * @create: 2020-05-28 14:51
+  **/
+ public enum SelectStatus {
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/annotation/LogAspect.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.annotation;\r\n\r\nimport com.mmz.model.User;\r\nimport com.mmz.service.IUserService;\r\nimport com.mmz.utils.DateUtils;\r\nimport com.mmz.utils.IPUtils;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.aspectj.lang.ProceedingJoinPoint;\r\nimport org.aspectj.lang.annotation.Around;\r\nimport org.aspectj.lang.annotation.Aspect;\r\nimport org.aspectj.lang.annotation.Pointcut;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Component;\r\n\r\nimport java.lang.reflect.Method;\r\nimport java.net.UnknownHostException;\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: 日志的aop\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-28 10:24\r\n **/\r\n@Slf4j\r\n@Aspect\r\n@Component\r\npublic class LogAspect {\r\n\r\n    @Autowired\r\n    private IUserService IUserService;\r\n\r\n    /**\r\n    * @Description:\r\n     *      定义一个切面\r\n     *      之前应用的切面一边情况下切类，还可以使用通配符，或者可以切整个包\r\n     *      eg: com.mmz.*.controller\r\n     *\r\n     *      这里要切自定义的注解\r\n     *      也就是说当检测到这个注解存在的时候，aop才会生效\r\n    * @Param: []\r\n    * @return: void\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/28\r\n    */\r\n    @Pointcut(\"@annotation(com.mmz.annotation.LoginLogAnnotation)\")\r\n    public void pointcut() {\r\n        // TODO 什么都不写，定义了具体切哪一部分，切的注解\r\n    }\r\n    /**\r\n    * @Description: 定义环形切点\r\n     *        ProceedingJoinPoint：\r\n     *          里面封装了目标路径中的所有参数，可以任意获取\r\n    * @Param: [proceedingJoinPoint]\r\n    * @return: java.lang.Object\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/28\r\n    */\r\n    @Around(\"pointcut()\")\r\n    public Object around(ProceedingJoinPoint proceedingJoinPoint) throws ClassNotFoundException, UnknownHostException{\r\n        // 1.定义返回值\r\n        Object result = null;\r\n        try {\r\n            result = proceedingJoinPoint.proceed();\r\n        } catch (Throwable throwable) {\r\n            throwable.printStackTrace();\r\n        }\r\n\r\n        // 2.获取username信息，其实username的信息就在方法的参数中，也就是说只要获取目标方法的参数就可以获取username的值\r\n        Object[] args = proceedingJoinPoint.getArgs();\r\n        User user = null;\r\n        for (Object arg : args) {\r\n            user = (User) arg;\r\n        }\r\n\r\n        // 3.获取登陆时间\r\n        String date = DateUtils.getDate();\r\n        //4 .TODO 获取Ip地址\r\n\r\n            String ip = IPUtils.getIp();\r\n        //5.获取operationType和operationName\r\n        // 获取方法所属类的全限定名\r\n        String className = proceedingJoinPoint.getTarget().getClass().getName();\r\n        // 获取目标方法的方法名\r\n        String targetMethodName = proceedingJoinPoint.getSignature().getName();\r\n        // 通过反射获取类的对象\r\n        Class targetClass = Class.forName(className);\r\n        // 获取目标类中的所有方法\r\n        Method[] methods = targetClass.getMethods();\r\n        String operationType = \"\";\r\n        String operationName = \"\";\r\n\r\n        // 通过循环来进行对比判断\r\n        for (Method method : methods) {\r\n            String methodName = method.getName();\r\n            // 判断两个methodName是否相等\r\n            if (methodName.equals(targetMethodName)) {\r\n                // 需要考虑到方法的重载，对应方法中参数的个数\r\n                Class[] parameterTypes = method.getParameterTypes();\r\n                // 判断两个方法中的参数个数是否相同\r\n                if (parameterTypes.length == args.length) {\r\n                    // 获取最终的目标方法注解中的属性\r\n                    operationType = method.getAnnotation(LoginLogAnnotation.class).operationType();\r\n                    operationName = method.getAnnotation(LoginLogAnnotation.class).operationName();\r\n                }\r\n            }\r\n        }\r\n\r\n        Map map = new HashMap();\r\n        map.put(\"username\", user.getUsername());\r\n        map.put(\"loginTime\",date);\r\n        map.put(\"ip\", ip);\r\n        map.put(\"location\", \"河南\");\r\n        map.put(\"operationType\", operationType);\r\n        map.put(\"operationName\", operationName);\r\n        IUserService.addLoginLog(map);\r\n        // 如果不return则永远不会返回目标controller\r\n        return result;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/annotation/LogAspect.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/annotation/LogAspect.java	(date 1591084418557)
+@@ -11,7 +11,10 @@
+ import org.aspectj.lang.annotation.Pointcut;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Component;
++import org.springframework.web.context.request.RequestContextHolder;
++import org.springframework.web.context.request.ServletRequestAttributes;
+ 
++import javax.servlet.http.HttpServletRequest;
+ import java.lang.reflect.Method;
+ import java.net.UnknownHostException;
+ import java.util.HashMap;
+@@ -73,12 +76,11 @@
+         for (Object arg : args) {
+             user = (User) arg;
+         }
+-
+         // 3.获取登陆时间
+-        String date = DateUtils.getDate();
+-        //4 .TODO 获取Ip地址
+-
+-            String ip = IPUtils.getIp();
++        String date = DateUtils.getDateTime();
++        //4 .通过Request对象获取获取IP地址
++        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
++        String ip = IPUtils.getIpAddr(request);
+         //5.获取operationType和operationName
+         // 获取方法所属类的全限定名
+         String className = proceedingJoinPoint.getTarget().getClass().getName();
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Central Repository\" />\r\n      <option name=\"url\" value=\"https://maven.aliyun.com/repository/central\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ .idea/jarRepositories.xml	(date 1591084418566)
+@@ -3,6 +3,11 @@
+   <component name="RemoteRepositoriesConfiguration">
+     <remote-repository>
+       <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
+       <option name="name" value="Maven Central repository" />
+       <option name="url" value="https://repo1.maven.org/maven2" />
+     </remote-repository>
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.controller;\r\n\r\nimport com.mmz.annotation.LoginLogAnnotation;\r\nimport com.mmz.base.BaseController;\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.model.User;\r\nimport com.mmz.service.IUserService;\r\nimport io.swagger.annotations.Api;\r\nimport javafx.scene.chart.PieChart;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\nimport java.sql.Date;\r\nimport java.util.List;\r\n\r\n/**\r\n * @program: springcloud-mapping\r\n * @description: 用户管理\r\n * @author: Mr.Miao\r\n * @create: 2020-05-28 14:16\r\n **/\r\n@RestController\r\n@Api(value = \"用户管理\", tags = \"对用户进行接口\")\r\npublic class UserController extends BaseController {\r\n    @Autowired\r\n    private IUserService iUserService;\r\n\r\n    /**\r\n     * @Description: 查询所有用户\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    //@LoginLogAnnotation(operationName = \"管理员\",operationType = \"查询\")   查询操作不需要记录\r\n    @GetMapping(\"getAllUserInfo\")\r\n    public ResultData getAllUserInfo() {\r\n        System.out.println(\"consumer-Controller\");\r\n        List<User> allUserInfo = iUserService.getAllUserInfo();\r\n        if (!\" \".equals(allUserInfo) && null != allUserInfo) {\r\n            return super.selectSuccesss(iUserService.getAllUserInfo());\r\n        } else {\r\n            return super.selectFailed();\r\n        }\r\n\r\n    }\r\n\r\n    /**\r\n     * @Description: 添加用户\r\n     * @Param: [user]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/31\r\n     */\r\n\r\n    @LoginLogAnnotation(operationName = \"管理员\", operationType = \"添加\")\r\n    @PostMapping(\"insertUser\")\r\n    public ResultData insertUser(@RequestBody User user) {\r\n\r\n        System.out.println(\"consumer-Controller\");\r\n        user.setCreateTime(\"2020-06-01\");\r\n        Boolean aBoolean = iUserService.insertUser(user);\r\n        if (aBoolean) {\r\n            return super.insertSuccess();\r\n        } else {\r\n            return super.insertFailed();\r\n        }\r\n    }\r\n\r\n    /**\r\n     * @Description: 修改用户信息\r\n     * @Param: [user]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    @PostMapping(\"updateUser\")\r\n    public ResultData updateUserInfoById(@RequestBody User user) {\r\n\r\n        System.out.println(\"consumer-Controller-----\"+user);\r\n        user.setCreateTime(\"2020-06-01\");\r\n        Boolean aBoolean = iUserService.insertUser(user);\r\n        if (aBoolean) {\r\n            return super.updatetSuccess();\r\n        } else {\r\n            return super.updateFailed();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/UserController.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/UserController.java	(date 1591090788211)
+@@ -6,20 +6,18 @@
+ import com.mmz.model.User;
+ import com.mmz.service.IUserService;
+ import io.swagger.annotations.Api;
+-import javafx.scene.chart.PieChart;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RestController;
+ 
+-import java.sql.Date;
+ import java.util.List;
+ 
+ /**
+  * @program: springcloud-mapping
+  * @description: 用户管理
+- * @author: Mr.Miao
++ * @author: ly
+  * @create: 2020-05-28 14:16
+  **/
+ @RestController
+@@ -32,7 +30,7 @@
+      * @Description: 查询所有用户
+      * @Param: []
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/28
+      */
+     //@LoginLogAnnotation(operationName = "管理员",operationType = "查询")   查询操作不需要记录
+@@ -41,7 +39,7 @@
+         System.out.println("consumer-Controller");
+         List<User> allUserInfo = iUserService.getAllUserInfo();
+         if (!" ".equals(allUserInfo) && null != allUserInfo) {
+-            return super.selectSuccesss(iUserService.getAllUserInfo());
++            return super.selectSuccess(iUserService.getAllUserInfo());
+         } else {
+             return super.selectFailed();
+         }
+@@ -52,7 +50,7 @@
+      * @Description: 添加用户
+      * @Param: [user]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/31
+      */
+ 
+@@ -74,7 +72,7 @@
+      * @Description: 修改用户信息
+      * @Param: [user]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/6/1
+      */
+     @PostMapping("updateUser")
+@@ -84,7 +82,7 @@
+         user.setCreateTime("2020-06-01");
+         Boolean aBoolean = iUserService.insertUser(user);
+         if (aBoolean) {
+-            return super.updatetSuccess();
++            return super.selectSuccess();
+         } else {
+             return super.updateFailed();
+         }
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/LoginController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.controller;\r\n\r\nimport com.mmz.annotation.LoginLogAnnotation;\r\nimport com.mmz.base.BaseController;\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.model.User;\r\nimport com.mmz.service.IUserService;\r\nimport com.mmz.vo.TokenVo;\r\nimport io.swagger.annotations.Api;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: consumer的登陆controller\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-24 18:28\r\n **/\r\n@RestController\r\n// 标识这个类是swagger的资源 value、tags都是说明的意思\r\n@Api(value = \"登陆信息\" ,tags = \"用户登陆接口\")\r\npublic class LoginController extends BaseController {\r\n\r\n    @Autowired\r\n    private IUserService IUserService;\r\n\r\n\r\n    @PostMapping(\"/doLogin\")\r\n    @ApiOperation(value = \"登陆功能\" ,notes = \"用户执行登陆的功能\")\r\n    @LoginLogAnnotation(operationType = \"登陆操作\",operationName = \"管理员登陆\")\r\n    public ResultData doLogin(@RequestBody User user) {\r\n        TokenVo tokenVo = IUserService.doLogin(user);\r\n        // 通过往redis存储token值得结果来验证用户是否登陆成功\r\n        if (tokenVo.getIfSuccess()) {\r\n            return super.loginSuccess(\"登陆成功\",tokenVo.getToken());\r\n        }\r\n        return super.loginFailed();\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/LoginController.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/LoginController.java	(date 1591084418500)
+@@ -6,6 +6,7 @@
+ import com.mmz.model.User;
+ import com.mmz.service.IUserService;
+ import com.mmz.vo.TokenVo;
++import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+ import io.swagger.annotations.Api;
+ import io.swagger.annotations.ApiOperation;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -31,6 +32,8 @@
+     @PostMapping("/doLogin")
+     @ApiOperation(value = "登陆功能" ,notes = "用户执行登陆的功能")
+     @LoginLogAnnotation(operationType = "登陆操作",operationName = "管理员登陆")
++    //@ApiImplicitParams({@ApiImplicitParam(name = "jwt-token", value = "jwt-token", required = true, dataType = "string", paramType = "header")})
++    @HystrixCommand
+     public ResultData doLogin(@RequestBody User user) {
+         TokenVo tokenVo = IUserService.doLogin(user);
+         // 通过往redis存储token值得结果来验证用户是否登陆成功
+Index: mapping-management/mapping-mapper/src/main/java/com/mmz/mapper/UserInfoMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.mapper;\r\n\r\nimport com.mmz.model.User;\r\nimport tk.mybatis.mapper.common.Mapper;\r\n\r\n\r\n\r\n/**\r\n * @program: springcloud-mapping\r\n * @description: 用户管理\r\n * @author: Mr.Miao\r\n * @create: 2020-05-28 13:59\r\n **/\r\n\r\npublic interface UserInfoMapper extends Mapper<User> {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-mapper/src/main/java/com/mmz/mapper/UserInfoMapper.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-management/mapping-mapper/src/main/java/com/mmz/mapper/UserInfoMapper.java	(date 1591090788195)
+@@ -8,7 +8,7 @@
+ /**
+  * @program: springcloud-mapping
+  * @description: 用户管理
+- * @author: Mr.Miao
++ * @author: ly
+  * @create: 2020-05-28 13:59
+  **/
+ 
+Index: mapping-common/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <parent>\r\n        <artifactId>spring-cloud-mapping</artifactId>\r\n        <groupId>com.mmz</groupId>\r\n        <version>1.0-SNAPSHOT</version>\r\n    </parent>\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <packaging>jar</packaging>\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>org.apache.maven.plugins</groupId>\r\n                <artifactId>maven-compiler-plugin</artifactId>\r\n                <configuration>\r\n                    <source>6</source>\r\n                    <target>6</target>\r\n                </configuration>\r\n            </plugin>\r\n        </plugins>\r\n    </build>\r\n\r\n    <artifactId>mapping-common</artifactId>\r\n\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.apache.commons</groupId>\r\n            <artifactId>commons-lang3</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>commons-httpclient</groupId>\r\n            <artifactId>commons-httpclient</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>commons-io</groupId>\r\n            <artifactId>commons-io</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.apache.httpcomponents</groupId>\r\n            <artifactId>httpclient</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>com.fasterxml.jackson.core</groupId>\r\n            <artifactId>jackson-core</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>com.fasterxml.jackson.core</groupId>\r\n            <artifactId>jackson-databind</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>com.fasterxml.jackson.core</groupId>\r\n            <artifactId>jackson-annotations</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>com.alibaba</groupId>\r\n            <artifactId>fastjson</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n        </dependency>\r\n\r\n        <!-- Objenesis -->\r\n        <dependency>\r\n            <groupId>org.objenesis</groupId>\r\n            <artifactId>objenesis</artifactId>\r\n        </dependency>\r\n\r\n        <!--高性能反射工具-->\r\n        <dependency>\r\n            <groupId>com.esotericsoftware</groupId>\r\n            <artifactId>reflectasm</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.cloud</groupId>\r\n            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>\r\n        </dependency>\r\n\r\n    </dependencies>\r\n\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/pom.xml	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/pom.xml	(date 1591084418575)
+@@ -9,18 +9,6 @@
+     </parent>
+     <modelVersion>4.0.0</modelVersion>
+     <packaging>jar</packaging>
+-    <build>
+-        <plugins>
+-            <plugin>
+-                <groupId>org.apache.maven.plugins</groupId>
+-                <artifactId>maven-compiler-plugin</artifactId>
+-                <configuration>
+-                    <source>6</source>
+-                    <target>6</target>
+-                </configuration>
+-            </plugin>
+-        </plugins>
+-    </build>
+ 
+     <artifactId>mapping-common</artifactId>
+ 
+Index: mapping-management/mapping-api/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <parent>\r\n        <artifactId>mapping-management</artifactId>\r\n        <groupId>com.mmz</groupId>\r\n        <version>1.0-SNAPSHOT</version>\r\n    </parent>\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <packaging>jar</packaging>\r\n\r\n    <artifactId>mapping-api</artifactId>\r\n\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>com.mmz</groupId>\r\n            <artifactId>mapping-model</artifactId>\r\n            <version>1.0-SNAPSHOT</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.cloud</groupId>\r\n            <artifactId>spring-cloud-starter-openfeign</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>io.github.openfeign.form</groupId>\r\n            <artifactId>feign-form</artifactId>\r\n        </dependency>\r\n\r\n        <!-- 支持feignClient文件上传 -->\r\n        <dependency>\r\n            <groupId>io.github.openfeign.form</groupId>\r\n            <artifactId>feign-form-spring</artifactId>\r\n        </dependency>\r\n    </dependencies>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-api/pom.xml	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-management/mapping-api/pom.xml	(date 1591087918546)
+@@ -34,6 +34,12 @@
+             <groupId>io.github.openfeign.form</groupId>
+             <artifactId>feign-form-spring</artifactId>
+         </dependency>
++        <dependency>
++            <groupId>com.github.pagehelper</groupId>
++            <artifactId>pagehelper</artifactId>
++            <version>5.1.10</version>
++            <scope>compile</scope>
++        </dependency>
+     </dependencies>
+ 
+ </project>
+\ No newline at end of file
+Index: mapping-common/src/main/java/com/mmz/base/BaseController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.base;\r\n\r\nimport com.mmz.status.InsertStatus;\r\nimport com.mmz.status.LoginStatus;\r\nimport com.mmz.status.SelectStatus;\r\nimport com.mmz.status.UpdateStatus;\r\nimport org.springframework.stereotype.Controller;\r\n\r\n/**\r\n * @program: 20200402-exam-shiro-springboot\r\n * @description: 对返回的消息类型做规范\r\n * @author: Liu Xinpeng\r\n * @create: 2020-04-06 16:35\r\n **/\r\n@Controller\r\npublic class BaseController {\r\n\r\n\r\n    /**\r\n     * @Description: 登陆成功 使用系统消息 没有返回值\r\n     * 解决硬编码的方式：\r\n     * 使用静态常量\r\n     * 使用枚举\r\n     * 使用properties\r\n     * @Param: []\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginSuccess() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());\r\n        resultData.setMsg(LoginStatus.LOGIN_SUCCESS.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆成功 使用自定义消息 没有返回值\r\n     * @Param: [msg]\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginSuccess(String msg) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());\r\n        resultData.setMsg(msg);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆成功 使用系统消息 有返回值\r\n     * @Param: [msg]\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginSuccess(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());\r\n        resultData.setMsg(LoginStatus.LOGIN_SUCCESS.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆成功 使用自定义消息 有返回值\r\n     * @Param: [msg]\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginSuccess(String msg, Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_SUCCESS.getCode());\r\n        resultData.setMsg(msg);\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆失败 使用系统消息 没有返回值\r\n     * @Param: []\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginFailed() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());\r\n        resultData.setMsg(LoginStatus.LOGIN_FAILED.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆失败 自定义返回消息 没有返回值\r\n     * @Param: [msg]\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginFailed(String msg) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());\r\n        resultData.setMsg(msg);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆失败 自定义返回消息 有返回值\r\n     * @Param: [msg]\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginFailed(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());\r\n        resultData.setMsg(LoginStatus.LOGIN_FAILED.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 登陆失败 使用系统消息 有返回值\r\n     * @Param: [msg]\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/6\r\n     */\r\n    protected ResultData loginFailed(String msg, Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.LOGIN_FAILED.getCode());\r\n        resultData.setMsg(msg);\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 注册时，验证用户是否存在\r\n     * @Param: []\r\n     * @return: com.exam.shiro.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/4/8\r\n     */\r\n    protected ResultData userExist() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(LoginStatus.USER_EXIST.getCode());\r\n        resultData.setMsg(LoginStatus.USER_EXIST.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 新增成功，不返回数据\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    protected ResultData insertSuccess() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());\r\n        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 新增成功，返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    protected ResultData insertSuccess(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());\r\n        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 新增失败，不返回数据\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    protected ResultData insertFailed() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());\r\n        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 新增失败，返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    protected ResultData insertFailed(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());\r\n        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 查询成功，返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    protected ResultData selectSuccesss(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(SelectStatus.SELECT_SUCCESS.getCode());\r\n        resultData.setMsg(SelectStatus.SELECT_SUCCESS.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 查询失败，返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    protected ResultData selectFailed(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(SelectStatus.SELECT_SUCCESS.getCode());\r\n        resultData.setMsg(SelectStatus.SELECT_SUCCESS.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 查询失败，不返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    protected ResultData selectFailed() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(SelectStatus.SELECT_FAILED.getCode());\r\n        resultData.setMsg(SelectStatus.SELECT_FAILED.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 修改成功，不返回数据\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    protected ResultData updatetSuccess() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(UpdateStatus.UPDATE_SUCCESS.getCode());\r\n        resultData.setMsg(UpdateStatus.UPDATE_SUCCESS.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 修改成功，返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    protected ResultData updateSuccess(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(UpdateStatus.UPDATE_SUCCESS.getCode());\r\n        resultData.setMsg(UpdateStatus.UPDATE_SUCCESS.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 修改失败，不返回数据\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    protected ResultData updateFailed() {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(UpdateStatus.UPDATE_FAILED.getCode());\r\n        resultData.setMsg(UpdateStatus.UPDATE_FAILED.getMsg());\r\n        return resultData;\r\n    }\r\n\r\n    /**\r\n     * @Description: 修改失败，返回数据\r\n     * @Param: [data]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    protected ResultData updateFailed(Object data) {\r\n        ResultData resultData = new ResultData();\r\n        resultData.setCode(UpdateStatus.UPDATE_FAILED.getCode());\r\n        resultData.setMsg(UpdateStatus.UPDATE_FAILED.getMsg());\r\n        resultData.setData(data);\r\n        return resultData;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/base/BaseController.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/base/BaseController.java	(date 1591090788096)
+@@ -212,10 +212,10 @@
+      * @Description: 查询成功，返回数据
+      * @Param: [data]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/28
+      */
+-    protected ResultData selectSuccesss(Object data) {
++    protected ResultData selectSuccess(Object data) {
+         ResultData resultData = new ResultData();
+         resultData.setCode(SelectStatus.SELECT_SUCCESS.getCode());
+         resultData.setMsg(SelectStatus.SELECT_SUCCESS.getMsg());
+@@ -223,11 +223,25 @@
+         return resultData;
+     }
+ 
++    /**
++     * @Description: 查询成功，不返回数据
++     * @Param: [data]
++     * @return: com.mmz.base.ResultData
++     * @Author: ly
++     * @Date: 2020/5/28
++     */
++    protected ResultData selectSuccess() {
++        ResultData resultData = new ResultData();
++        resultData.setCode(SelectStatus.SELECT_SUCCESS.getCode());
++        resultData.setMsg(SelectStatus.SELECT_SUCCESS.getMsg());
++        return resultData;
++    }
++
+     /**
+      * @Description: 查询失败，返回数据
+      * @Param: [data]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/28
+      */
+     protected ResultData selectFailed(Object data) {
+@@ -242,7 +256,7 @@
+      * @Description: 查询失败，不返回数据
+      * @Param: [data]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/5/28
+      */
+     protected ResultData selectFailed() {
+@@ -256,10 +270,10 @@
+      * @Description: 修改成功，不返回数据
+      * @Param: []
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/6/1
+      */
+-    protected ResultData updatetSuccess() {
++    protected ResultData updateSuccess() {
+         ResultData resultData = new ResultData();
+         resultData.setCode(UpdateStatus.UPDATE_SUCCESS.getCode());
+         resultData.setMsg(UpdateStatus.UPDATE_SUCCESS.getMsg());
+@@ -270,7 +284,7 @@
+      * @Description: 修改成功，返回数据
+      * @Param: [data]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/6/1
+      */
+     protected ResultData updateSuccess(Object data) {
+@@ -285,7 +299,7 @@
+      * @Description: 修改失败，不返回数据
+      * @Param: []
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/6/1
+      */
+     protected ResultData updateFailed() {
+@@ -299,7 +313,7 @@
+      * @Description: 修改失败，返回数据
+      * @Param: [data]
+      * @return: com.mmz.base.ResultData
+-     * @Author: Mr.miao
++     * @Author: ly
+      * @Date: 2020/6/1
+      */
+     protected ResultData updateFailed(Object data) {
+@@ -309,4 +323,62 @@
+         resultData.setData(data);
+         return resultData;
+     }
++
++    /**
++     * @Description: 删除成功，不返回数据
++     * @Param: []
++     * @return: com.mmz.base.ResultData
++     * @Author: Liu Xinpeng
++     * @Date: 2020/5/24
++     */
++    protected ResultData deleteSuccess() {
++        ResultData resultData = new ResultData();
++        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
++        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
++        return resultData;
++    }
++
++    /**
++     * @Description:  删除成功，返回数据
++     * @Param: [data]
++     * @return: com.mmz.base.ResultData
++     * @Author: Liu Xinpeng
++     * @Date: 2020/5/24
++     */
++    protected ResultData deleteSuccess(Object data) {
++        ResultData resultData = new ResultData();
++        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
++        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
++        resultData.setData(data);
++        return resultData;
++    }
++
++    /**
++     * @Description: 删除失败，不返回数据
++     * @Param: []
++     * @return: com.mmz.base.ResultData
++     * @Author: Liu Xinpeng
++     * @Date: 2020/5/24
++     */
++    protected ResultData deleteFailed() {
++        ResultData resultData = new ResultData();
++        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
++        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
++        return resultData;
++    }
++
++    /**
++     * @Description: 删除失败，返回数据
++     * @Param: [data]
++     * @return: com.mmz.base.ResultData
++     * @Author: Liu Xinpeng
++     * @Date: 2020/5/24
++     */
++    protected ResultData deleteFailed(Object data) {
++        ResultData resultData = new ResultData();
++        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
++        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
++        resultData.setData(data);
++        return resultData;
++    }
+ }
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile default=\"true\" name=\"Default\" enabled=\"true\" />\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"mapping-mapper\" />\r\n        <module name=\"mapping-api\" />\r\n        <module name=\"mapping-common\" />\r\n        <module name=\"mapping-sub-provider-8081\" />\r\n        <module name=\"mapping-service\" />\r\n        <module name=\"mapping-zuul-4081\" />\r\n        <module name=\"mapping-model\" />\r\n        <module name=\"mapping-sub-eureka-7082\" />\r\n        <module name=\"mapping-sub-consumer-6081\" />\r\n        <module name=\"mapping-sub-eureka-7083\" />\r\n        <module name=\"mapping-config\" />\r\n        <module name=\"mapping-sub-eureka-7081\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n    <bytecodeTargetLevel>\r\n      <module name=\"mapping-sub-consumer-8081\" target=\"1.5\" />\r\n      <module name=\"mapping-system-consumer-6081\" target=\"1.5\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ .idea/compiler.xml	(date 1591087953592)
+@@ -7,6 +7,7 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
++        <module name="mapping-config" />
+         <module name="mapping-mapper" />
+         <module name="mapping-api" />
+         <module name="mapping-common" />
+@@ -14,10 +15,10 @@
+         <module name="mapping-service" />
+         <module name="mapping-zuul-4081" />
+         <module name="mapping-model" />
+-        <module name="mapping-sub-eureka-7082" />
++        <module name="mapping-feign" />
+         <module name="mapping-sub-consumer-6081" />
+         <module name="mapping-sub-eureka-7083" />
+-        <module name="mapping-config" />
++        <module name="mapping-sub-eureka-7082" />
+         <module name="mapping-sub-eureka-7081" />
+       </profile>
+     </annotationProcessing>
+Index: mapping-common/src/main/java/com/mmz/utils/IPUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.utils;\r\n\r\nimport java.net.Inet4Address;\r\nimport java.net.InetAddress;\r\nimport java.net.UnknownHostException;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: 获取当前访问者的IP\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-25 23:06\r\n **/\r\npublic class IPUtils {\r\n    /**\r\n    * @Description: 将构造器私有化\r\n    * @Param: []\r\n    * @return:\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/25\r\n    */\r\n    private IPUtils(){\r\n        throw new AssertionError();\r\n    }\r\n    \r\n    /**\r\n    * @Description: 获取当前访问用户的ip，并转转换成String类型\r\n    * @Param: []\r\n    * @return: java.lang.String \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/25\r\n    */\r\n    public static String getIp() throws UnknownHostException {\r\n            InetAddress localHost = Inet4Address.getLocalHost();\r\n            String ip = localHost.toString();\r\n            return ip;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-common/src/main/java/com/mmz/utils/IPUtils.java	(revision 1d1590a193e815b9559a2c396d82b9a90ffd0ccf)
++++ mapping-common/src/main/java/com/mmz/utils/IPUtils.java	(date 1591084485339)
+@@ -1,12 +1,13 @@
+ package com.mmz.utils;
+ 
++import javax.servlet.http.HttpServletRequest;
+ import java.net.Inet4Address;
+ import java.net.InetAddress;
+ import java.net.UnknownHostException;
+ 
+ /**
+  * @program: spring-cloud-mapping
+- * @description: 获取当前访问者的IP
++ * @description: 获取当前访问者的IP工具类
+  * @author: Liu Xinpeng
+  * @create: 2020-05-25 23:06
+  **/
+@@ -21,9 +22,11 @@
+     private IPUtils(){
+         throw new AssertionError();
+     }
++
++    private static final String UNKNOWN = "unknown";
+     
+     /**
+-    * @Description: 获取当前访问用户的ip，并转转换成String类型
++    * @Description: 获取当前系统的IP
+     * @Param: []
+     * @return: java.lang.String 
+     * @Author: Liu Xinpeng
+@@ -34,4 +37,36 @@
+             String ip = localHost.toString();
+             return ip;
+     }
++
++    
++    /**
++    * @Description: 通过请求来判断当前用户的IP地址
++     *      有可能会使用Apache、Squid、Nginx。。对服务器的请求进行代理
++     *      经过代理之后，由于在客户端和服务之间增加了中间层，所以服务器无法直接获取到客户端的ip
++     *      服务器端也就无法直接通过请求转发的地址返回给客户端
++     *      但是在请求转发的http头信息中，增加了x-forwarded-for信息，用以跟踪原有客户端IP地址和
++     *      原来客户端请求的服务器地址
++    * @Param: [request]
++    * @return: java.lang.String 
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/1
++    */
++    public static String getIpAddr(HttpServletRequest request) {
++        // 用户的ip地址都可以获取的到x-forwarded-for就是ip地址
++        // 如果在配置文件中将forewared-for改为off 则获取到额结果就为unknown
++        String ip = request.getHeader("x-forwarded-for");
++        // 需要进行严谨性判断，对用户使用的代理服务器进行判断(本地代理服务器或者网络代理服务器)
++        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
++            ip = request.getHeader("Proxy-Client-IP");
++        }
++        if(ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
++            ip = request.getHeader("WL-Proxy-Client-IP");
++        }
++        if(ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
++            // 0:0:0:1.. 127.0.0.1
++            // 如果存在代理服务器的情况下getRemoteAddr()方法获取的IP实际上是代理服务器的地址
++            ip = request.getRemoteAddr();
++        }
++        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
++    }
+ }
+\ No newline at end of file

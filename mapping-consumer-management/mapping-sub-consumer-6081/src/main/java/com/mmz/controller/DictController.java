@@ -152,5 +152,4 @@ public class DictController extends BaseController {
         }
         return super.insertFailed();
     }
-
 }

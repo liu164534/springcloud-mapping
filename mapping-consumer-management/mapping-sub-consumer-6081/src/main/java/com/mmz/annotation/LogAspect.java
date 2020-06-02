@@ -1,7 +1,6 @@
 package com.mmz.annotation;
 
 import com.mmz.model.User;
-import com.mmz.service.IUserService;
 import com.mmz.utils.DateUtils;
 import com.mmz.utils.IPUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -73,12 +75,11 @@ public class LogAspect {
         for (Object arg : args) {
             user = (User) arg;
         }
-
         // 3.获取登陆时间
-        String date = DateUtils.getDate();
-        //4 .TODO 获取Ip地址
-
-            String ip = IPUtils.getIp();
+        String date = DateUtils.getDateTime();
+        //4 .通过Request对象获取获取IP地址
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String ip = IPUtils.getIpAddr(request);
         //5.获取operationType和operationName
         // 获取方法所属类的全限定名
         String className = proceedingJoinPoint.getTarget().getClass().getName();
