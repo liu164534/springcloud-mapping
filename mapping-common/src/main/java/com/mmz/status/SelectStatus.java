@@ -8,8 +8,8 @@ package com.mmz.status;
  **/
 public enum SelectStatus {
 
-    SELECT_SUCCESS("20004", "查询成功"),
-    SELECT_FAILED("10007", "查询失败");
+    SELECT_SUCCESS("20003", "查询成功"),
+    SELECT_FAILED("10006", "查询失败");
 
     SelectStatus(String code, String msg) {
         this.code = code;

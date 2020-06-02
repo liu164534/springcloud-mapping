@@ -7,8 +7,8 @@ package com.mmz.status;
  * @create: 2020-06-01 20:10
  **/
 public enum  UpdateStatus {
-    UPDATE_SUCCESS("20004","修改成功"),
-    UPDATE_FAILED("10007","修改失败");
+    UPDATE_SUCCESS("20006","修改成功"),
+    UPDATE_FAILED("10009","修改失败");
 
     UpdateStatus(String code, String msg) {
         this.code = code;
