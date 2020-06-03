@@ -1,5 +1,6 @@
 package com.mmz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mmz.base.ResultData;
 import com.mmz.model.Dict;
 import com.mmz.model.User;
@@ -91,16 +92,27 @@ public interface IUserService {
     @PostMapping("updateUser")
     Boolean updateUserInfoById(@RequestBody User user);
 
-    //    /**
-//     * @author Jia Hao Hao
-//     * @param
-//     * @date 2020/5/29
-//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-//     * @description 分页获取字典表数据
-//     * @throws
-//     **/
-//    @PostMapping("/selectDictInfo")
-//    PageInfo<Dict> selectDictInfo(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/29
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 分页获取字典表数据
+     * @throws
+     **/
+    @PostMapping("/selectDictInfo")
+    PageInfo<Dict> selectDictInfo(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    /**
+     * @author Jia Hao Hao
+     * @param [pageNo, pageSize]
+     * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 按条件分页查询所有字典表信息
+     * @throws
+     **/
+    @PostMapping("/selectPageDict")
+    PageInfo<Dict> selectPageDict(@RequestBody Dict dict,@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize);
 
     /**
      * @author Jia Hao Hao

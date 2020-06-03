@@ -20,27 +20,51 @@ public class DictService extends BaseService<Dict> {
     @Autowired
     private DictMapper dictMapper;
 
-//    /**
-//     * @author Jia Hao Hao
-//     * @param [pageNo, pageSize]
-//     * @date 2020/5/28
-//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-//     * @description 查询所有字典表信息
-//     * @throws
-//     **/
-//    public PageInfo<Dict> selectDictInfo(Integer pageNo, Integer pageSize){
-//        PageHelper.startPage(pageNo,pageSize);
-//        List<Dict> dicts = dictMapper.selectAll();
-//        if (dicts.size() > 0){
-//            PageInfo<Dict> dictPageInfo = new PageInfo<>(dicts);
-//            return dictPageInfo;
-//        }
-//        return null;
-//    }
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 分页查询所有字典表信息
+     * @throws
+     **/
+    public PageInfo<Dict> selectDictInfo(Integer pageNo, Integer pageSize){
+        //分页
+        PageHelper.startPage(pageNo,pageSize);
+        //查询字典信息
+        List<Dict> dicts = dictMapper.selectAll();
+        if (dicts.size() > 0){
+            //将信息分页
+            PageInfo<Dict> dictPageInfo = new PageInfo<>(dicts);
+            return dictPageInfo;
+        }
+        return null;
+    }
 
     /**
      * @author Jia Hao Hao
-     * @param [pageNum, pageSize]
+     * @param
+     * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 分页条件查询所有字典表信息
+     * @throws
+     **/
+    public PageInfo<Dict> selectPageDict(Dict dict,Integer pageNo, Integer pageSize){
+        //分页
+        PageHelper.startPage(pageNo,pageSize);
+        //按条件查询字典信息
+        List<Dict> dicts = dictMapper.select(dict);
+        if (!"".equals(dicts) && null != dicts){
+            //将信息分页
+            PageInfo<Dict> dictPageInfo = new PageInfo<>(dicts);
+            return dictPageInfo;
+        }
+        return null;
+    }
+
+    /**
+     * @author Jia Hao Hao
+     * @param
      * @date 2020/5/28
      * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
      * @description 查询所有字典表信息
@@ -60,7 +84,7 @@ public class DictService extends BaseService<Dict> {
 
     /**
      * @author Jia Hao Hao
-     * @param [dict]
+     * @param
      * @date 2020/5/28
      * @return int
      * @throws
@@ -80,7 +104,7 @@ public class DictService extends BaseService<Dict> {
 
     /**
      * @author Jia Hao Hao
-     * @param [ids]
+     * @param
      * @date 2020/5/28
      * @return java.lang.Boolean
      * @throws
