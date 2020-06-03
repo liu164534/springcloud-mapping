@@ -1,5 +1,6 @@
 package com.mmz.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.mmz.base.BaseService;
 import com.mmz.base.CommonController;
 import com.mmz.model.Dict;
@@ -49,7 +50,7 @@ public class DictController extends CommonController<Dict> {
      * @throws
      **/
     @PostMapping("/selectPageDict")
-    public PageInfo<Dict> selectPageDict(@RequestBody Dict dict,@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize){
+    public PageInfo<Dict> selectPageDict(@RequestBody Dict dict, @RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize){
         //按条件分页查询所有字典表信息
         PageInfo<Dict> dictPageInfo = dictService.selectPageDict(dict,pageNo, pageSize);
         if (!"".equals(dictPageInfo) && null != dictPageInfo){
