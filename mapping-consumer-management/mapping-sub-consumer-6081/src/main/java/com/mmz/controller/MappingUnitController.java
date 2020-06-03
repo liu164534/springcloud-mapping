@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @program: spring-cloud-mapping
- * @description: 测绘单位
+ * @description: consumer-测绘单位
  * @author: Liu Xinpeng
  * @create: 2020-06-03 09:32
  **/

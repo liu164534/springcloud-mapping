@@ -52,7 +52,13 @@
 
 <!--  根据条件查询测绘项目的名称-->
   <select id="getMappingProjectName" parameterType="com.mmz.model.MappingProject" resultMap="BaseResultMap">
-    select project_name from t_mapping_project
+    select id,project_type,project_name,project_amount,project_leader,start_date,end_date,complete_time,
+    acceptance_department,acceptance_report,task_source,project_area,scale,sheet_number,awards_department,
+    prize_level,project_quality_approval,winning_time,acceptance_time,basic_content,credit_status,submit_status,
+    user_id,schedule,create_time,modify_time,memo,status,audit_status,results_status,meridian,coordinate_system,
+    management_level,funding_source,entrust_unit,accept_unit,mobile_phone,phone,address,center_point,synchronization_status,
+    contract_time,coordinate
+    from t_mapping_project
     where 1=1
     <if test="projectType != null">
       and  project_type = #{projectType}

@@ -63,7 +63,14 @@
 
   <!--  根据条件检索测绘单位的名称-->
   <select id="getMappingUnitName" parameterType="com.mmz.model.MappingUnit" resultMap="BaseResultMap">
-    select unit_name from t_mapping_unit
+    select id,create_time,modify_time,memo,unit_name,register_address,register_time,oa,corporation,linkman,
+    owned_district,register_fund,social_credit_code,qualification_level,phone,contact_way,used_name,register_address_lon,
+    register_address_lat,register_address_postcode,oa_postcode,oa_area,establish_time,mobile_phone,fax_num,email,
+    surveying_num,staff_num,unit_nature,belong_industry,certificate_code,certificate_send_date,company_type,stock_details,
+    joint_venture,joint_ch_p,joint_ratify_code,competent_depart,first_qualification_level,first_qualification_date,
+    qualification_process,organization_code,unit_type,user_id,audit_status,unit_code,unit_status,synchronization_status,
+    score,filing_business,business_scope,unit_intro,coordinate
+    from t_mapping_unit
     where 1=1
     <if test="unitName != null">
       and unit_name like concat('%',#{unitName},'%')

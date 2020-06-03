@@ -2,10 +2,7 @@ package com.mmz.service;
 
 import com.github.pagehelper.PageInfo;
 import com.mmz.base.ResultData;
-import com.mmz.model.Dict;
-import com.mmz.model.MappingProject;
-import com.mmz.model.MappingUnit;
-import com.mmz.model.User;
+import com.mmz.model.*;
 import com.mmz.vo.TokenVo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -204,4 +201,13 @@ public interface IUserService {
     List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);
 
 
+    /**
+    * @Description: 根据条件查询测绘成果
+    * @Param: [resultCommit]
+    * @return: java.util.List<com.mmz.model.ResultCommit> 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
+    */
+    @PostMapping("getResultCommitName")
+    List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
 }

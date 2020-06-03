@@ -1,7 +1,7 @@
 package com.mmz.controller;
 
-import com.github.pagehelper.PageInfo;
-import com.mmz.base.BaseController;
+import com.mmz.base.BaseService;
+import com.mmz.base.CommonController;
 import com.mmz.model.Dict;
 import com.mmz.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,13 @@ import java.util.List;
  * @Description: 字典管理
  **/
 @RestController
-public class DictController extends BaseController {
+public class DictController extends CommonController<Dict> {
     @Autowired
     private DictService dictService;
+    @Override
+    public BaseService<Dict> getBaseService() {
+        return dictService;
+    }
 
     /**
      * @author Jia Hao Hao
@@ -139,4 +143,6 @@ public class DictController extends BaseController {
     public Integer updateDictInfo(@RequestBody Dict dict){
         return dictService.updateDictInfo(dict);
     }
+
+
 }
