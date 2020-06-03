@@ -1,0 +1,144 @@
+Index: mapping-management/mapping-mapper/src/main/resources/mapper/MappingUnitMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\" >\r\n<mapper namespace=\"com.mmz.mapper.MappingUnitMapper\" >\r\n  <resultMap id=\"BaseResultMap\" type=\"com.mmz.model.MappingUnit\" >\r\n    <!--\r\n      WARNING - @mbg.generated\r\n    -->\r\n    <id column=\"id\" property=\"id\" jdbcType=\"BIGINT\" />\r\n    <result column=\"create_time\" property=\"createTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"modify_time\" property=\"modifyTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"memo\" property=\"memo\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"unit_name\" property=\"unitName\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"register_address\" property=\"registerAddress\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"register_time\" property=\"registerTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"oa\" property=\"oa\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"corporation\" property=\"corporation\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"linkman\" property=\"linkman\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"owned_district\" property=\"ownedDistrict\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"register_fund\" property=\"registerFund\" jdbcType=\"DOUBLE\" />\r\n    <result column=\"social_credit_code\" property=\"socialCreditCode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"qualification_level\" property=\"qualificationLevel\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"phone\" property=\"phone\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"contact_way\" property=\"contactWay\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"used_name\" property=\"usedName\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"register_address_lon\" property=\"registerAddressLon\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"register_address_lat\" property=\"registerAddressLat\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"register_address_postcode\" property=\"registerAddressPostcode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"oa_postcode\" property=\"oaPostcode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"oa_area\" property=\"oaArea\" jdbcType=\"DOUBLE\" />\r\n    <result column=\"establish_time\" property=\"establishTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"mobile_phone\" property=\"mobilePhone\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"fax_num\" property=\"faxNum\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"email\" property=\"email\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"surveying_num\" property=\"surveyingNum\" jdbcType=\"INTEGER\" />\r\n    <result column=\"staff_num\" property=\"staffNum\" jdbcType=\"INTEGER\" />\r\n    <result column=\"unit_nature\" property=\"unitNature\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"belong_industry\" property=\"belongIndustry\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"certificate_code\" property=\"certificateCode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"certificate_send_date\" property=\"certificateSendDate\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"company_type\" property=\"companyType\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"stock_details\" property=\"stockDetails\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"joint_venture\" property=\"jointVenture\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"joint_ch_p\" property=\"jointChP\" jdbcType=\"INTEGER\" />\r\n    <result column=\"joint_ratify_code\" property=\"jointRatifyCode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"competent_depart\" property=\"competentDepart\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"first_qualification_level\" property=\"firstQualificationLevel\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"first_qualification_date\" property=\"firstQualificationDate\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"qualification_process\" property=\"qualificationProcess\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"organization_code\" property=\"organizationCode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"unit_type\" property=\"unitType\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"user_id\" property=\"userId\" jdbcType=\"BIGINT\" />\r\n    <result column=\"audit_status\" property=\"auditStatus\" jdbcType=\"INTEGER\" />\r\n    <result column=\"unit_code\" property=\"unitCode\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"unit_status\" property=\"unitStatus\" jdbcType=\"INTEGER\" />\r\n    <result column=\"synchronization_status\" property=\"synchronizationStatus\" jdbcType=\"INTEGER\" />\r\n    <result column=\"score\" property=\"score\" jdbcType=\"INTEGER\" />\r\n    <result column=\"filing_business\" property=\"filingBusiness\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"business_scope\" property=\"businessScope\" jdbcType=\"LONGVARCHAR\" />\r\n    <result column=\"unit_intro\" property=\"unitIntro\" jdbcType=\"LONGVARCHAR\" />\r\n    <result column=\"coordinate\" property=\"coordinate\" jdbcType=\"LONGVARCHAR\" />\r\n  </resultMap>\r\n\r\n\r\n  <!--  根据条件检索测绘单位的名称-->\r\n  <select id=\"getMappingUnitName\" parameterType=\"com.mmz.model.MappingUnit\" resultMap=\"BaseResultMap\">\r\n    select unit_name from t_mapping_unit\r\n    where 1=1\r\n    <if test=\"unitName != null\">\r\n      and unit_name like concat('%',#{unitName},'%')\r\n    </if>\r\n    <if test=\"registerAddress != null\">\r\n      and register_address like concat('%',#{registerAddress},'%')\r\n    </if>\r\n    <if test=\"registerTime != null\">\r\n      and registerTime = #{registerTime}\r\n    </if>\r\n  </select>\r\n</mapper>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-mapper/src/main/resources/mapper/MappingUnitMapper.xml	(revision 43c82d2bccb7103f3367959edd076468eab4b371)
++++ mapping-management/mapping-mapper/src/main/resources/mapper/MappingUnitMapper.xml	(date 1591157983968)
+@@ -63,7 +63,14 @@
+ 
+   <!--  根据条件检索测绘单位的名称-->
+   <select id="getMappingUnitName" parameterType="com.mmz.model.MappingUnit" resultMap="BaseResultMap">
+-    select unit_name from t_mapping_unit
++    select id,create_time,modify_time,memo,unit_name,register_address,register_time,oa,corporation,linkman,
++    owned_district,register_fund,social_credit_code,qualification_level,phone,contact_way,used_name,register_address_lon,
++    register_address_lat,register_address_postcode,oa_postcode,oa_area,establish_time,mobile_phone,fax_num,email,
++    surveying_num,staff_num,unit_nature,belong_industry,certificate_code,certificate_send_date,company_type,stock_details,
++    joint_venture,joint_ch_p,joint_ratify_code,competent_depart,first_qualification_level,first_qualification_date,
++    qualification_process,organization_code,unit_type,user_id,audit_status,unit_code,unit_status,synchronization_status,
++    score,filing_business,business_scope,unit_intro,coordinate
++    from t_mapping_unit
+     where 1=1
+     <if test="unitName != null">
+       and unit_name like concat('%',#{unitName},'%')
+Index: mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/DictController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.controller;\r\n\r\nimport com.github.pagehelper.PageInfo;\r\nimport com.mmz.base.BaseController;\r\nimport com.mmz.model.Dict;\r\nimport com.mmz.service.DictService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.List;\r\n\r\n/**\r\n * @Author: Jia Hao Hao\r\n * @Date: 2020-05-29 09:44\r\n * @Description: 字典管理\r\n **/\r\n@RestController\r\npublic class DictController extends BaseController {\r\n    @Autowired\r\n    private DictService dictService;\r\n\r\n//    /**\r\n//     * @author Jia Hao Hao\r\n//     * @param [pageNo, pageSize]\r\n//     * @date 2020/5/28\r\n//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n//     * @description 查询所有字典表信息\r\n//     * @throws\r\n//     **/\r\n//    @PostMapping(\"/selectDictInfo\")\r\n//    public PageInfo<Dict> selectDictInfo(Integer pageNo, Integer pageSize){\r\n//        PageInfo<Dict> dictPageInfo = dictService.selectDictInfo(pageNo, pageSize);\r\n//        if (!\"\".equals(dictPageInfo) && null != dictPageInfo){\r\n//            return dictPageInfo;\r\n//        }\r\n//        return null;\r\n//    }\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/29\r\n     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n     * @description 分页获取所有字典表数据\r\n     * @throws\r\n    **/\r\n    @GetMapping(\"/selectAllDictInfo\")\r\n    public List<Dict> selectAllDictInfo(){\r\n        //查询字典表所有信息\r\n        List<Dict> dictList = dictService.selectAllDictInfo();\r\n        //判断是否获取到数据\r\n        if(!\"\".equals(dictList) && null != dictList){\r\n            //有数据则返回\r\n            return dictList;\r\n        }\r\n        //没有数据返回空\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return int\r\n     * @throws\r\n     * @description 新增字典信息\r\n     **/\r\n    @PostMapping(\"/insertDictInfo\")\r\n    public Boolean insertDictInfo(@RequestBody Dict dict){\r\n        return dictService.insertDictInfo(dict);\r\n    }\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return int\r\n     * @throws\r\n     * @description 批量删除字典信息\r\n     **/\r\n    @DeleteMapping(\"/deleteDictInfo\")\r\n    public Integer deleteDictInfo(@RequestBody List<Object> ids){\r\n        return dictService.deleteDictInfo(ids);\r\n    }\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id删除字典信息\r\n     **/\r\n    @DeleteMapping(\"/deleteDictId\")\r\n    public Integer deleteDictId(@RequestBody Dict dict) {\r\n        return dictService.deleteDictId(dict);\r\n    }\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id查询字典信息\r\n     **/\r\n    @PostMapping(\"/selectDictId\")\r\n    public Dict selectDictId(@RequestBody Dict dict){\r\n        return dictService.selectDictId(dict);\r\n    }\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id修改字典信息\r\n     **/\r\n    @PutMapping(\"/updateDictInfo\")\r\n    public Integer updateDictInfo(@RequestBody Dict dict){\r\n        return dictService.updateDictInfo(dict);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/DictController.java	(revision 43c82d2bccb7103f3367959edd076468eab4b371)
++++ mapping-provider-management/mapping-sub-provider-8081/src/main/java/com/mmz/controller/DictController.java	(date 1591156911014)
+@@ -1,7 +1,7 @@
+ package com.mmz.controller;
+ 
+-import com.github.pagehelper.PageInfo;
+-import com.mmz.base.BaseController;
++import com.mmz.base.BaseService;
++import com.mmz.base.CommonController;
+ import com.mmz.model.Dict;
+ import com.mmz.service.DictService;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -15,9 +15,13 @@
+  * @Description: 字典管理
+  **/
+ @RestController
+-public class DictController extends BaseController {
++public class DictController extends CommonController<Dict> {
+     @Autowired
+     private DictService dictService;
++    @Override
++    public BaseService<Dict> getBaseService() {
++        return dictService;
++    }
+ 
+ //    /**
+ //     * @author Jia Hao Hao
+@@ -121,4 +125,6 @@
+     public Integer updateDictInfo(@RequestBody Dict dict){
+         return dictService.updateDictInfo(dict);
+     }
++
++
+ }
+Index: mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.service;\r\n\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.model.Dict;\r\nimport com.mmz.model.MappingProject;\r\nimport com.mmz.model.MappingUnit;\r\nimport com.mmz.model.User;\r\nimport com.mmz.vo.TokenVo;\r\nimport com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;\r\nimport org.springframework.cloud.openfeign.FeignClient;\r\nimport org.springframework.stereotype.Component;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: fallbackFactory:就是用来实现熔断的，在实际开发过程中，开发阶段不能开启熔断\r\n * 因为一旦开启了熔断，整个系统运行过程中异常就不再抛出，不方便调试BUG\r\n * <p>\r\n * <p>\r\n * 实际开发中需要注意的东西：\r\n * 无论是springcloud1.x版本还是2.x版本\r\n * 一旦使用feign来传递参数的时候，都需要注意以下两点：\r\n * 1.如果是简单的数据类型（java8大基本数据类型--基本数据类型的包装类也可以，String）-->需要使用注解@RequestParm\r\n * 基本数据类型可以传多个，也就是说一个方法的参数中可以使用多个@PRequestParm注解\r\n * <p>\r\n * 2.如果是传递包装类型（List,Map,Vo,Po）,只能传递一个，而且必须使用@RequestBody注解\r\n * <p>\r\n * 也就是说最终把这些参数值传递到provider项目的controller中，所以provider的controller中也必须使用相同的注解\r\n * 而且provider要和api中的方法一模一样（方法名、返回值类型、参数类型。。）\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-20 16:09\r\n **/\r\n\r\n/**\r\n * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性\r\n */\r\n@FeignClient(value = \"system-interface-8081\")\r\n@Component\r\npublic interface IUserService {\r\n\r\n\r\n    /**\r\n     * @Description: 执行登陆操作\r\n     * @Param: [user]\r\n     * @return: com.mmz.vo.TokenVo\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    @PostMapping(\"/doLogin\")\r\n    @HystrixCommand\r\n    TokenVo doLogin(@RequestBody User user);\r\n\r\n    /**\r\n     * @Description: 添加登陆日志\r\n     * @Param: [map]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/28\r\n     */\r\n    @PostMapping(\"/addLoginLog\")\r\n    ResultData addLoginLog(@RequestBody Map map);\r\n\r\n    /**\r\n     * @Description: 查询用户信息\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    @GetMapping(\"getAllUserInfo\")\r\n    List<User> getAllUserInfo();\r\n\r\n    /**\r\n     * @Description: 添加用户信息\r\n     * @Param: [user]\r\n     * @return: java.lang.Boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/31\r\n     */\r\n    @PostMapping(\"insertUser\")\r\n    Boolean insertUser(@RequestBody User user);\r\n\r\n    /**\r\n     * @Description: 修改用户信息\r\n     * @Param: [user]\r\n     * @return: java.lang.Boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    @PostMapping(\"updateUser\")\r\n    Boolean updateUserInfoById(@RequestBody User user);\r\n\r\n    //    /**\r\n//     * @author Jia Hao Hao\r\n//     * @param\r\n//     * @date 2020/5/29\r\n//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n//     * @description 分页获取字典表数据\r\n//     * @throws\r\n//     **/\r\n//    @PostMapping(\"/selectDictInfo\")\r\n//    PageInfo<Dict> selectDictInfo(@RequestParam(\"pageNo\") Integer pageNo, @RequestParam(\"pageSize\") Integer pageSize);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/29\r\n     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n     * @description 获取所有字典表数据\r\n     * @throws\r\n     **/\r\n    @GetMapping(\"/selectAllDictInfo\")\r\n    List<Dict> selectAllDictInfo();\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return int\r\n     * @throws\r\n     * @description 新增字典信息\r\n     **/\r\n    @PostMapping(\"/insertDictInfo\")\r\n    Boolean insertDictInfo(@RequestBody Dict dict);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return int\r\n     * @throws\r\n     * @description 批量删除字典信息\r\n     **/\r\n    @DeleteMapping(\"/deleteDictInfo\")\r\n    Integer deleteDictInfo(@RequestBody List<Object> ids);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id删除字典信息\r\n     **/\r\n    @DeleteMapping(\"/deleteDictId\")\r\n    Integer deleteDictId(@RequestBody Dict dict);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id查询字典信息\r\n     **/\r\n    @PostMapping(\"/selectDictId\")\r\n    Dict selectDictId(@RequestBody Dict dict);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id修改字典信息\r\n     **/\r\n    @PutMapping(\"/updateDictInfo\")\r\n    Integer updateDictInfo(@RequestBody Dict dict);\r\n\r\n\r\n    /**\r\n    * @Description: 根据条件查询测绘项目的名称\r\n    * @Param: [mappingProject]\r\n    * @return: com.mmz.model.MappingProject\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/6/2\r\n    */\r\n    @PostMapping(\"/getMappingProjectName\")\r\n    List<MappingProject> getMappingProjectName(@RequestBody MappingProject mappingProject);\r\n\r\n    /**\r\n    * @Description: 根据条件查询测绘单位的名称\r\n    * @Param: [mappingUnit]\r\n    * @return: java.util.List<com.mmz.model.MappingUnit>\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/6/3\r\n    */\r\n    @PostMapping(\"getMappingUnitName\")\r\n    List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java	(revision 43c82d2bccb7103f3367959edd076468eab4b371)
++++ mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java	(date 1591155490480)
+@@ -1,10 +1,7 @@
+ package com.mmz.service;
+ 
+ import com.mmz.base.ResultData;
+-import com.mmz.model.Dict;
+-import com.mmz.model.MappingProject;
+-import com.mmz.model.MappingUnit;
+-import com.mmz.model.User;
++import com.mmz.model.*;
+ import com.mmz.vo.TokenVo;
+ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+ import org.springframework.cloud.openfeign.FeignClient;
+@@ -192,4 +189,13 @@
+     List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);
+ 
+ 
++    /**
++    * @Description: 根据条件查询测绘成果
++    * @Param: [resultCommit]
++    * @return: java.util.List<com.mmz.model.ResultCommit> 
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/3
++    */
++    @PostMapping("getResultCommitName")
++    List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
+ }
+\ No newline at end of file
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/MappingUnitController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.controller;\r\n\r\nimport com.mmz.base.BaseController;\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.model.MappingUnit;\r\nimport com.mmz.service.IUserService;\r\nimport io.swagger.annotations.Api;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\nimport java.util.List;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: 测绘单位\r\n * @author: Liu Xinpeng\r\n * @create: 2020-06-03 09:32\r\n **/\r\n@RestController\r\n@Api(value = \"测绘单位\")\r\npublic class MappingUnitController extends BaseController {\r\n    @Autowired\r\n    private IUserService iUserService;\r\n\r\n    /**\r\n    * @Description: 根据条件搜索测绘单位的名称\r\n    * @Param: [mappingUnit]\r\n    * @return: com.mmz.base.ResultData\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/6/3\r\n    */\r\n    @PostMapping(\"getMappingUnitName\")\r\n    public ResultData getMappingUnitName(@RequestBody MappingUnit mappingUnit) {\r\n        List<MappingUnit> mappingUnitNames = iUserService.getMappingUnitName(mappingUnit);\r\n        if (mappingUnitNames.size() > 0 && null != mappingUnitNames) {\r\n            return super.selectSuccess(mappingUnitNames);\r\n        }\r\n        return super.selectFailed();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/MappingUnitController.java	(revision 43c82d2bccb7103f3367959edd076468eab4b371)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/controller/MappingUnitController.java	(date 1591155238115)
+@@ -14,7 +14,7 @@
+ 
+ /**
+  * @program: spring-cloud-mapping
+- * @description: 测绘单位
++ * @description: consumer-测绘单位
+  * @author: Liu Xinpeng
+  * @create: 2020-06-03 09:32
+  **/
+Index: mapping-management/mapping-mapper/src/main/resources/mapper/MappingProjectMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\" >\r\n<mapper namespace=\"com.mmz.mapper.MappingProjectMapper\" >\r\n  <resultMap id=\"BaseResultMap\" type=\"com.mmz.model.MappingProject\" >\r\n    <!--\r\n      WARNING - @mbg.generated\r\n    -->\r\n    <id column=\"id\" property=\"id\" jdbcType=\"BIGINT\" />\r\n    <result column=\"project_type\" property=\"projectType\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"project_name\" property=\"projectName\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"project_amount\" property=\"projectAmount\" jdbcType=\"DOUBLE\" />\r\n    <result column=\"project_leader\" property=\"projectLeader\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"start_date\" property=\"startDate\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"end_date\" property=\"endDate\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"complete_time\" property=\"completeTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"acceptance_department\" property=\"acceptanceDepartment\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"acceptance_report\" property=\"acceptanceReport\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"task_source\" property=\"taskSource\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"project_area\" property=\"projectArea\" jdbcType=\"DOUBLE\" />\r\n    <result column=\"scale\" property=\"scale\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"sheet_number\" property=\"sheetNumber\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"awards_department\" property=\"awardsDepartment\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"prize_level\" property=\"prizeLevel\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"project_quality_approval\" property=\"projectQualityApproval\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"winning_time\" property=\"winningTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"acceptance_time\" property=\"acceptanceTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"basic_content\" property=\"basicContent\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"credit_status\" property=\"creditStatus\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"submit_status\" property=\"submitStatus\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"user_id\" property=\"userId\" jdbcType=\"BIGINT\" />\r\n    <result column=\"schedule\" property=\"schedule\" jdbcType=\"INTEGER\" />\r\n    <result column=\"create_time\" property=\"createTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"modify_time\" property=\"modifyTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"memo\" property=\"memo\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"status\" property=\"status\" jdbcType=\"INTEGER\" />\r\n    <result column=\"audit_status\" property=\"auditStatus\" jdbcType=\"INTEGER\" />\r\n    <result column=\"results_status\" property=\"resultsStatus\" jdbcType=\"INTEGER\" />\r\n    <result column=\"meridian\" property=\"meridian\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"coordinate_system\" property=\"coordinateSystem\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"management_level\" property=\"managementLevel\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"funding_source\" property=\"fundingSource\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"entrust_unit\" property=\"entrustUnit\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"accept_unit\" property=\"acceptUnit\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"mobile_phone\" property=\"mobilePhone\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"phone\" property=\"phone\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"address\" property=\"address\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"center_point\" property=\"centerPoint\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"synchronization_status\" property=\"synchronizationStatus\" jdbcType=\"INTEGER\" />\r\n    <result column=\"contract_time\" property=\"contractTime\" jdbcType=\"VARCHAR\" />\r\n    <result column=\"coordinate\" property=\"coordinate\" jdbcType=\"LONGVARCHAR\" />\r\n  </resultMap>\r\n\r\n<!--  根据条件查询测绘项目的名称-->\r\n  <select id=\"getMappingProjectName\" parameterType=\"com.mmz.model.MappingProject\" resultMap=\"BaseResultMap\">\r\n    select project_name from t_mapping_project\r\n    where 1=1\r\n    <if test=\"projectType != null\">\r\n      and  project_type = #{projectType}\r\n    </if>\r\n   <if test=\"startDate != null\">\r\n     and start_date = #{startDate}\r\n   </if>\r\n    <if test=\"projectName != null\">\r\n      and project_name like concat('%',#{projectName},'%')\r\n    </if>\r\n  </select>\r\n\r\n\r\n</mapper>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-mapper/src/main/resources/mapper/MappingProjectMapper.xml	(revision 43c82d2bccb7103f3367959edd076468eab4b371)
++++ mapping-management/mapping-mapper/src/main/resources/mapper/MappingProjectMapper.xml	(date 1591155189769)
+@@ -52,7 +52,13 @@
+ 
+ <!--  根据条件查询测绘项目的名称-->
+   <select id="getMappingProjectName" parameterType="com.mmz.model.MappingProject" resultMap="BaseResultMap">
+-    select project_name from t_mapping_project
++    select id,project_type,project_name,project_amount,project_leader,start_date,end_date,complete_time,
++    acceptance_department,acceptance_report,task_source,project_area,scale,sheet_number,awards_department,
++    prize_level,project_quality_approval,winning_time,acceptance_time,basic_content,credit_status,submit_status,
++    user_id,schedule,create_time,modify_time,memo,status,audit_status,results_status,meridian,coordinate_system,
++    management_level,funding_source,entrust_unit,accept_unit,mobile_phone,phone,address,center_point,synchronization_status,
++    contract_time,coordinate
++    from t_mapping_project
+     where 1=1
+     <if test="projectType != null">
+       and  project_type = #{projectType}
