@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmz.mapper.RoleMapper" >
+    <resultMap id="BaseResultMap" type="com.mmz.model.Role" >
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="ROLE_ID" property="id" jdbcType="BIGINT" />
+        <result column="ROLE_NAME" property="userId" jdbcType="VARCHAR" />
+        <result column="REMARK" property="roleId" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+        <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
+    </resultMap>
+</mapper>

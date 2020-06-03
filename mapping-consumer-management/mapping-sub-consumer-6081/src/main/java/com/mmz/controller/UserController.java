@@ -88,4 +88,17 @@ public class UserController extends BaseController {
             return super.updateFailed();
         }
     }
+
+    @LoginLogAnnotation(operationName = "苗管理员",operationType = "删除")
+    @PostMapping("deleteUserById")
+    public ResultData deleteUserById (@RequestBody User user){
+        System.out.println("consumer-Controller-----"+user);
+        Boolean aBoolean = iUserService.deleteUserById(user);
+        if (aBoolean) {
+            return super.deleteSuccess();
+        } else {
+            return super.deleteFailed();
+        }
+
+    }
 }

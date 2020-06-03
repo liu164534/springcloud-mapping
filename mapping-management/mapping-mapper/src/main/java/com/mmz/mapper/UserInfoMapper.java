@@ -3,6 +3,7 @@ package com.mmz.mapper;
 import com.mmz.model.User;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.math.BigInteger;
 
 
 /**
@@ -20,6 +21,6 @@ public interface UserInfoMapper extends Mapper<User> {
     * @Author: Mr.miao
     * @Date: 2020/6/2
     */
-    Integer insertUseGeneratedKeys(User user);
+    Long insertUseGeneratedKeys(User user);
 
 }

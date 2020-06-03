@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * @program: springcloud-mapping
@@ -24,12 +25,12 @@ public class UserRole implements Serializable {
      * 用户id
      */
     @Column(name = "USER_ID")
-    private Long userId;
+        private String userId;
 
     /**
      * 权限id
      */
     @Column(name = "ROLE_ID")
-    private Long roleId;
+    private String roleId;
     
 }

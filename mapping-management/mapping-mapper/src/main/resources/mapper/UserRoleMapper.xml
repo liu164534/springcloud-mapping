@@ -5,7 +5,10 @@
         <!--
           WARNING - @mbg.generated
         -->
-        <result column="USER_ID" property="userId" jdbcType="BIGINT" />
-        <result column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
     </resultMap>
+    <delete id="deleteUserRoleByUserId" parameterType="Long">
+        delete from t_user_role where user_id=#{id}
+    </delete>
 </mapper>
