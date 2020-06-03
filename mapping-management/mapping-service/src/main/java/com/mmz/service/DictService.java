@@ -25,7 +25,7 @@ public class DictService extends BaseService<Dict> {
      * @param
      * @date 2020/5/28
      * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-     * @description 分页查询所有字典表信息
+     * @description 分页查询所有字典的表信息
      * @throws
      **/
     public PageInfo<Dict> selectDictInfo(Integer pageNo, Integer pageSize){

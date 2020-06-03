@@ -38,7 +38,7 @@ public class DictController extends BaseController {
 
     /**
      * @author Jia Hao Hao
-     * @param [pageNo, pageSize]
+     * @param
      * @date 2020/5/28
      * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
      * @description 按条件分页查询所有字典表信息

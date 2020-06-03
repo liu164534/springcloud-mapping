@@ -22,6 +22,7 @@ import java.util.List;
 @Api(value = "字典信息",tags = "管理字典")
 public class DictController extends BaseController {
 
+
       @Autowired
       private IUserService iUserService;
 
