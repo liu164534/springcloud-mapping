@@ -1,9 +1,6 @@
 package com.mmz.base;
 
-import com.mmz.status.InsertStatus;
-import com.mmz.status.LoginStatus;
-import com.mmz.status.SelectStatus;
-import com.mmz.status.UpdateStatus;
+import com.mmz.status.*;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -333,8 +330,8 @@ public class BaseController {
      */
     protected ResultData deleteSuccess() {
         ResultData resultData = new ResultData();
-        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
-        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
+        resultData.setCode(DeleteStatus.DELETE_SUCCESS.getCode());
+        resultData.setMsg(DeleteStatus.DELETE_SUCCESS.getMsg());
         return resultData;
     }
 
@@ -347,8 +344,8 @@ public class BaseController {
      */
     protected ResultData deleteSuccess(Object data) {
         ResultData resultData = new ResultData();
-        resultData.setCode(InsertStatus.INSERT_SUCCESS.getCode());
-        resultData.setMsg(InsertStatus.INSERT_SUCCESS.getMsg());
+        resultData.setCode(DeleteStatus.DELETE_SUCCESS.getCode());
+        resultData.setMsg(DeleteStatus.DELETE_SUCCESS.getMsg());
         resultData.setData(data);
         return resultData;
     }
@@ -362,8 +359,8 @@ public class BaseController {
      */
     protected ResultData deleteFailed() {
         ResultData resultData = new ResultData();
-        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
-        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
+        resultData.setCode(DeleteStatus.DELETE_FAILED.getCode());
+        resultData.setMsg(DeleteStatus.DELETE_FAILED.getMsg());
         return resultData;
     }
 
@@ -376,8 +373,8 @@ public class BaseController {
      */
     protected ResultData deleteFailed(Object data) {
         ResultData resultData = new ResultData();
-        resultData.setCode(InsertStatus.INSERT_FAILED.getCode());
-        resultData.setMsg(InsertStatus.INSERT_FAILED.getMsg());
+        resultData.setCode(DeleteStatus.DELETE_FAILED.getCode());
+        resultData.setMsg(DeleteStatus.DELETE_FAILED.getMsg());
         resultData.setData(data);
         return resultData;
     }

@@ -12,6 +12,9 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * 登陆日志实体
+ */
 public class LoginLog implements Serializable {
     /**
      * 用户名

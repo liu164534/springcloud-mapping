@@ -15,6 +15,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+/**
+ * 字典实体
+ */
 public class Dict implements Serializable {
     /**
      * 字典ID
