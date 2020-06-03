@@ -264,4 +264,54 @@ public interface IUserService {
      **/
     @PostMapping("/updateEquipment")
     Boolean updateEquipment(@RequestBody Equipment equipment);
+
+    /**
+    *@Description: 查询所有部门
+    *@Param: []
+    *@return: java.util.List<com.mmz.model.Dept>
+    *@Author: Thanks
+    *@date: 2020/6/4
+    */
+    @GetMapping("/selecetAllDept")
+    List<Dept> selectAllDept();
+
+    /**
+     *@Description: 新增部门
+     *@Param: [dept]
+     *@return: boolean
+     *@Author: Thanks
+     *@date: 2020/6/3
+     */
+    @PostMapping("/insertDept")
+    boolean insertDept(@RequestBody Dept dept);
+
+    /**
+     *@Description: 根据id删除部门
+     *@Param: [dept]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/3
+     */
+    @PostMapping("/deleteDeptId")
+    Integer deleteDeptId(@RequestBody Dept dept);
+
+    /**
+     *@Description: 批量删除部门
+     *@Param: [depts]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/3
+     */
+    @PostMapping("/deleteDepts")
+    Integer deleteDepts(@RequestBody List<Object> depts);
+
+    /**
+     *@Description: 修改部门信息
+     *@Param: [dept]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/3
+     */
+    @PostMapping("/updateDept")
+    Integer updateDept(@RequestBody Dept dept);
 }
