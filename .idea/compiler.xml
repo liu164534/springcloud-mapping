@@ -22,9 +22,5 @@
         <module name="mapping-sub-eureka-7081" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="mapping-sub-consumer-8081" target="1.5" />
-      <module name="mapping-system-consumer-6081" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>

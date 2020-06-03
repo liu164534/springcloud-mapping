@@ -3,6 +3,8 @@ package com.mmz.service;
 import com.github.pagehelper.PageInfo;
 import com.mmz.base.ResultData;
 import com.mmz.model.Dict;
+import com.mmz.model.MappingProject;
+import com.mmz.model.MappingUnit;
 import com.mmz.model.User;
 import com.mmz.vo.TokenVo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -36,7 +38,7 @@ import java.util.Map;
 /**
  * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性
  */
-@FeignClient(value = "system-interface")
+@FeignClient(value = "system-interface-8081")
 @Component
 public interface IUserService {
 
@@ -179,5 +181,27 @@ public interface IUserService {
      **/
     @PutMapping("/updateDictInfo")
     Integer updateDictInfo(@RequestBody Dict dict);
+
+
+    /**
+    * @Description: 根据条件查询测绘项目的名称
+    * @Param: [mappingProject]
+    * @return: com.mmz.model.MappingProject
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/2
+    */
+    @PostMapping("/getMappingProjectName")
+    List<MappingProject> getMappingProjectName(@RequestBody MappingProject mappingProject);
+
+    /**
+    * @Description: 根据条件查询测绘单位的名称
+    * @Param: [mappingUnit]
+    * @return: java.util.List<com.mmz.model.MappingUnit>
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
+    */
+    @PostMapping("getMappingUnitName")
+    List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);
+
 
 }

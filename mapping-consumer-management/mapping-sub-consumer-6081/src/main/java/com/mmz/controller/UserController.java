@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @program: springcloud-mapping
  * @description: 用户管理
- * @author: ly
+ * @author: Mr.miao
  * @create: 2020-05-28 14:16
  **/
 @RestController
@@ -30,7 +30,7 @@ public class UserController extends BaseController {
      * @Description: 查询所有用户
      * @Param: []
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Mr.miao
      * @Date: 2020/5/28
      */
     //@LoginLogAnnotation(operationName = "管理员",operationType = "查询")   查询操作不需要记录
@@ -50,7 +50,7 @@ public class UserController extends BaseController {
      * @Description: 添加用户
      * @Param: [user]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Mr.miao
      * @Date: 2020/5/31
      */
 
@@ -72,7 +72,7 @@ public class UserController extends BaseController {
      * @Description: 修改用户信息
      * @Param: [user]
      * @return: com.mmz.base.ResultData
-     * @Author: ly
+     * @Author: Mr.miao
      * @Date: 2020/6/1
      */
     @PostMapping("updateUser")
