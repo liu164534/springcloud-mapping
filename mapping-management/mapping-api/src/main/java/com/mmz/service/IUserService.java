@@ -92,98 +92,88 @@ public interface IUserService {
     Boolean updateUserInfoById(@RequestBody User user);
 
     /**
-     * @Description: 删除用户信息
-     * @Param: [user]
-     * @return: java.lang.Boolean
-     * @Author: Mr.miao
-     * @Date: 2020/6/3
-     */
-    @PostMapping("deleteUserById")
-    Boolean deleteUserById(@RequestBody User user);
-
-    /**
-     * @param
-     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-     * @throws
      * @author Jia Hao Hao
+     * @param
      * @date 2020/5/29
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
      * @description 分页获取字典表数据
+     * @throws
      **/
     @PostMapping("/selectDictInfo")
     PageInfo<Dict> selectDictInfo(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
 
     /**
-     * @param
-     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-     * @throws
      * @author Jia Hao Hao
+     * @param
      * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
      * @description 按条件分页查询所有字典表信息
+     * @throws
      **/
     @PostMapping("/selectPageDict")
-    PageInfo<Dict> selectPageDict(@RequestBody Dict dict, @RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+    PageInfo<Dict> selectPageDict(@RequestBody Dict dict,@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize);
 
     /**
-     * @param
-     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-     * @throws
      * @author Jia Hao Hao
+     * @param
      * @date 2020/5/29
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
      * @description 获取所有字典表数据
+     * @throws
      **/
     @GetMapping("/selectAllDictInfo")
     List<Dict> selectAllDictInfo();
 
     /**
+     * @author Jia Hao Hao
      * @param
+     * @date 2020/5/28
      * @return int
      * @throws
-     * @author Jia Hao Hao
-     * @date 2020/5/28
      * @description 新增字典信息
      **/
     @PostMapping("/insertDictInfo")
     Boolean insertDictInfo(@RequestBody Dict dict);
 
     /**
+     * @author Jia Hao Hao
      * @param
+     * @date 2020/5/28
      * @return int
      * @throws
-     * @author Jia Hao Hao
-     * @date 2020/5/28
      * @description 批量删除字典信息
      **/
     @DeleteMapping("/deleteDictInfo")
     Integer deleteDictInfo(@RequestBody List<Object> ids);
 
     /**
+     * @author Jia Hao Hao
      * @param
+     * @date 2020/5/28
      * @return java.lang.Boolean
      * @throws
-     * @author Jia Hao Hao
-     * @date 2020/5/28
      * @description 根据id删除字典信息
      **/
     @DeleteMapping("/deleteDictId")
     Integer deleteDictId(@RequestBody Dict dict);
 
     /**
+     * @author Jia Hao Hao
      * @param
+     * @date 2020/5/28
      * @return java.lang.Boolean
      * @throws
-     * @author Jia Hao Hao
-     * @date 2020/5/28
      * @description 根据id查询字典信息
      **/
     @PostMapping("/selectDictId")
     Dict selectDictId(@RequestBody Dict dict);
 
     /**
+     * @author Jia Hao Hao
      * @param
+     * @date 2020/5/28
      * @return java.lang.Boolean
      * @throws
-     * @author Jia Hao Hao
-     * @date 2020/5/28
      * @description 根据id修改字典信息
      **/
     @PutMapping("/updateDictInfo")
@@ -191,33 +181,33 @@ public interface IUserService {
 
 
     /**
-     * @Description: 根据条件查询测绘项目的名称
-     * @Param: [mappingProject]
-     * @return: com.mmz.model.MappingProject
-     * @Author: Liu Xinpeng
-     * @Date: 2020/6/2
-     */
+    * @Description: 根据条件查询测绘项目的名称
+    * @Param: [mappingProject]
+    * @return: com.mmz.model.MappingProject
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/2
+    */
     @PostMapping("/getMappingProjectName")
     List<MappingProject> getMappingProjectName(@RequestBody MappingProject mappingProject);
 
     /**
-     * @Description: 根据条件查询测绘单位的名称
-     * @Param: [mappingUnit]
-     * @return: java.util.List<com.mmz.model.MappingUnit>
-     * @Author: Liu Xinpeng
-     * @Date: 2020/6/3
-     */
+    * @Description: 根据条件查询测绘单位的名称
+    * @Param: [mappingUnit]
+    * @return: java.util.List<com.mmz.model.MappingUnit>
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
+    */
     @PostMapping("getMappingUnitName")
     List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);
 
 
     /**
-     * @Description: 根据条件查询测绘成果
-     * @Param: [resultCommit]
-     * @return: java.util.List<com.mmz.model.ResultCommit>
-     * @Author: Liu Xinpeng
-     * @Date: 2020/6/3
-     */
+    * @Description: 根据条件查询测绘成果
+    * @Param: [resultCommit]
+    * @return: java.util.List<com.mmz.model.ResultCommit> 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
+    */
     @PostMapping("getResultCommitName")
     List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
 
