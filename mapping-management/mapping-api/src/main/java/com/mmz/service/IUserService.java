@@ -230,4 +230,48 @@ public interface IUserService {
      */
     @GetMapping("selectAllRole")
     List<Role> selectAllRole();
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  获取所有仪器设备信息
+     **/
+    @PostMapping("/selectEquipment")
+    List<Equipment> selectAllEquipment(@RequestBody Equipment userId);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  添加仪器设备信息
+     **/
+    @PostMapping("/insertEquipment")
+    Boolean insertEquipment(@RequestBody Equipment equipment);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  删除仪器设备信息
+     **/
+    @DeleteMapping("/deleteEquipment")
+    Boolean deleteEquipment(@RequestBody Equipment equipment);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  修改仪器设备信息
+     **/
+    @PostMapping("/updateEquipment")
+    Boolean updateEquipment(@RequestBody Equipment equipment);
 }
