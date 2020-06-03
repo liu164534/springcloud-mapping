@@ -1,8 +1,8 @@
 package com.mmz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mmz.base.ResultData;
-import com.mmz.model.Dict;
-import com.mmz.model.User;
+import com.mmz.model.*;
 import com.mmz.vo.TokenVo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性
  */
-@FeignClient(value = "system-interface")
+@FeignClient(value = "system-interface-8081")
 @Component
 public interface IUserService {
 
@@ -91,16 +91,27 @@ public interface IUserService {
     @PostMapping("updateUser")
     Boolean updateUserInfoById(@RequestBody User user);
 
-    //    /**
-//     * @author Jia Hao Hao
-//     * @param
-//     * @date 2020/5/29
-//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-//     * @description 分页获取字典表数据
-//     * @throws
-//     **/
-//    @PostMapping("/selectDictInfo")
-//    PageInfo<Dict> selectDictInfo(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/29
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 分页获取字典表数据
+     * @throws
+     **/
+    @PostMapping("/selectDictInfo")
+    PageInfo<Dict> selectDictInfo(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 按条件分页查询所有字典表信息
+     * @throws
+     **/
+    @PostMapping("/selectPageDict")
+    PageInfo<Dict> selectPageDict(@RequestBody Dict dict,@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize);
 
     /**
      * @author Jia Hao Hao
@@ -168,4 +179,35 @@ public interface IUserService {
     @PutMapping("/updateDictInfo")
     Integer updateDictInfo(@RequestBody Dict dict);
 
+
+    /**
+    * @Description: 根据条件查询测绘项目的名称
+    * @Param: [mappingProject]
+    * @return: com.mmz.model.MappingProject
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/2
+    */
+    @PostMapping("/getMappingProjectName")
+    List<MappingProject> getMappingProjectName(@RequestBody MappingProject mappingProject);
+
+    /**
+    * @Description: 根据条件查询测绘单位的名称
+    * @Param: [mappingUnit]
+    * @return: java.util.List<com.mmz.model.MappingUnit>
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
+    */
+    @PostMapping("getMappingUnitName")
+    List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);
+
+
+    /**
+    * @Description: 根据条件查询测绘成果
+    * @Param: [resultCommit]
+    * @return: java.util.List<com.mmz.model.ResultCommit> 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
+    */
+    @PostMapping("getResultCommitName")
+    List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmz.mapper.ResultCommitMapper" >
+  <resultMap id="BaseResultMap" type="com.mmz.model.ResultCommit" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="project_type" property="projectType" jdbcType="VARCHAR"/>
+    <result column="plotting_scale" property="plottingScale" jdbcType="VARCHAR" />
+    <result column="new_figure" property="newFigure" jdbcType="VARCHAR" />
+    <result column="old_figure" property="oldFigure" jdbcType="VARCHAR" />
+    <result column="figure" property="figure" jdbcType="VARCHAR" />
+    <result column="medium_type" property="mediumType" jdbcType="VARCHAR" />
+    <result column="result_date" property="resultDate" jdbcType="VARCHAR" />
+    <result column="data_format" property="dataFormat" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+    <result column="height_datum" property="heightDatum" jdbcType="INTEGER" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="ref_id" property="refId" jdbcType="BIGINT" />
+    <result column="meridian" property="meridian" jdbcType="VARCHAR" />
+    <result column="coordinate" property="coordinate" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+<!--  根据条件搜索测绘成果-->
+  <select id="getResultCommitName" parameterType="com.mmz.model.ResultCommit" resultMap="BaseResultMap">
+    select id,project_type,plotting_scale,new_figure,old_figure,figure,medium_type,result_date,data_format,
+    name,create_date,height_datum,memo,ref_id,meridian,coordinate
+    from t_result_commit
+    where 1=1
+    <if test="name != null">
+        and name like concat('%',#{name},'%')
+    </if>
+    <if test="projectType != null">
+        and project_type like concat('%',#{projectType},'%')
+    </if>
+    <if test="resultDate != null">
+        and result_date = #{resultDate}
+    </if>
+  </select>
+</mapper>

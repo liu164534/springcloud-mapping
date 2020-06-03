@@ -1,7 +1,8 @@
 package com.mmz.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.mmz.base.BaseController;
+import com.mmz.base.BaseService;
+import com.mmz.base.CommonController;
 import com.mmz.model.Dict;
 import com.mmz.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +16,48 @@ import java.util.List;
  * @Description: 字典管理
  **/
 @RestController
-public class DictController extends BaseController {
+public class DictController extends CommonController<Dict> {
     @Autowired
     private DictService dictService;
+    @Override
+    public BaseService<Dict> getBaseService() {
+        return dictService;
+    }
 
-//    /**
-//     * @author Jia Hao Hao
-//     * @param [pageNo, pageSize]
-//     * @date 2020/5/28
-//     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
-//     * @description 查询所有字典表信息
-//     * @throws
-//     **/
-//    @PostMapping("/selectDictInfo")
-//    public PageInfo<Dict> selectDictInfo(Integer pageNo, Integer pageSize){
-//        PageInfo<Dict> dictPageInfo = dictService.selectDictInfo(pageNo, pageSize);
-//        if (!"".equals(dictPageInfo) && null != dictPageInfo){
-//            return dictPageInfo;
-//        }
-//        return null;
-//    }
+    /**
+     * @author Jia Hao Hao
+     * @param [pageNo, pageSize]
+     * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 分页查询所有字典表信息
+     * @throws
+     **/
+    @PostMapping("/selectDictInfo")
+    public PageInfo<Dict> selectDictInfo(@RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize){
+        PageInfo<Dict> dictPageInfo = dictService.selectDictInfo(pageNo, pageSize);
+        if (!"".equals(dictPageInfo) && null != dictPageInfo){
+            return dictPageInfo;
+        }
+        return null;
+    }
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/5/28
+     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>
+     * @description 按条件分页查询所有字典表信息
+     * @throws
+     **/
+    @PostMapping("/selectPageDict")
+    public PageInfo<Dict> selectPageDict(@RequestBody Dict dict, @RequestParam("pageNo")Integer pageNo, @RequestParam("pageSize")Integer pageSize){
+        //按条件分页查询所有字典表信息
+        PageInfo<Dict> dictPageInfo = dictService.selectPageDict(dict,pageNo, pageSize);
+        if (!"".equals(dictPageInfo) && null != dictPageInfo){
+            return dictPageInfo;
+        }
+        return null;
+    }
 
     /**
      * @author Jia Hao Hao
@@ -121,4 +144,6 @@ public class DictController extends BaseController {
     public Integer updateDictInfo(@RequestBody Dict dict){
         return dictService.updateDictInfo(dict);
     }
+
+
 }
