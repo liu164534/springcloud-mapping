@@ -333,4 +333,14 @@ public interface IUserService {
      **/
     @PostMapping("/updateEquipment")
     Boolean updateEquipment(@RequestBody Equipment equipment);
+
+    /**
+    * @Description: 根据主键删除用户
+    * @Param: [user]
+    * @return: java.lang.Boolean
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @PostMapping("deleteUserById")
+    Boolean deleteUserById(@RequestBody User user);
 }

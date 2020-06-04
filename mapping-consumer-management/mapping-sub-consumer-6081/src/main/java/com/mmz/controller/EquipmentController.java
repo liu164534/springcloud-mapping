@@ -4,8 +4,12 @@ import com.mmz.base.BaseController;
 import com.mmz.base.ResultData;
 import com.mmz.model.Equipment;
 import com.mmz.service.IUserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -16,6 +20,7 @@ import java.util.List;
  * @Description: 单位基本信息————仪器设备信息
  **/
 @RestController
+@Api(value = "仪器设备",tags = "仪器设备接口")
 public class EquipmentController extends BaseController {
     @Autowired
     private IUserService iUserService;

@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @create: 2020-06-03 19:24
  **/
 @RestController
-@Api(value = "文件上传")
+@Api(value = "文件上传",tags = "文件上传接口")
 public class UploadController extends BaseController {
 
     @Autowired

@@ -19,7 +19,7 @@ import java.util.List;
  * @create: 2020-06-02 23:09
  **/
 @RestController
-@Api(value = "测绘项目")
+@Api(value = "测绘项目",tags = "测绘项目接口")
 public class MappingProjectController extends BaseController {
     
     @Autowired
