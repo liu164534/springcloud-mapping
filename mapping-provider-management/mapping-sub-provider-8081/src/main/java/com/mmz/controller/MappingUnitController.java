@@ -64,7 +64,14 @@ public class MappingUnitController extends CommonController {
         List<MappingUnit> mappingUnits = mappingUnitService.queryList(mappingUnit);
         return mappingUnits;
     }
-
+    
+    /**
+    * @Description: 审核注册的测绘单位
+    * @Param: [mappingUnit]
+    * @return: java.lang.Integer 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
     @PostMapping("auditMappingUnit")
     Integer auditMappingUnit(@RequestBody MappingUnit mappingUnit) {
         mappingUnit.setAuditStatus(3);
