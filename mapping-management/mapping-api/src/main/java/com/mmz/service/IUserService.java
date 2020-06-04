@@ -343,4 +343,15 @@ public interface IUserService {
     */
     @PostMapping("deleteUserById")
     Boolean deleteUserById(@RequestBody User user);
+
+
+    /**
+    * @Description: 首页注册测绘单位
+    * @Param: [mappingUnit]
+    * @return: java.lang.Integer 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @PutMapping("addMappingUnit")
+    Integer addMappingUnit(@RequestBody MappingUnit mappingUnit);
 }
