@@ -18,7 +18,10 @@
         <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
     </resultMap>
     <insert id="insertMenu" parameterType="com.mmz.model.Menu">
-        insert into t_menu(PARENT_ID,MENU_NAME,PATH,COMPONENT,PERMS,ICON,TYPE,ORDER_NUM,create_time)
+        insert into t_menu (PARENT_ID,MENU_NAME,PATH,COMPONENT,PERMS,ICON,TYPE,ORDER_NUM,create_time)
         values (#{parentId},#{menuName},#{path},#{component},#{perms},#{icon},#{type},#{orderNum},#{createTime})
     </insert>
+    <delete id="deleteMenuByParentId" parameterType="Long">
+        delete t_menu where PARENT_ID=#{parentId}
+    </delete>
 </mapper>

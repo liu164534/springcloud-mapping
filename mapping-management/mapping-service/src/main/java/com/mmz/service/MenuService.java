@@ -56,7 +56,34 @@ public class MenuService {
             return true;
         }
     }
+    /**
+    * @Description: 修改菜单
+    * @Param: [menu]
+    * @return: java.lang.Boolean
+    * @Author: Mr.miao
+    * @Date: 2020/6/4
+    */
     public Boolean updateMenu(Menu menu){
         return false;
+    }
+    /**
+    * @Description: 删除菜单
+    * @Param: [menu]
+    * @return: java.lang.Boolean
+    * @Author: Mr.miao
+    * @Date: 2020/6/4
+    */
+    public Boolean deleteMenu(Menu menu){
+        int deleteByPrimaryKey = menuMapper.deleteByPrimaryKey(menu.getMenuId());
+        if (deleteByPrimaryKey>0){
+            try {
+                menuMapper.deleteMenuByParentId(menu.getMenuId());
+                return true;
+            }catch (Exception e){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return false;
+            }
+
+        }return false;
     }
 }

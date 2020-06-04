@@ -21,32 +21,38 @@ public class MenuController {
 
     @Autowired
     MenuService menuService;
-/**
-* @Description: 获取所有菜单
-* @Param: []
-* @return: java.util.List<com.mmz.model.Menu>
-* @Author: Mr.miao
-* @Date: 2020/6/4
-*/
+
+    /**
+     * @Description: 获取所有菜单
+     * @Param: []
+     * @return: java.util.List<com.mmz.model.Menu>
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
     @GetMapping("getAllMenu")
-    public List<Menu> getAllMenu (){
+    public List<Menu> getAllMenu() {
 
         return menuService.getAllMenu();
     }
+
     /**
-    * @Description: 添加菜单
-    * @Param: [menu]
-    * @return: java.lang.Boolean
-    * @Author: Mr.miao
-    * @Date: 2020/6/4
-    */
+     * @Description: 添加菜单
+     * @Param: [menu]
+     * @return: java.lang.Boolean
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
     @PostMapping("insertMenu")
-    public Boolean insertMenu(@RequestBody Menu menu){
+    public Boolean insertMenu(@RequestBody Menu menu) {
         return menuService.insertMenu(menu);
     }
 
     @PostMapping("updateMenu")
-    public Boolean updateMenu(@RequestBody Menu menu){
+    public Boolean updateMenu(@RequestBody Menu menu) {
         return menuService.updateMenu(menu);
-            }
+    }
+    @PostMapping("deleteMenu")
+    public Boolean deleteMenu(@RequestBody Menu menu){
+        return  menuService.deleteMenu(menu);
+    }
 }

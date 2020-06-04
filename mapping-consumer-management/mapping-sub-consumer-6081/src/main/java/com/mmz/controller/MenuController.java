@@ -44,4 +44,14 @@ public class MenuController extends BaseController{
             return super.insertFailed();
         }
     }
+
+    @PostMapping("deleteMenu")
+    public ResultData deleteMenu(Menu menu){
+        Boolean aBoolean = service.insertMenu(menu);
+        if (aBoolean) {
+            return super.insertSuccess();
+        } else {
+            return super.insertFailed();
+        }
+    }
 }
