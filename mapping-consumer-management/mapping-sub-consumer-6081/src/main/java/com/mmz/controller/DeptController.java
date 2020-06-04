@@ -55,10 +55,6 @@ public class DeptController extends BaseController{
      */
     @PostMapping("/insertDept")
     public ResultData insertDept(@RequestBody Dept dept){
-        //获取当前系统时间
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //将系统时间添加到dept中
-        dept.setCreateTime(df.format(new Date()));
         //判断返回值类型
         Boolean aBoolean =iUserService.insertDept(dept);
         if (aBoolean) {
@@ -115,10 +111,6 @@ public class DeptController extends BaseController{
      */
     @PostMapping("/updateDept")
     public ResultData updateDept(@RequestBody Dept dept){
-        //获取当前系统时间
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //将系统时间添加到dept中
-        dept.setModifyTime(df.format(new Date()));
         //修改部门信息
         Integer integer = iUserService.updateDept(dept);
         if(integer>0){

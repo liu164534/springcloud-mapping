@@ -6,6 +6,8 @@ import com.mmz.model.Dept;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +48,10 @@ public class DeptService extends BaseService<Dept> {
      *@date: 2020/6/3
      */
     public boolean insertDept(Dept dept){
+        //获取当前系统时间
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //将系统时间添加到dept中
+        dept.setModifyTime(df.format(new Date()));
         //添加部门
         int insert = deptMapper.insert(dept);
         //判断是否添加成功
@@ -114,6 +120,10 @@ public class DeptService extends BaseService<Dept> {
         }else {
             try {
                 //如果不为空则开始修改部门信息
+                //获取当前系统时间
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                //将系统时间添加到dept中
+                dept.setCreateTime(df.format(new Date()));
                 Integer integer = super.update(dept);
                 if (integer!=0){
                     return integer;
