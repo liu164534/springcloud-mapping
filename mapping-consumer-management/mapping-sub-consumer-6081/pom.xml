@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-
     <build>
         <plugins>
             <plugin>
@@ -22,7 +21,6 @@
             </plugin>
         </plugins>
     </build>
-
 
     <artifactId>mapping-sub-consumer-6081</artifactId>
 

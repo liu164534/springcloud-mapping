@@ -19,7 +19,7 @@ import java.util.List;
  * @create: 2020-06-03 11:34
  **/
 @RestController
-@Api(value = "测绘成果")
+@Api(value = "测绘成果",tags = "测绘成果接口")
 public class ResultCommitController extends BaseController {
     @Autowired
     private IUserService iUserService;

@@ -35,7 +35,7 @@ public class DictService extends BaseService<Dict> {
         List<Dict> dicts = dictMapper.selectAll();
         if (dicts.size() > 0){
             //将信息分页
-            PageInfo<Dict> dictPageInfo = new PageInfo<>(dicts);
+            PageInfo<Dict> dictPageInfo = new PageInfo<Dict>(dicts);
             return dictPageInfo;
         }
         return null;
@@ -56,7 +56,7 @@ public class DictService extends BaseService<Dict> {
         List<Dict> dicts = dictMapper.select(dict);
         if (!"".equals(dicts) && null != dicts){
             //将信息分页
-            PageInfo<Dict> dictPageInfo = new PageInfo<>(dicts);
+            PageInfo<Dict> dictPageInfo = new PageInfo<Dict>(dicts);
             return dictPageInfo;
         }
         return null;

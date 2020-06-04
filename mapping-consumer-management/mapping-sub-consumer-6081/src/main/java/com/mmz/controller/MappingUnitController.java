@@ -19,7 +19,7 @@ import java.util.List;
  * @create: 2020-06-03 09:32
  **/
 @RestController
-@Api(value = "测绘单位")
+@Api(value = "测绘单位",tags = "测绘单位接口")
 public class MappingUnitController extends BaseController {
     @Autowired
     private IUserService iUserService;

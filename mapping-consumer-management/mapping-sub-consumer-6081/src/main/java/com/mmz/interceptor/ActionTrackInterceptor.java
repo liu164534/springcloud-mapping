@@ -36,6 +36,7 @@ public class ActionTrackInterceptor implements ClientHttpRequestInterceptor {
     // 加入自定义字段
 
     log.info("jwtToken:" + jwtToken);
+    jwtToken = "123456";
     if (StringUtils.isNotBlank(jwtToken)) {
       // header里面添加jwt-token
       headers.add(JWT_TOKEN_KEY, jwtToken);

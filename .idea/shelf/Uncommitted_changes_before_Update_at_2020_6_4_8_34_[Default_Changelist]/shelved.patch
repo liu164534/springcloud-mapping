@@ -1,0 +1,409 @@
+Index: mapping-config/src/main/java/com/mmz/utils/FTPUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.utils;\r\n\r\nimport org.apache.commons.net.ftp.FTP;\r\nimport org.apache.commons.net.ftp.FTPClient;\r\nimport org.apache.commons.net.ftp.FTPReply;\r\n\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: 文件上传的通用工具类\r\n *      既然是通用的工具类，为什么不放到common工程？\r\n *         由于config依赖于common项目，如果把FTPUtils工具类放入到common项目\r\n *         意味着所有和ftp有关的jar包都会放入到common项目\r\n *         当consumer项目使用到common项目的时候，也会把common中有关ftp的jar包给引进\r\n *         这样会增加项目的负担，并且无法实现职责单一化\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-23 16:22\r\n **/\r\npublic class FTPUtils {\r\n    /**\r\n    * @Description: 私有构造方法防止被实例化\r\n    * @Param: []\r\n    * @return:\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    private FTPUtils() {\r\n        throw new AssertionError();\r\n    }\r\n\r\n    /**\r\n    * @Description: 文件上传的方法，返回值使用包装类型是为了防止NPE\r\n     *      在进行文件上传之前，需要先连接到ftp服务器，也就是说需要先登陆到ftp\r\n     *      进行文件上传的时候--必须知到文件所需要上传的路径\r\n     *      (这里我们采用以当天日期为文件夹名称的方式对文件进行存放\r\n     *      eg: 2020/02/02)\r\n     *      还需要知到所要上传到的ftp服务器存放文件的根路径(/home/ftp)\r\n     *      最后需要知到当前文件的名称\r\n    * @Param: [host, port, username, password, filePath, basePath, fileName, inputStream]\r\n    * @return: java.lang.Boolean\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/5/23\r\n    */\r\n    private static Boolean uploadFile(String host, Integer port, String username, String password,\r\n                                      String filePath, String basePath, String fileName, InputStream inputStream)  {\r\n\r\n        // 1.创建一个临时的文件路径(在进行文件上传的时候，检测该日期文件夹是否存在，如果不存在就需要进行创建)\r\n        String tempPath = \"\";\r\n        // 2.创建FTPClient对象（这是ftp给java提供的API，可以实现连接ftp，登陆ftp,创建文件夹，实现文件的上传和下载。。)\r\n        FTPClient ftpClient = new FTPClient();\r\n        try{\r\n            // 3.连接ftp服务器\r\n            ftpClient.connect(host, port);\r\n            // 4.执行登陆操作   这一步在java中永远不会进入cache-->意思就是说不会捕获到异常信息\r\n            ftpClient.login(username, password);\r\n            // 5.验证是否成功的连接和登陆 （如果成功返回230，失败则返回503/530）\r\n            int replyCode = ftpClient.getReplyCode();\r\n            // 6.根据返回的状态码来判断用户是否已经连接和登陆成功\r\n            // isPositiveCompletion()  就是对状态码进行判断，成功返回true，失败返回false\r\n            if (! FTPReply.isPositiveCompletion(replyCode)) {\r\n                // 说明账号或者密码错误--》既然账号密码错误了，但是此时并不知道是否连接成功，如果连接成功了\r\n                // 需要断开连接释放资源，这里释放资源有可能会出现异常，所以在finally再执行一次，double check\r\n                ftpClient.disconnect();\r\n                return false;\r\n            }\r\n      // 7.此时说明连接和登陆都已经成功了，判断文件上传的路径是否存在\r\n      // changeWorkingDirectory(),该方法判断文件夹是否存在，存在返回true，不存在返回false\r\n      if (!ftpClient.changeWorkingDirectory(basePath + filePath)) {\r\n        // 路径不存在则需要创建文件夹，java没有类似mkdir -p 的级联创建命令，只能逐级进行创建\r\n        // 8.将文件路径进行分割\r\n        String[] dirs = filePath.split(\"/\");\r\n        // 9.把basePath（/home/ftp）赋值给临时路径\r\n        tempPath = basePath;\r\n        // 10.对分割后的文件路径进行循环，创建文件夹\r\n        for (String dir : dirs) {\r\n          // 需要进行严谨性判断，保证文件夹的名称不能为null\r\n          // 跳出本次循环，进入下次循环\r\n          if (null == dir || \"\".equals(dir)) continue;\r\n          // 11.将临时路径和拆分的路径进行拼接  /home/ftp/2020\r\n          tempPath += \"/\" + dir;\r\n          // 12.再次检测来确保该文件夹不存在\r\n          if (!ftpClient.changeWorkingDirectory(tempPath)) {\r\n            // 13.创建文件夹\r\n            if (!ftpClient.makeDirectory(tempPath)) {\r\n              return false;\r\n            } else {\r\n              System.out.println(\"文件夹创建\" + ftpClient.changeWorkingDirectory(tempPath));\r\n            }\r\n          }\r\n        }\r\n    }\r\n      // 14.说明文件夹存在，可以直接进行上传，FTP是支持IO的，但是IO的性能很低，所以将文件转换成二进制流进行上传\r\n            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);\r\n      // 15.这才是真实环境文件上传的方法 -- storeFile(), 返回值为true/false\r\n            if (! ftpClient.storeFile(fileName, inputStream)) {\r\n                return false;\r\n            }\r\n            // 16.关闭输入流\r\n            inputStream.close();\r\n            // 17.退出ftp\r\n            ftpClient.logout();\r\n        } catch (IOException ie) {\r\n            ie.printStackTrace();\r\n        } finally{\r\n            // 判断当前ftp是否处于连接状态\r\n            if (ftpClient.isConnected()) {\r\n                try{\r\n                    // 关闭ftp连接\r\n                    ftpClient.disconnect();\r\n                } catch (IOException ie) {\r\n                    ie.printStackTrace();\r\n                }\r\n            }\r\n\r\n        }\r\n        return true;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-config/src/main/java/com/mmz/utils/FTPUtils.java	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ mapping-config/src/main/java/com/mmz/utils/FTPUtils.java	(date 1591200324732)
+@@ -43,77 +43,159 @@
+     * @Author: Liu Xinpeng
+     * @Date: 2020/5/23
+     */
+-    private static Boolean uploadFile(String host, Integer port, String username, String password,
+-                                      String filePath, String basePath, String fileName, InputStream inputStream)  {
++//    public static Boolean uploadFile(String host, Integer port, String username, String password,
++//                                      String filePath, String basePath, String fileName, InputStream inputStream)  {
++//
++//        // 1.创建一个临时的文件路径(在进行文件上传的时候，检测该日期文件夹是否存在，如果不存在就需要进行创建)
++//        String tempPath = "";
++//        // 2.创建FTPClient对象（这是ftp给java提供的API，可以实现连接ftp，登陆ftp,创建文件夹，实现文件的上传和下载。。)
++//        FTPClient ftpClient = new FTPClient();
++//        try{
++//            // 3.连接ftp服务器
++//            ftpClient.connect(host, port);
++//            // 4.执行登陆操作   这一步在java中永远不会进入cache-->意思就是说不会捕获到异常信息
++//            ftpClient.login(username, password);
++//            // 5.验证是否成功的连接和登陆 （如果成功返回230，失败则返回503/530）
++//            int replyCode = ftpClient.getReplyCode();
++//            // 6.根据返回的状态码来判断用户是否已经连接和登陆成功
++//            // isPositiveCompletion()  就是对状态码进行判断，成功返回true，失败返回false
++//            if (! FTPReply.isPositiveCompletion(replyCode)) {
++//                // 说明账号或者密码错误--》既然账号密码错误了，但是此时并不知道是否连接成功，如果连接成功了
++//                // 需要断开连接释放资源，这里释放资源有可能会出现异常，所以在finally再执行一次，double check
++//                ftpClient.disconnect();
++//                return false;
++//            }
++//      // 7.此时说明连接和登陆都已经成功了，判断文件上传的路径是否存在
++//      // changeWorkingDirectory(),该方法判断文件夹是否存在，存在返回true，不存在返回false
++//      if (!ftpClient.changeWorkingDirectory(basePath + filePath)) {
++//        // 路径不存在则需要创建文件夹，java没有类似mkdir -p 的级联创建命令，只能逐级进行创建
++//        // 8.将文件路径进行分割
++//        String[] dirs = filePath.split("/");
++//        // 9.把basePath（/home/ftp）赋值给临时路径
++//        tempPath = basePath;
++//        // 10.对分割后的文件路径进行循环，创建文件夹
++//        for (String dir : dirs) {
++//          // 需要进行严谨性判断，保证文件夹的名称不能为null
++//          // 跳出本次循环，进入下次循环
++//          if (null == dir || "".equals(dir)) continue;
++//          // 11.将临时路径和拆分的路径进行拼接  /home/ftp/2020
++//          tempPath += "/" + dir;
++//          // 12.再次检测来确保该文件夹不存在
++//          if (!ftpClient.changeWorkingDirectory(tempPath)) {
++//            // 13.创建文件夹
++//            if (!ftpClient.makeDirectory(tempPath)) {
++//              return false;
++//            } else {
++//              System.out.println("文件夹创建" + ftpClient.changeWorkingDirectory(tempPath));
++//            }
++//          }
++//        }
++//    }
++//      // 14.说明文件夹存在，可以直接进行上传，FTP是支持IO的，但是IO的性能很低，所以将文件转换成二进制流进行上传
++//            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
++//      // 15.这才是真实环境文件上传的方法 -- storeFile(), 返回值为true/false
++//            if (! ftpClient.storeFile(fileName, inputStream)) {
++//                return false;
++//            }
++//            // 16.关闭输入流
++//            inputStream.close();
++//            // 17.退出ftp
++//            ftpClient.logout();
++//        } catch (IOException ie) {
++//            ie.printStackTrace();
++//        } finally{
++//            // 判断当前ftp是否处于连接状态
++//            if (ftpClient.isConnected()) {
++//                try{
++//                    // 关闭ftp连接
++//                    ftpClient.disconnect();
++//                } catch (IOException ie) {
++//                    ie.printStackTrace();
++//                }
++//            }
++//
++//        }
++//        return true;
++//    }
+ 
+-        // 1.创建一个临时的文件路径(在进行文件上传的时候，检测该日期文件夹是否存在，如果不存在就需要进行创建)
+-        String tempPath = "";
+-        // 2.创建FTPClient对象（这是ftp给java提供的API，可以实现连接ftp，登陆ftp,创建文件夹，实现文件的上传和下载。。)
+-        FTPClient ftpClient = new FTPClient();
+-        try{
++    public static Boolean uploadFile(String host, Integer port, String username, String password,
++                                     String filePath, String basePath, String fileName, InputStream input) {
++
++        // 1.创建临时路径(方便于后面我需要上传文件的时候，检测日期文件夹是否存在，如果不存在需要进行创建)
++        // 2020-->2020/05--->2020/05/15(就是方便于拼接这个文件夹目录)
++        String tmpPath = "";
++        // 2.创建FTPClient对象(这也就是Ftp给java所提供的API，可以实现连接ftp，登录ftp，创建文件夹，实现文件上传和下载..)
++        FTPClient ftp = new FTPClient();
++        try {
+             // 3.连接ftp服务器
+-            ftpClient.connect(host, port);
+-            // 4.执行登陆操作   这一步在java中永远不会进入cache-->意思就是说不会捕获到异常信息
+-            ftpClient.login(username, password);
+-            // 5.验证是否成功的连接和登陆 （如果成功返回230，失败则返回503/530）
+-            int replyCode = ftpClient.getReplyCode();
+-            // 6.根据返回的状态码来判断用户是否已经连接和登陆成功
+-            // isPositiveCompletion()  就是对状态码进行判断，成功返回true，失败返回false
+-            if (! FTPReply.isPositiveCompletion(replyCode)) {
+-                // 说明账号或者密码错误--》既然账号密码错误了，但是此时并不知道是否连接成功，如果连接成功了
+-                // 需要断开连接释放资源，这里释放资源有可能会出现异常，所以在finally再执行一次，double check
+-                ftpClient.disconnect();
++            ftp.connect(host, port);
++            // 4.执行登录操作
++            ftp.login(username, password);// 这一步在java代码中永远不会进入cache
++            // 5.验证服务器是否已经连接和登录成功(如果成功，则返回230，如果失败，则返回530/503)
++            int reply = ftp.getReplyCode();
++            // 6.根据返回的状态码来进行判断用户是否已经登录和连接成功
++            // isPositiveCompletion():就是检测状态码的信息，如果成功返回true，如果失败返回false
++            if(!FTPReply.isPositiveCompletion(reply)) {
++                // 说明账号和密码错误(虽然已经知道账号密码错误，但是并不知道是否连接成功，如果连接成功了，需要及时断开连接(释放资源))
++                ftp.disconnect();// 如果在这释放资源失败了
+                 return false;
+             }
+-      // 7.此时说明连接和登陆都已经成功了，判断文件上传的路径是否存在
+-      // changeWorkingDirectory(),该方法判断文件夹是否存在，存在返回true，不存在返回false
+-      if (!ftpClient.changeWorkingDirectory(basePath + filePath)) {
+-        // 路径不存在则需要创建文件夹，java没有类似mkdir -p 的级联创建命令，只能逐级进行创建
+-        // 8.将文件路径进行分割
+-        String[] dirs = filePath.split("/");
+-        // 9.把basePath（/home/ftp）赋值给临时路径
+-        tempPath = basePath;
+-        // 10.对分割后的文件路径进行循环，创建文件夹
+-        for (String dir : dirs) {
+-          // 需要进行严谨性判断，保证文件夹的名称不能为null
+-          // 跳出本次循环，进入下次循环
+-          if (null == dir || "".equals(dir)) continue;
+-          // 11.将临时路径和拆分的路径进行拼接  /home/ftp/2020
+-          tempPath += "/" + dir;
+-          // 12.再次检测来确保该文件夹不存在
+-          if (!ftpClient.changeWorkingDirectory(tempPath)) {
+-            // 13.创建文件夹
+-            if (!ftpClient.makeDirectory(tempPath)) {
+-              return false;
+-            } else {
+-              System.out.println("文件夹创建" + ftpClient.changeWorkingDirectory(tempPath));
+-            }
+-          }
+-        }
+-    }
+-      // 14.说明文件夹存在，可以直接进行上传，FTP是支持IO的，但是IO的性能很低，所以将文件转换成二进制流进行上传
+-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+-      // 15.这才是真实环境文件上传的方法 -- storeFile(), 返回值为true/false
+-            if (! ftpClient.storeFile(fileName, inputStream)) {
++
++            // 如果没有进入if，就说明已经连接和登录成功了
++            // 7.那么需要开始判断目标上传路径是否存在(/home/ftp/2020/05/15)
++            // basePath + filePath---> /home/ftp/2020/05/15
++            // changeWorkingDirectory():判断路径是否存在，如果存在返回true，如果不存在则返回false
++            if(!ftp.changeWorkingDirectory(basePath + filePath)) {
++                // 说明路径不存在，需要进行创建文件夹
++                // java中可是没有mkdir -p命令的 mkdir -p /home/ftp/2020/05/15/，只能一层一层创建
++                // 8.分割filePath--->String[] ---> ["", "2020", "05", "15"]
++                String[] dirs = filePath.split("/");// "//"
++                // 9.把basePath(/home/ftp)赋值给临时路径(tmpPath)
++                tmpPath = basePath;
++                // 10.循环dirs数组
++                for(String dir : dirs) {
++                    // 严谨判断 判断dir一定不能为null
++                    if (null == dir || "".equals(dir)) continue;// 跳过本次循环，进入下一次循环
++                    // 11.拼接临时路径
++                    tmpPath += "/" + dir;// /home/ftp/2020
++                    // 12.再次检测确保该路径不存在
++                    if(!ftp.changeWorkingDirectory(tmpPath)) {
++                        // 13.创建文件夹
++                        // makeDirectory()--->就是创建文件夹的方法，返回为bolean
++                        if(!ftp.makeDirectory(tmpPath)) {
++                            return false;
++                        } else {
++                            System.out.println(ftp.changeWorkingDirectory(tmpPath));
++                        }
++                    }
++                }
++            }
++
++            // 14.如果if没有进入，就说明这些文件夹都已经存在了，可以直接进行上传
++            // FTP是支持IO的，但是IO的性能很低，所以可以使用二进制字符流的形式进行上传
++            // 把文件转换为二进制字符流的模式来进行上传
++            // 切换到被动模式
++            ftp.enterLocalPassiveMode();
++            ftp.setFileType(FTP.BINARY_FILE_TYPE);
++            // 15.这才是真正实现文件上传的方法
++            // storeFile():就是文件上传的方法，返回true/false
++            if(!ftp.storeFile(fileName, input)) {
+                 return false;
+             }
+             // 16.关闭输入流
+-            inputStream.close();
++            input.close();
+             // 17.退出ftp
+-            ftpClient.logout();
+-        } catch (IOException ie) {
+-            ie.printStackTrace();
+-        } finally{
+-            // 判断当前ftp是否处于连接状态
+-            if (ftpClient.isConnected()) {
+-                try{
+-                    // 关闭ftp连接
+-                    ftpClient.disconnect();
+-                } catch (IOException ie) {
+-                    ie.printStackTrace();
++            ftp.logout();
++        } catch (IOException e) {
++            e.printStackTrace();
++        } finally {
++            if(ftp.isConnected()) {
++                try {
++                    ftp.disconnect();
++                } catch (IOException e) {
++                    e.printStackTrace();
+                 }
+             }
+-
+         }
+         return true;
+     }
+Index: mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.service;\r\n\r\nimport com.github.pagehelper.PageInfo;\r\nimport com.mmz.base.ResultData;\r\nimport com.mmz.model.*;\r\nimport com.mmz.vo.TokenVo;\r\nimport com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;\r\nimport org.springframework.cloud.openfeign.FeignClient;\r\nimport org.springframework.stereotype.Component;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description: fallbackFactory:就是用来实现熔断的，在实际开发过程中，开发阶段不能开启熔断\r\n * 因为一旦开启了熔断，整个系统运行过程中异常就不再抛出，不方便调试BUG\r\n * <p>\r\n * <p>\r\n * 实际开发中需要注意的东西：\r\n * 无论是springcloud1.x版本还是2.x版本\r\n * 一旦使用feign来传递参数的时候，都需要注意以下两点：\r\n * 1.如果是简单的数据类型（java8大基本数据类型--基本数据类型的包装类也可以，String）-->需要使用注解@RequestParm\r\n * 基本数据类型可以传多个，也就是说一个方法的参数中可以使用多个@PRequestParm注解\r\n * <p>\r\n * 2.如果是传递包装类型（List,Map,Vo,Po）,只能传递一个，而且必须使用@RequestBody注解\r\n * <p>\r\n * 也就是说最终把这些参数值传递到provider项目的controller中，所以provider的controller中也必须使用相同的注解\r\n * 而且provider要和api中的方法一模一样（方法名、返回值类型、参数类型。。）\r\n * @author: Liu Xinpeng\r\n * @create: 2020-05-20 16:09\r\n **/\r\n\r\n/**\r\n * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性\r\n */\r\n@FeignClient(value = \"system-interface-8081\")\r\n@Component\r\npublic interface IUserService {\r\n\r\n\r\n    /**\r\n     * @Description: 执行登陆操作\r\n     * @Param: [user]\r\n     * @return: com.mmz.vo.TokenVo\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/24\r\n     */\r\n    @PostMapping(\"/doLogin\")\r\n    @HystrixCommand\r\n    TokenVo doLogin(@RequestBody User user);\r\n\r\n    /**\r\n     * @Description: 添加登陆日志\r\n     * @Param: [map]\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Liu Xinpeng\r\n     * @Date: 2020/5/28\r\n     */\r\n    @PostMapping(\"/addLoginLog\")\r\n    ResultData addLoginLog(@RequestBody Map map);\r\n\r\n    /**\r\n     * @Description: 查询用户信息\r\n     * @Param: []\r\n     * @return: com.mmz.base.ResultData\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/28\r\n     */\r\n    @GetMapping(\"getAllUserInfo\")\r\n    List<User> getAllUserInfo();\r\n\r\n    /**\r\n     * @Description: 添加用户信息\r\n     * @Param: [user]\r\n     * @return: java.lang.Boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/5/31\r\n     */\r\n    @PostMapping(\"insertUser\")\r\n    Boolean insertUser(@RequestBody User user);\r\n\r\n    /**\r\n     * @Description: 修改用户信息\r\n     * @Param: [user]\r\n     * @return: java.lang.Boolean\r\n     * @Author: Mr.miao\r\n     * @Date: 2020/6/1\r\n     */\r\n    @PostMapping(\"updateUser\")\r\n    Boolean updateUserInfoById(@RequestBody User user);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/29\r\n     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n     * @description 分页获取字典表数据\r\n     * @throws\r\n     **/\r\n    @PostMapping(\"/selectDictInfo\")\r\n    PageInfo<Dict> selectDictInfo(@RequestParam(\"pageNo\") Integer pageNo, @RequestParam(\"pageSize\") Integer pageSize);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n     * @description 按条件分页查询所有字典表信息\r\n     * @throws\r\n     **/\r\n    @PostMapping(\"/selectPageDict\")\r\n    PageInfo<Dict> selectPageDict(@RequestBody Dict dict,@RequestParam(\"pageNo\")Integer pageNo, @RequestParam(\"pageSize\")Integer pageSize);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/29\r\n     * @return com.github.pagehelper.PageInfo<com.mmz.model.Dict>\r\n     * @description 获取所有字典表数据\r\n     * @throws\r\n     **/\r\n    @GetMapping(\"/selectAllDictInfo\")\r\n    List<Dict> selectAllDictInfo();\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return int\r\n     * @throws\r\n     * @description 新增字典信息\r\n     **/\r\n    @PostMapping(\"/insertDictInfo\")\r\n    Boolean insertDictInfo(@RequestBody Dict dict);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return int\r\n     * @throws\r\n     * @description 批量删除字典信息\r\n     **/\r\n    @DeleteMapping(\"/deleteDictInfo\")\r\n    Integer deleteDictInfo(@RequestBody List<Object> ids);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id删除字典信息\r\n     **/\r\n    @DeleteMapping(\"/deleteDictId\")\r\n    Integer deleteDictId(@RequestBody Dict dict);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id查询字典信息\r\n     **/\r\n    @PostMapping(\"/selectDictId\")\r\n    Dict selectDictId(@RequestBody Dict dict);\r\n\r\n    /**\r\n     * @author Jia Hao Hao\r\n     * @param\r\n     * @date 2020/5/28\r\n     * @return java.lang.Boolean\r\n     * @throws\r\n     * @description 根据id修改字典信息\r\n     **/\r\n    @PutMapping(\"/updateDictInfo\")\r\n    Integer updateDictInfo(@RequestBody Dict dict);\r\n\r\n\r\n    /**\r\n    * @Description: 根据条件查询测绘项目的名称\r\n    * @Param: [mappingProject]\r\n    * @return: com.mmz.model.MappingProject\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/6/2\r\n    */\r\n    @PostMapping(\"/getMappingProjectName\")\r\n    List<MappingProject> getMappingProjectName(@RequestBody MappingProject mappingProject);\r\n\r\n    /**\r\n    * @Description: 根据条件查询测绘单位的名称\r\n    * @Param: [mappingUnit]\r\n    * @return: java.util.List<com.mmz.model.MappingUnit>\r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/6/3\r\n    */\r\n    @PostMapping(\"getMappingUnitName\")\r\n    List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);\r\n\r\n\r\n    /**\r\n    * @Description: 根据条件查询测绘成果\r\n    * @Param: [resultCommit]\r\n    * @return: java.util.List<com.mmz.model.ResultCommit> \r\n    * @Author: Liu Xinpeng\r\n    * @Date: 2020/6/3\r\n    */\r\n    @PostMapping(\"getResultCommitName\")\r\n    List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ mapping-management/mapping-api/src/main/java/com/mmz/service/IUserService.java	(date 1591200572222)
+@@ -6,8 +6,10 @@
+ import com.mmz.vo.TokenVo;
+ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+ import org.springframework.cloud.openfeign.FeignClient;
++import org.springframework.http.MediaType;
+ import org.springframework.stereotype.Component;
+ import org.springframework.web.bind.annotation.*;
++import org.springframework.web.multipart.MultipartFile;
+ 
+ import java.util.List;
+ import java.util.Map;
+@@ -210,4 +212,24 @@
+     */
+     @PostMapping("getResultCommitName")
+     List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
++
++
++    /**
++    * @Description: ftp文件上传
++     *      file文件是无法发送到provider项目中的，因为feign默认只能支持发送普通类型的数据
++     *      (java8种基本数据类型和包装类、封装类型、集合。。)这些普通类型的数据都可以转换成为二进制流的形式
++     *      在http之间进行传输，但是文件类型不行，因为文件类型只能转换为字节/字符流
++     *      所以让PostMapping接收Multipart/form-data
++     *      让feign接收json格式的数据
++     *
++    * @Param: [multipartFile]
++    * @return: java.lang.Boolean
++    * @Author: Liu Xinpeng
++    * @Date: 2020/6/3
++    */
++    @PostMapping(value = "/uploadFile",
++            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
++            produces = MediaType.APPLICATION_JSON_VALUE)
++    Boolean uploadFile(@RequestBody MultipartFile multipartFile);
++
+ }
+\ No newline at end of file
+Index: mapping-config/src/main/resources/properties/ftp.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#ftp服务器的ip地址\r\nspring.ftp.host=39.97.173.224\r\n#ftp服务器的连接端口号,使用的阿里云的服务器，采用的sftp协议，使用的是22端口号\r\nspring.ftp.port=22\r\n#ftp的用户名\r\nspring.ftp.username=ftpuser\r\n#ftp用户的密码\r\nspring.ftp.user.password=123456\r\n\r\n#配置ftp上传的根目录，使用Nginx做代理映射，所以/home/ftp就被映射为/\r\n#但是上传文件的时候，仍需要指定原始的路径，让用户上传到/home/ftp\r\nspring.ftp.base-path=/home/ftp\r\n#设置用户访问时的浏览路径（访问的时候，Nginx会进行代理）\r\nspring.ftp.http-path=http://39.97.173.224/
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>GBK
+===================================================================
+--- mapping-config/src/main/resources/properties/ftp.properties	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ mapping-config/src/main/resources/properties/ftp.properties	(date 1591199211393)
+@@ -1,14 +1,17 @@
+ #ftp服务器的ip地址
+-spring.ftp.host=39.97.173.224
++#spring.ftp.host=39.97.173.224
++spring.ftp.host=192.168.139.135
+ #ftp服务器的连接端口号,使用的阿里云的服务器，采用的sftp协议，使用的是22端口号
+-spring.ftp.port=22
++#spring.ftp.port=22
++spring.ftp.port=21
+ #ftp的用户名
+ spring.ftp.username=ftpuser
+-#ftp用户的密码
+-spring.ftp.user.password=123456
++#ftp用户的密码,这个地方原来是spring.ftp.user.password但是这样链接会出错
++spring.ftp.password=123456
+ 
+ #配置ftp上传的根目录，使用Nginx做代理映射，所以/home/ftp就被映射为/
+ #但是上传文件的时候，仍需要指定原始的路径，让用户上传到/home/ftp
+ spring.ftp.base-path=/home/ftp
+ #设置用户访问时的浏览路径（访问的时候，Nginx会进行代理）
+-spring.ftp.http-path=http://39.97.173.224/
+\ No newline at end of file
++#spring.ftp.http-path=http://39.97.173.224/
++spring.ftp.http-path=http://192.168.139.135/
+\ No newline at end of file
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server.port=6081\r\nserver.servlet.context-path=/\r\n\r\n\r\n#配置eureka的命名空间,需要通过注册中心来寻找provider\r\neureka.client.service-url.defaultZone=http://eureka01:7081/eureka,http://eureka02:7082/eureka,http://eureka03:7083/eureka\r\n\r\n#consumer不需要向注册中心进行注册\r\neureka.client.register-with-eureka=false\r\n\r\n#开启feign对hystrix的支持，测试阶段关闭熔断\r\nfeign.hystrix.enabled=true\r\n\r\n#关闭ribbon中使用eureka\r\n#ribbon.eureka.enabled=false\r\n\r\n\r\n#设置存储token的请求头信息\r\njwt.header=tokenHeader\r\n#hystrix调用方法的超时时间，默认是1000毫秒\r\nhystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=50000\r\n#加上这个就可以获取到HttpServletRequest\r\nhystrix.command.default.execution.isolation.strategy=SEMAPHORE\r\n#使用CGLIB代理，默认false使用JDK代理\r\nspring.aop.proxy-target-class=true\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>GBK
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/resources/config/application.properties	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/resources/config/application.properties	(date 1591198769622)
+@@ -15,6 +15,10 @@
+ #ribbon.eureka.enabled=false
+ 
+ 
++# feign的连接超时
++feign.client.config.default.connect-timeout=700000
++feign.client.config.default.read-timeout=700000
++
+ #设置存储token的请求头信息
+ jwt.header=tokenHeader
+ #hystrix调用方法的超时时间，默认是1000毫秒
+Index: mapping-management/mapping-api/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <parent>\r\n        <artifactId>mapping-management</artifactId>\r\n        <groupId>com.mmz</groupId>\r\n        <version>1.0-SNAPSHOT</version>\r\n    </parent>\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <packaging>jar</packaging>\r\n\r\n    <artifactId>mapping-api</artifactId>\r\n\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>com.mmz</groupId>\r\n            <artifactId>mapping-model</artifactId>\r\n            <version>1.0-SNAPSHOT</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.cloud</groupId>\r\n            <artifactId>spring-cloud-starter-openfeign</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>io.github.openfeign.form</groupId>\r\n            <artifactId>feign-form</artifactId>\r\n        </dependency>\r\n\r\n        <!-- 支持feignClient文件上传 -->\r\n        <dependency>\r\n            <groupId>io.github.openfeign.form</groupId>\r\n            <artifactId>feign-form-spring</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.github.pagehelper</groupId>\r\n            <artifactId>pagehelper</artifactId>\r\n            <version>5.1.10</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n    </dependencies>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-management/mapping-api/pom.xml	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ mapping-management/mapping-api/pom.xml	(date 1591187891101)
+@@ -34,12 +34,6 @@
+             <groupId>io.github.openfeign.form</groupId>
+             <artifactId>feign-form-spring</artifactId>
+         </dependency>
+-        <dependency>
+-            <groupId>com.github.pagehelper</groupId>
+-            <artifactId>pagehelper</artifactId>
+-            <version>5.1.10</version>
+-            <scope>compile</scope>
+-        </dependency>
+     </dependencies>
+ 
+ </project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile default=\"true\" name=\"Default\" enabled=\"true\" />\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"mapping-config\" />\r\n        <module name=\"mapping-mapper\" />\r\n        <module name=\"mapping-api\" />\r\n        <module name=\"mapping-common\" />\r\n        <module name=\"mapping-sub-provider-8081\" />\r\n        <module name=\"mapping-service\" />\r\n        <module name=\"mapping-zuul-4081\" />\r\n        <module name=\"mapping-model\" />\r\n        <module name=\"mapping-feign\" />\r\n        <module name=\"mapping-sub-consumer-6081\" />\r\n        <module name=\"mapping-sub-eureka-7083\" />\r\n        <module name=\"mapping-sub-eureka-7082\" />\r\n        <module name=\"mapping-sub-eureka-7081\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ .idea/compiler.xml	(date 1591173686015)
+@@ -7,7 +7,6 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+-        <module name="mapping-config" />
+         <module name="mapping-mapper" />
+         <module name="mapping-api" />
+         <module name="mapping-common" />
+@@ -16,9 +15,10 @@
+         <module name="mapping-zuul-4081" />
+         <module name="mapping-model" />
+         <module name="mapping-feign" />
++        <module name="mapping-sub-eureka-7082" />
+         <module name="mapping-sub-consumer-6081" />
+         <module name="mapping-sub-eureka-7083" />
+-        <module name="mapping-sub-eureka-7082" />
++        <module name="mapping-config" />
+         <module name="mapping-sub-eureka-7081" />
+       </profile>
+     </annotationProcessing>
+Index: mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/config/ClientConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.mmz.config;\r\n\r\nimport com.mmz.interceptor.ActionTrackInterceptor;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.cloud.client.loadbalancer.LoadBalanced;\r\nimport org.springframework.context.annotation.Bean;\r\nimport org.springframework.context.annotation.Configuration;\r\nimport org.springframework.http.client.ClientHttpRequestInterceptor;\r\nimport org.springframework.web.client.RestTemplate;\r\n\r\nimport java.util.Collections;\r\n\r\n/**\r\n * @program: spring-cloud-mapping\r\n * @description:\r\n * @author: Liu Xinpeng\r\n * @create: 2020-06-01 22:42\r\n **/\r\n\r\n@Configuration\r\npublic class ClientConfig {\r\n\r\n    @Autowired\r\n    ActionTrackInterceptor actionTrackInterceptor;\r\n\r\n\r\n    // TODO\r\n    /**\r\n     * 这里就是创建一个负载均衡的RestTemplate Bean\r\n     *\r\n     * @return\r\n     */\r\n    @LoadBalanced\r\n    @Bean\r\n    public RestTemplate restTemplate() {\r\n        RestTemplate restTemplate = new RestTemplate();\r\n\r\n        // 把自定义的ClientHttpRequestInterceptor添加到RestTemplate，可添加多个\r\n        restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(actionTrackInterceptor));\r\n        return restTemplate;\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/config/ClientConfig.java	(revision a3956c6b864de7d7c8b6c2c758de987cf0ef6019)
++++ mapping-consumer-management/mapping-sub-consumer-6081/src/main/java/com/mmz/config/ClientConfig.java	(date 1591192214492)
+@@ -6,6 +6,7 @@
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+ import org.springframework.http.client.ClientHttpRequestInterceptor;
++import org.springframework.http.client.SimpleClientHttpRequestFactory;
+ import org.springframework.web.client.RestTemplate;
+ 
+ import java.util.Collections;
+@@ -33,6 +34,9 @@
+     @LoadBalanced
+     @Bean
+     public RestTemplate restTemplate() {
++        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
++        requestFactory.setConnectTimeout(300000);// 设置超时
++        requestFactory.setReadTimeout(300000);
+         RestTemplate restTemplate = new RestTemplate();
+ 
+         // 把自定义的ClientHttpRequestInterceptor添加到RestTemplate，可添加多个
