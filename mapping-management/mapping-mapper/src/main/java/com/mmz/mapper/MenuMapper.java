@@ -26,4 +26,12 @@ public interface MenuMapper extends Mapper<Menu> {
     * @Date: 2020/6/4
     */
     Integer deleteMenuByParentId(Long parentId);
+    /**
+    * @Description: 根据菜单id删除菜单
+    * @Param: [MenuId]
+    * @return: java.lang.Integer
+    * @Author: Mr.miao
+    * @Date: 2020/6/4
+    */
+    Integer deleteMenuByMenuId(Long MenuId);
 }
