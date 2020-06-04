@@ -33,4 +33,65 @@ public class MappingProjectService extends BaseService<MappingProject> {
         }
         return null;
     }
+    /**
+    *@Description: 新增项目
+    *@Param: [mappingProject]
+    *@return: java.lang.Boolean
+    *@Author: Thanks
+    *@date: 2020/6/4
+    */
+    public Boolean insertMappingProject(MappingProject mappingProject){
+        //新增的项目默认的进行状态 审核状态 项目成果
+        mappingProject.setStatus(2);
+        mappingProject.setAuditStatus(1);
+        mappingProject.setResultsStatus(3);
+        int insert = mappingProjectMapper.insert(mappingProject);
+        if (insert>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     *@Description: 修改项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    public Integer updateMappingProject(MappingProject mappingProject){
+        //先判断传入参数是否为空
+        if (mappingProject==null){
+            //如果为空直接返回null
+            return null;
+        }else {
+            try {
+                //如果不为空则开始修改部门信息
+                Integer integer = super.update(mappingProject);
+                if (integer!=0){
+                    return integer;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     *@Description: 删除项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    public Integer deleteMappingProject(MappingProject mappingProject){
+        int delete = mappingProjectMapper.delete(mappingProject);
+        if (delete>0){
+            return delete;
+        }else {
+            return null;
+        }
+    }
 }

@@ -40,5 +40,53 @@ public class MappingProjectController extends BaseController {
         }
         return super.selectFailed();
     }
-    
+    /**
+     *@Description: 新增项目
+     *@Param: [mappingProject]
+     *@return: com.mmz.base.ResultData
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("insertMappingProject")
+    public ResultData insertMappingProject(@RequestBody MappingProject mappingProject){
+        Boolean aBoolean = iUserService.insertMappingProject(mappingProject);
+        if (aBoolean){
+            return super.insertSuccess();
+        }else {
+            return super.insertFailed();
+        }
+    }
+
+    /**
+     *@Description: 修改项目
+     *@Param: [mappingProject]
+     *@return: com.mmz.base.ResultData
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("updateMappingProject")
+    public ResultData updateMappingProject(@RequestBody MappingProject mappingProject){
+        Integer integer = iUserService.updateMappingProject(mappingProject);
+        if (integer>0){
+            return super.updateSuccess();
+        }else {
+            return super.updateFailed();
+        }
+    }
+    /**
+     *@Description: 删除项目
+     *@Param: [mappingProject]
+     *@return: com.mmz.base.ResultData
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/deleteMappingProject")
+    public ResultData deleteMappingProject(@RequestBody MappingProject mappingProject){
+        Integer integer = iUserService.deleteMappingProject(mappingProject);
+        if (integer>0){
+            return super.deleteSuccess();
+        }else {
+            return super.deleteFailed();
+        }
+    }
 }

@@ -14,7 +14,6 @@
         <module name="mapping-service" />
         <module name="mapping-zuul-4081" />
         <module name="mapping-model" />
-        <module name="mapping-feign" />
         <module name="mapping-sub-eureka-7082" />
         <module name="mapping-sub-consumer-6081" />
         <module name="mapping-sub-eureka-7083" />

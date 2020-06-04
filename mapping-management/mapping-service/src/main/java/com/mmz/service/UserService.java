@@ -77,7 +77,7 @@ public class UserService extends BaseService<User> {
      */
     public Boolean updateUserInfoById(User user) {
         System.out.println("management-Service----" + user);
-        Integer i = userInfoMapper.updateByPrimaryKey(user);
+        Integer i = userInfoMapper.updateUserInfo(user);
         if (i < 1) {
             return false;
         } else {

@@ -1,8 +1,8 @@
 package com.mmz.service;
 
 import com.mmz.base.BaseService;
-import com.mmz.mapper.EquipmentMapper;
-import com.mmz.model.Equipment;
+import com.mmz.mapper.TechnicistMapper;
+import com.mmz.model.Technicist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +12,13 @@ import java.util.List;
 
 /**
  * @Author: Jia Hao Hao
- * @Date: 2020-06-02 19:31
- * @Description: 单位基本信息————仪器设备信息
+ * @Date: 2020-06-04 10:29
+ * @Description: 技术人员信息管理
  **/
 @Service
-public class EquipmentService extends BaseService<Equipment> {
-
+public class TechnicistService extends BaseService<Technicist> {
     @Autowired
-    private EquipmentMapper equipmentMapper;
+    private TechnicistMapper technicistMapper;
 
     /**
      * @author Jia Hao Hao
@@ -27,14 +26,14 @@ public class EquipmentService extends BaseService<Equipment> {
      * @date 2020/6/2
      * @return java.util.List<com.mmz.model.Equipment>
      * @throws
-     * @description  根据uiseId获取所有仪器设备信息
-    **/
-    public List<Equipment> selectAllEquipment(Equipment userId){
+     * @description  根据uiseId获取所有技术人员信息
+     **/
+    public List<Technicist> selectAllTechnicist(Technicist userId){
         //获取所有仪器设备信息
-        List<Equipment> equipment = equipmentMapper.select(userId);
+        List<Technicist> select = technicistMapper.select(userId);
         //判断是否获取到数据
-        if (null !=  equipment && equipment.size() > 0){
-            return equipment;
+        if (null !=  select && select.size() > 0){
+            return select;
         }
         return null;
     }
@@ -45,25 +44,25 @@ public class EquipmentService extends BaseService<Equipment> {
      * @date 2020/6/2
      * @return java.util.List<com.mmz.model.Equipment>
      * @throws
-     * @description  添加仪器设备信息
+     * @description  添加仪器技术人员信息
      **/
-    public Boolean insertEquipment(Equipment equipment){
+    public Boolean insertTechnicist(Technicist technicist){
         //判断是否有数据
-        if("".equals(equipment) && null == equipment){
+        if("".equals(technicist) && null == technicist){
             return false;
         }else {
             //获取系统时间
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = simpleDateFormat.format(date);
-            equipment.setCreateTime(format);
-            int insert = equipmentMapper.insert(equipment);
+            technicist.setCreateTime(format);
+            //执行新增
+            int insert = technicistMapper.insert(technicist);
             if (insert > 0){
                 return true;
-            } else{
-                return false;
             }
         }
+        return false;
     }
 
     /**
@@ -72,19 +71,18 @@ public class EquipmentService extends BaseService<Equipment> {
      * @date 2020/6/2
      * @return java.util.List<com.mmz.model.Equipment>
      * @throws
-     * @description  删除仪器设备信息
+     * @description  删除技术人员信息
      **/
-    public Boolean deleteEquipment(Equipment equipment){
-        if ("".equals(equipment) && null == equipment) {
+    public Boolean deleteTechnicist(Technicist technicist){
+        if ("".equals(technicist) && null == technicist) {
             return false;
         } else {
-            int i = equipmentMapper.deleteByPrimaryKey(equipment);
+            int i = technicistMapper.deleteByPrimaryKey(technicist);
             if (i > 0) {
                 return true;
-            } else {
-                return false;
             }
         }
+        return false;
     }
 
     /**
@@ -93,18 +91,17 @@ public class EquipmentService extends BaseService<Equipment> {
      * @date 2020/6/2
      * @return java.util.List<com.mmz.model.Equipment>
      * @throws
-     * @description  修改仪器设备信息
+     * @description  修改技术人员信息
      **/
-    public Boolean updateEquipment(Equipment equipment){
-        if ("".equals(equipment) && null == equipment) {
+    public Boolean updateTechnicist(Technicist technicist){
+        if ("".equals(technicist) && null == technicist) {
             return false;
         } else {
-            int i = equipmentMapper.updateByPrimaryKey(equipment);
+            int i = technicistMapper.updateByPrimaryKey(technicist);
             if (i > 0) {
                 return true;
-            } else {
-                return false;
             }
         }
+        return false;
     }
 }

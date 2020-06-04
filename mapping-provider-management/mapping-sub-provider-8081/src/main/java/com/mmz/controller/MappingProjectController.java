@@ -41,5 +41,39 @@ public class MappingProjectController extends CommonController{
         return mappingProjectNames;
     }
 
+    /**
+     *@Description: 新增项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Boolean
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/insertMappingProject")
+    public Boolean insertMappingProject(@RequestBody MappingProject mappingProject){
+        return mappingProjectService.insertMappingProject(mappingProject);
+    }
 
+    /**
+     *@Description: 修改项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/updateMappingProject")
+    public Integer updateMappingProject(@RequestBody MappingProject mappingProject){
+        return mappingProjectService.updateMappingProject(mappingProject);
+    }
+
+    /**
+     *@Description: 删除项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/deleteMappingProject")
+    public Integer deleteMappingProject(@RequestBody MappingProject mappingProject){
+        return mappingProjectService.deleteMappingProject(mappingProject);
+    }
 }

@@ -22,5 +22,13 @@ public interface UserInfoMapper extends Mapper<User> {
     * @Date: 2020/6/2
     */
     Long insertUseGeneratedKeys(User user);
+    /**
+    * @Description: 修改用户信息
+    * @Param: [user]
+    * @return: java.lang.Integer
+    * @Author: Mr.miao
+    * @Date: 2020/6/4
+    */
+    Integer updateUserInfo(User user);
 
 }
