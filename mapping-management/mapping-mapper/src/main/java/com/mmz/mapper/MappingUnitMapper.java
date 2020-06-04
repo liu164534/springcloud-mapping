@@ -19,4 +19,13 @@ public interface MappingUnitMapper extends Mapper<MappingUnit> {
     * @Date: 2020/6/3
     */
     List<MappingUnit> getMappingUnitName(MappingUnit mappingUnit);
+
+    /**
+    * @Description: 注册测绘单位
+    * @Param: [mappingUnit]
+    * @return: java.lang.Integer
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    Integer addMappingUnit(MappingUnit mappingUnit);
 }

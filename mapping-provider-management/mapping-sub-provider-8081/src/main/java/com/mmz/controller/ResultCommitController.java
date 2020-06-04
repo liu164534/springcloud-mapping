@@ -38,4 +38,6 @@ public class ResultCommitController extends CommonController<ResultCommit> {
         List<ResultCommit> resultCommits = resultCommitService.getResultCommitName(resultCommit);
         return resultCommits;
     }
+
+
 }

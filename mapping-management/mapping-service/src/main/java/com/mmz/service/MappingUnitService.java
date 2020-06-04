@@ -28,11 +28,26 @@ public class MappingUnitService extends BaseService<MappingUnit> {
     * @Author: Liu Xinpeng
     * @Date: 2020/6/3
     */
-    public List<MappingUnit> getMapingUnitName(MappingUnit mappingUnit) {
+    public List<MappingUnit> getMappingUnitName(MappingUnit mappingUnit) {
         List<MappingUnit> mappingUnits = mappingUnitMapper.getMappingUnitName(mappingUnit);
         if (mappingUnits.size() > 0 && null != mappingUnits) {
             return mappingUnits;
         }
         return null;
+    }
+
+    /**
+    * @Description: 首页注册测绘单位
+    * @Param: [mappingUnit]
+    * @return: java.lang.Integer
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    public Integer addMappingUnit(MappingUnit mappingUnit) {
+        Integer integer = mappingUnitMapper.addMappingUnit(mappingUnit);
+        if (integer > 0) {
+            return integer;
+        }
+        return 0;
     }
 }

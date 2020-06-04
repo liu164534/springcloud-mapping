@@ -6,6 +6,7 @@ import com.mmz.model.MappingUnit;
 import com.mmz.service.MappingUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,20 @@ public class MappingUnitController extends CommonController {
     */
     @PostMapping("getMappingUnitName")
     public List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit) {
-        List<MappingUnit> mappingUnits = mappingUnitService.getMapingUnitName(mappingUnit);
+        List<MappingUnit> mappingUnits = mappingUnitService.getMappingUnitName(mappingUnit);
         return mappingUnits;
+    }
+    
+    /**
+    * @Description: 首页添加测绘部门
+    * @Param: [mappingUnit]
+    * @return: java.lang.Integer 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @PutMapping("addMappingUnit")
+    public Integer addMappingUnit(@RequestBody MappingUnit mappingUnit) {
+        Integer integer = mappingUnitService.addMappingUnit(mappingUnit);
+        return integer;
     }
 }

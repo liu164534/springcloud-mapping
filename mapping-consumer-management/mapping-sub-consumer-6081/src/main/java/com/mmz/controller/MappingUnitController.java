@@ -7,6 +7,7 @@ import com.mmz.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,5 +39,22 @@ public class MappingUnitController extends BaseController {
             return super.selectSuccess(mappingUnitNames);
         }
         return super.selectFailed();
+    }
+    
+    
+    /**
+    * @Description: 首页注册测绘单位
+    * @Param: [mappingUnit]
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @PutMapping("addMappingUnit")
+    public ResultData addMappingUnit(@RequestBody MappingUnit mappingUnit) {
+        Integer integer = iUserService.addMappingUnit(mappingUnit);
+        if (integer > 0) {
+            return super.insertSuccess();
+        }
+        return super.insertFailed();
     }
 }
