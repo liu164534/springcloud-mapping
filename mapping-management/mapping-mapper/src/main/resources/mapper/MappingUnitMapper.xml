@@ -87,7 +87,7 @@
   <insert id="addMappingUnit" parameterType="com.mmz.model.MappingUnit">
     insert into t_mapping_unit values
     (owned_district = #{ownedDistrict},unit_name=#{unitName},register_address=#{registerAddress},linkman=#{linkman},
-    phone=#{phone},mobile_phone=#{#mobilePhone},email=#{email},surveying_num=#{surveyingNum},unit_nature=#{unitNature},
+    phone=#{phone},mobile_phone=#{mobilePhone},email=#{email},surveying_num=#{surveyingNum},unit_nature=#{unitNature},
     qualification_level=#{qualificationLevel},certificate_code=#{certificateCode},certificate_send_date=#{certificateSendDate},
     social_credit_code=#{socialCreditCode},corporation=#{corporation},organization_code=#{organizationCode},unit_status=3,synchronization_status=1,
     audit_status=2)

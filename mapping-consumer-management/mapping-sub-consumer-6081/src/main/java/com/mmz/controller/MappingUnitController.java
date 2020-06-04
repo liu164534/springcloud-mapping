@@ -6,10 +6,7 @@ import com.mmz.model.MappingUnit;
 import com.mmz.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,5 +53,37 @@ public class MappingUnitController extends BaseController {
             return super.insertSuccess();
         }
         return super.insertFailed();
+    }
+    
+    /**
+    * @Description: 查询注册待审核的测绘单位
+    * @Param: []
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @GetMapping("getAuditMappingUnit")
+    public ResultData getAuditMappingUnit() {
+        List<MappingUnit> auditMappingUnit = iUserService.getAuditMappingUnit();
+        if (auditMappingUnit.size() > 0 && null != auditMappingUnit) {
+            return super.selectSuccess(auditMappingUnit);
+        }
+        return super.selectFailed();
+    }
+        
+    /**
+    * @Description: 审核注册待审核的测绘单位
+    * @Param: [mappingUnit]
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @PostMapping("auditMappingUnit")
+    public ResultData auditMappingUnit(@RequestBody MappingUnit mappingUnit) {
+        Integer integer = iUserService.auditMappingUnit(mappingUnit);
+        if (integer > 0) {
+            return super.updateSuccess();
+        }
+        return super.updateFailed();
     }
 }

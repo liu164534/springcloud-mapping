@@ -23,7 +23,14 @@ public class UploadController extends BaseController {
 
     @Autowired
     private IUserService iUserService;
-
+    
+    /**
+    * @Description: 上传单个文件
+    * @Param: [multipartFile]
+    * @return: com.mmz.base.ResultData 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
     @PostMapping("/uploadFile")
     @ApiOperation(value = "文件上传",notes = "单文件上传接口")
     public ResultData uploadFile(@RequestBody MultipartFile multipartFile) {

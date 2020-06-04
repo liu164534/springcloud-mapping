@@ -5,10 +5,7 @@ import com.mmz.base.CommonController;
 import com.mmz.model.MappingUnit;
 import com.mmz.service.MappingUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,6 +46,28 @@ public class MappingUnitController extends CommonController {
     */
     @PutMapping("addMappingUnit")
     public Integer addMappingUnit(@RequestBody MappingUnit mappingUnit) {
+        Integer integer = mappingUnitService.addMappingUnit(mappingUnit);
+        return integer;
+    }
+
+    /**
+    * @Description: 查询注册待审核的企业
+    * @Param: []
+    * @return: java.util.List<com.mmz.model.MappingUnit>
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @GetMapping("getAuditMappingUnit")
+    public List<MappingUnit> getAuditMappingUnit() throws Exception {
+        MappingUnit mappingUnit = new MappingUnit();
+        mappingUnit.setAuditStatus(2);
+        List<MappingUnit> mappingUnits = mappingUnitService.queryList(mappingUnit);
+        return mappingUnits;
+    }
+
+    @PostMapping("auditMappingUnit")
+    Integer auditMappingUnit(@RequestBody MappingUnit mappingUnit) {
+        mappingUnit.setAuditStatus(3);
         Integer integer = mappingUnitService.addMappingUnit(mappingUnit);
         return integer;
     }

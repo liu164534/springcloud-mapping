@@ -2,7 +2,10 @@ package com.mmz.service;
 
 import com.mmz.base.BaseService;
 import com.mmz.mapper.MappingUnitMapper;
+import com.mmz.mapper.UserInfoMapper;
 import com.mmz.model.MappingUnit;
+import com.mmz.model.User;
+import com.mmz.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class MappingUnitService extends BaseService<MappingUnit> {
 
     @Autowired
     private MappingUnitMapper mappingUnitMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     /**
     * @Description: 根据条件查询测绘单位名称
@@ -44,9 +50,28 @@ public class MappingUnitService extends BaseService<MappingUnit> {
     * @Date: 2020/6/4
     */
     public Integer addMappingUnit(MappingUnit mappingUnit) {
-        Integer integer = mappingUnitMapper.addMappingUnit(mappingUnit);
-        if (integer > 0) {
-            return integer;
+        // 测绘单位注册之后，先注册一个登陆账号
+        User user = new User();
+        user.setUsername(mappingUnit.getUnitName());
+        // 默认的登陆密码123456
+        user.setPassword("123456");
+        user.setEmail(mappingUnit.getEmail());
+        user.setStatus("1");
+        user.setCreateTime(DateUtils.getDate());
+        user.setType("0");
+        Long keys = userInfoMapper.insertUseGeneratedKeys(user);
+        // 判断添加登陆账号成功后，再进行测绘单位的注册
+        if (keys > 0) {
+            mappingUnit.setCreateTime(DateUtils.getDate());
+            mappingUnit.setUserId(user.getId());
+            mappingUnit.setAuditStatus(2);
+            mappingUnit.setSynchronizationStatus(1);
+            mappingUnit.setUnitStatus(3);
+            Integer insert = mappingUnitMapper.insert(mappingUnit);
+            if (insert > 0) {
+                return insert;
+            }
+            return 0;
         }
         return 0;
     }

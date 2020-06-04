@@ -30,7 +30,6 @@ public class BaseModel implements Serializable {
     @Id
     @NotNull
     private Long id;
-
     /**
      * 创建时间
      */
