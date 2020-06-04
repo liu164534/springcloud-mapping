@@ -8,4 +8,7 @@
         <result column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
         <result column="MENU_ID" property="userId" jdbcType="BIGINT" />
     </resultMap>
+    <delete id="deleteByRoleId" parameterType="Long">
+        delete from t_role_menu where ROLE_ID=#{roleId}
+    </delete>
 </mapper>

@@ -10,4 +10,6 @@ import tk.mybatis.mapper.common.Mapper;
 * @Date: 2020/6/3
 */
 public interface RoleMenuMapper extends Mapper<RoleMenu> {
+
+    Integer deleteByRoleId(Long roleId);
 }

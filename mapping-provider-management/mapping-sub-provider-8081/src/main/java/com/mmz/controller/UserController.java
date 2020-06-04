@@ -64,6 +64,13 @@ public class UserController {
         return userService.updateUserInfoById(user);
 
     }
+    /**
+    * @Description: 删除用户
+    * @Param: [user]
+    * @return: java.lang.Boolean
+    * @Author: Mr.miao
+    * @Date: 2020/6/4
+    */
     @PostMapping("deleteUserById")
     public Boolean deleteUserById(@RequestBody User user){
         System.out.println("provider-Contorller----");

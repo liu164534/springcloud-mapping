@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * @author: Mr.Miao
  * @create: 2020-06-03 23:36
  **/
-@Table(name = "t_role")
+@Table(name = "t_role_menu")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

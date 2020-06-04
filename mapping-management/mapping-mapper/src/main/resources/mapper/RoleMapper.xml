@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmz.mapper.RoleMapper" >
+    <resultMap id="BaseResultMap" type="com.mmz.model.Role" >
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+        <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="insertUseGeneratedKeys" parameterType="com.mmz.model.Role" useGeneratedKeys="true" keyProperty="roleId" >
+        insert into t_role (ROLE_NAME,REMARK,create_time) values (#{roleName},#{remark},#{createTime});
+    </insert>
+    <update id="updateRoleByRoleId" parameterType="com.mmz.model.Role">
+        update t_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="roleName!=null">ROLE_NAME= #{roleName},</if>
+            <if test="remark!=null">REMARK= #{remark},</if>
+            <if test="modifyTime!=null">modify_time= #{modifyTime},</if>
+        </trim>
+        where ROLE_ID=#{roleId}
+    </update>
+    <delete id="deleteRoleByRoleId" parameterType="Long">
+        delete from t_role where ROLE_ID=#{roleId}
+    </delete>
+</mapper>

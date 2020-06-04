@@ -54,12 +54,9 @@ public class UserController extends BaseController {
      * @Date: 2020/5/31
      */
 
-    @LoginLogAnnotation(operationName = "苗管理员", operationType = "添加")
     @PostMapping("insertUser")
     public ResultData insertUser(@RequestBody User user) {
 
-        System.out.println("consumer-Controller");
-        user.setCreateTime("2020-06-01");
         Boolean aBoolean = iUserService.insertUser(user);
         if (aBoolean) {
             return super.insertSuccess();
@@ -76,23 +73,26 @@ public class UserController extends BaseController {
      * @Date: 2020/6/1
      */
 
-    @LoginLogAnnotation(operationName = "苗管理员", operationType = "修改")
     @PostMapping("updateUser")
     public ResultData updateUserInfoById(@RequestBody User user) {
 
-        System.out.println("consumer-Controller-----"+user);
-        Boolean aBoolean = iUserService.insertUser(user);
+        Boolean aBoolean = iUserService.updateUserInfoById(user);
         if (aBoolean) {
-            return super.selectSuccess();
+            return super.updateSuccess();
         } else {
             return super.updateFailed();
         }
     }
 
-    @LoginLogAnnotation(operationName = "苗管理员",operationType = "删除")
+    /**
+     * @Description: 删除用户信息
+     * @Param: [user]
+     * @return: com.mmz.base.ResultData
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
     @PostMapping("deleteUserById")
-    public ResultData deleteUserById (@RequestBody User user){
-        System.out.println("consumer-Controller-----"+user);
+    public ResultData deleteUserById(@RequestBody User user) {
         Boolean aBoolean = iUserService.deleteUserById(user);
         if (aBoolean) {
             return super.deleteSuccess();

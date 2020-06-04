@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @program: springcloud-mapping
@@ -48,5 +49,7 @@ public class Role   implements Serializable {
     @Column(name = "modify_time")
     @Max(value = 100, message = "时间最长不能超过100")
     private String modifyTime;
+
+    private List<Long> menuIdList;
 
 }
