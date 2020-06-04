@@ -6,6 +6,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -33,6 +34,9 @@ public class ClientConfig {
     @LoadBalanced
     @Bean
     public RestTemplate restTemplate() {
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(300000);// 设置超时
+        requestFactory.setReadTimeout(300000);
         RestTemplate restTemplate = new RestTemplate();
 
         // 把自定义的ClientHttpRequestInterceptor添加到RestTemplate，可添加多个

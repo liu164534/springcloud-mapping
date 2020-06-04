@@ -6,8 +6,10 @@ import com.mmz.model.*;
 import com.mmz.vo.TokenVo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -212,88 +214,22 @@ public interface IUserService {
     List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
 
     /**
-     * @Description: 获取角色的所有信息
-     * @Param: []
-     * @return: java.util.List<com.mmz.model.Role>
-     * @Author: Mr.miao
-     * @Date: 2020/6/3
-     */
-    @GetMapping("selectAllRole")
-    List<Role> selectAllRole();
-
-    /**
-     * @author Jia Hao Hao
-     * @param
-     * @date 2020/6/2
-     * @return java.util.List<com.mmz.model.Equipment>
-     * @throws
-     * @description  获取所有仪器设备信息
-     **/
-    @PostMapping("/selectEquipment")
-    List<Equipment> selectAllEquipment(@RequestBody Equipment userId);
-
-    /**
-     * @author Jia Hao Hao
-     * @param
-     * @date 2020/6/2
-     * @return java.util.List<com.mmz.model.Equipment>
-     * @throws
-     * @description  添加仪器设备信息
-     **/
-    @PostMapping("/insertEquipment")
-    Boolean insertEquipment(@RequestBody Equipment equipment);
-
-    /**
-     * @author Jia Hao Hao
-     * @param
-     * @date 2020/6/2
-     * @return java.util.List<com.mmz.model.Equipment>
-     * @throws
-     * @description  删除仪器设备信息
-     **/
-    @DeleteMapping("/deleteEquipment")
-    Boolean deleteEquipment(@RequestBody Equipment equipment);
-
-    /**
-     * @author Jia Hao Hao
-     * @param
-     * @date 2020/6/2
-     * @return java.util.List<com.mmz.model.Equipment>
-     * @throws
-     * @description  修改仪器设备信息
-     **/
-    @PostMapping("/updateEquipment")
-    Boolean updateEquipment(@RequestBody Equipment equipment);
-
-    /**
-    *@Description: 查询所有部门
-    *@Param: []
-    *@return: java.util.List<com.mmz.model.Dept>
-    *@Author: Thanks
-    *@date: 2020/6/4
+    * @Description: ftp文件上传
+     *      file文件是无法发送到provider项目中的，因为feign默认只能支持发送普通类型的数据
+     *      (java8种基本数据类型和包装类、封装类型、集合。。)这些普通类型的数据都可以转换成为二进制流的形式
+     *      在http之间进行传输，但是文件类型不行，因为文件类型只能转换为字节/字符流
+     *      所以让PostMapping接收Multipart/form-data
+     *      让feign接收json格式的数据
+     *
+    * @Param: [multipartFile]
+    * @return: java.lang.Boolean
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/3
     */
-    @GetMapping("/selecetAllDept")
-    List<Dept> selectAllDept();
-
-    /**
-     *@Description: 新增部门
-     *@Param: [dept]
-     *@return: boolean
-     *@Author: Thanks
-     *@date: 2020/6/3
-     */
-    @PostMapping("/insertDept")
-    boolean insertDept(@RequestBody Dept dept);
-
-    /**
-     *@Description: 根据id删除部门
-     *@Param: [dept]
-     *@return: java.lang.Integer
-     *@Author: Thanks
-     *@date: 2020/6/3
-     */
-    @PostMapping("/deleteDeptId")
-    Integer deleteDeptId(@RequestBody Dept dept);
+    @PostMapping(value = "/uploadFile",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    Boolean uploadFile(@RequestBody MultipartFile multipartFile);
 
     /**
      *@Description: 批量删除部门
