@@ -183,49 +183,49 @@ public interface IUserService {
 
 
     /**
-    * @Description: 根据条件查询测绘项目的名称
-    * @Param: [mappingProject]
-    * @return: com.mmz.model.MappingProject
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/2
-    */
+     * @Description: 根据条件查询测绘项目的名称
+     * @Param: [mappingProject]
+     * @return: com.mmz.model.MappingProject
+     * @Author: Liu Xinpeng
+     * @Date: 2020/6/2
+     */
     @PostMapping("/getMappingProjectName")
     List<MappingProject> getMappingProjectName(@RequestBody MappingProject mappingProject);
 
     /**
-    * @Description: 根据条件查询测绘单位的名称
-    * @Param: [mappingUnit]
-    * @return: java.util.List<com.mmz.model.MappingUnit>
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/3
-    */
+     * @Description: 根据条件查询测绘单位的名称
+     * @Param: [mappingUnit]
+     * @return: java.util.List<com.mmz.model.MappingUnit>
+     * @Author: Liu Xinpeng
+     * @Date: 2020/6/3
+     */
     @PostMapping("getMappingUnitName")
     List<MappingUnit> getMappingUnitName(@RequestBody MappingUnit mappingUnit);
 
 
     /**
-    * @Description: 根据条件查询测绘成果
-    * @Param: [resultCommit]
-    * @return: java.util.List<com.mmz.model.ResultCommit> 
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/3
-    */
+     * @Description: 根据条件查询测绘成果
+     * @Param: [resultCommit]
+     * @return: java.util.List<com.mmz.model.ResultCommit>
+     * @Author: Liu Xinpeng
+     * @Date: 2020/6/3
+     */
     @PostMapping("getResultCommitName")
     List<ResultCommit> getResultCommitName(@RequestBody ResultCommit resultCommit);
 
     /**
-    * @Description: ftp文件上传
+     * @Description: ftp文件上传
      *      file文件是无法发送到provider项目中的，因为feign默认只能支持发送普通类型的数据
      *      (java8种基本数据类型和包装类、封装类型、集合。。)这些普通类型的数据都可以转换成为二进制流的形式
      *      在http之间进行传输，但是文件类型不行，因为文件类型只能转换为字节/字符流
      *      所以让PostMapping接收Multipart/form-data
      *      让feign接收json格式的数据
      *
-    * @Param: [multipartFile]
-    * @return: java.lang.Boolean
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/3
-    */
+     * @Param: [multipartFile]
+     * @return: java.lang.Boolean
+     * @Author: Liu Xinpeng
+     * @Date: 2020/6/3
+     */
     @PostMapping(value = "/uploadFile",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -303,31 +303,31 @@ public interface IUserService {
     Boolean deleteMenu(Menu menu);
 
     /**
-    * @Description: 根据id删除部门
-    * @Param: [dept]
-    * @return: java.lang.Integer
-    * @Author: Thanks
-    * @Date: 2020/6/4
-    */
+     * @Description: 根据id删除部门
+     * @Param: [dept]
+     * @return: java.lang.Integer
+     * @Author: Thanks
+     * @Date: 2020/6/4
+     */
     @PostMapping("/deleteDeptId")
     Integer deleteDeptId(@RequestBody Dept dept);
 
     /**
-    * @Description: 查询所有部门
-    * @Param: []
-    * @return: java.util.List<com.mmz.model.Dept>
-    * @Author: Thanks
-    * @Date: 2020/6/4
-    */
+     * @Description: 查询所有部门
+     * @Param: []
+     * @return: java.util.List<com.mmz.model.Dept>
+     * @Author: Thanks
+     * @Date: 2020/6/4
+     */
     @GetMapping("/selectAllDept")
     List<Dept> selectAllDept();
     /**
-    * @Description: 新增部门
-    * @Param: [dept]
-    * @return: boolean
-    * @Author: Thanks
-    * @Date: 2020/6/4
-    */
+     * @Description: 新增部门
+     * @Param: [dept]
+     * @return: boolean
+     * @Author: Thanks
+     * @Date: 2020/6/4
+     */
     @PostMapping("/insertDept")
     boolean insertDept(@RequestBody Dept dept);
     /**
@@ -396,23 +396,23 @@ public interface IUserService {
     Boolean updateEquipment(@RequestBody Equipment equipment);
 
     /**
-    * @Description: 根据主键删除用户
-    * @Param: [user]
-    * @return: java.lang.Boolean
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/4
-    */
+     * @Description: 根据主键删除用户
+     * @Param: [user]
+     * @return: java.lang.Boolean
+     * @Author: Liu Xinpeng
+     * @Date: 2020/6/4
+     */
     @PostMapping("deleteUserById")
     Boolean deleteUserById(@RequestBody User user);
 
 
     /**
-    * @Description: 首页注册测绘单位
-    * @Param: [mappingUnit]
-    * @return: java.lang.Integer 
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/4
-    */
+     * @Description: 首页注册测绘单位
+     * @Param: [mappingUnit]
+     * @return: java.lang.Integer
+     * @Author: Liu Xinpeng
+     * @Date: 2020/6/4
+     */
     @PutMapping("addMappingUnit")
     Integer addMappingUnit(@RequestBody MappingUnit mappingUnit);
 
@@ -490,4 +490,69 @@ public interface IUserService {
      **/
     @PostMapping("/updateTechnicist")
     Boolean updateTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  根据uiseId获取单位负责人信息
+     **/
+    @PostMapping("/selectAllPrincipal")
+    List<Principal> selectAllPrincipal(@RequestBody Principal userId);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  添加单位负责人信息
+     **/
+    @PostMapping("/insertPrincipal")
+    Integer insertPrincipal(@RequestBody Principal principal);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  删除仪单位负责人信息
+     **/
+    @DeleteMapping("/deletePrincipal")
+    Integer deletePrincipal(@RequestBody Principal principal);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  修改单位负责人信息
+     **/
+    @PutMapping("/updatePrincipal")
+    Integer updatePrincipal(@RequestBody Principal principal);
+    
+    /**
+    * @Description: 查询注册待审核的测绘单位
+    * @Param: []
+    * @return: java.util.List<com.mmz.model.MappingUnit> 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @GetMapping("getAuditMappingUnit")
+    List<MappingUnit> getAuditMappingUnit();
+    
+    
+    /**
+    * @Description: 审核注册的测绘单位
+    * @Param: [mappingUnit]
+    * @return: java.lang.Integer 
+    * @Author: Liu Xinpeng
+    * @Date: 2020/6/4
+    */
+    @PostMapping("auditMappingUnit")
+    Integer auditMappingUnit(@RequestBody MappingUnit mappingUnit);
 }
