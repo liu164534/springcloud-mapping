@@ -22,6 +22,9 @@
         values (#{parentId},#{menuName},#{path},#{component},#{perms},#{icon},#{type},#{orderNum},#{createTime})
     </insert>
     <delete id="deleteMenuByParentId" parameterType="Long">
-        delete t_menu where PARENT_ID=#{parentId}
+        delete from t_menu where PARENT_ID=#{parentId}
+    </delete>
+    <delete id="deleteMenuByMenuId" parameterType="Long">
+        delete from t_menu where MENU_ID=#{menuId}
     </delete>
 </mapper>

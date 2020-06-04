@@ -23,8 +23,8 @@ public class Dict implements Serializable {
      * 字典ID
      */
     @Id
-    @Column(name = "DICT_ID")
-    private String dictId;
+    @Column(name = "id")
+    private String id;
 
     /**
      * 键

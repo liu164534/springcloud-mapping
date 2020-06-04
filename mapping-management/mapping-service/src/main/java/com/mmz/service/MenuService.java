@@ -1,5 +1,6 @@
 package com.mmz.service;
 
+import com.mmz.base.BaseService;
 import com.mmz.mapper.MenuMapper;
 import com.mmz.model.Menu;
 import com.mmz.model.Role;
@@ -17,7 +18,7 @@ import java.util.List;
  * @create: 2020-06-04 15:13
  **/
 @Service
-public class MenuService {
+public class MenuService extends BaseService<Menu> {
     @Autowired
     MenuMapper menuMapper;
 
@@ -74,7 +75,7 @@ public class MenuService {
     * @Date: 2020/6/4
     */
     public Boolean deleteMenu(Menu menu){
-        int deleteByPrimaryKey = menuMapper.deleteByPrimaryKey(menu.getMenuId());
+        int deleteByPrimaryKey = menuMapper.deleteMenuByMenuId(menu.getMenuId());
         if (deleteByPrimaryKey>0){
             try {
                 menuMapper.deleteMenuByParentId(menu.getMenuId());

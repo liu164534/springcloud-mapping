@@ -490,17 +490,4 @@ public interface IUserService {
      **/
     @PostMapping("/updateTechnicist")
     Boolean updateTechnicist(@RequestBody Technicist technicist);
-
-    /**
-    * @Description: 查询注册待审核的企业
-    * @Param: []
-    * @return: java.util.List<com.mmz.model.MappingUnit>
-    * @Author: Liu Xinpeng
-    * @Date: 2020/6/4
-    */
-    @GetMapping("getAuditMappingUnit")
-    List<MappingUnit> getAuditMappingUnit();
-
-    @PostMapping("auditMappingUnit")
-    Integer auditMappingUnit(@RequestBody MappingUnit mappingUnit);
 }

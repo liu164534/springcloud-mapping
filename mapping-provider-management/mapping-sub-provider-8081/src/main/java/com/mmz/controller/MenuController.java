@@ -53,6 +53,7 @@ public class MenuController {
     }
     @PostMapping("deleteMenu")
     public Boolean deleteMenu(@RequestBody Menu menu){
+        System.out.println(menu);
         return  menuService.deleteMenu(menu);
     }
 }
