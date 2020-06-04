@@ -232,6 +232,44 @@ public interface IUserService {
     Boolean uploadFile(@RequestBody MultipartFile multipartFile);
 
     /**
+     * @Description: 获取角色的所有信息
+     * @Param: []
+     * @return: java.util.List<com.mmz.model.Role>
+     * @Author: Mr.miao
+     * @Date: 2020/6/3
+     */
+    @GetMapping("selectAllRole")
+    List<Role> selectAllRole();
+
+    /**
+    * @Description: 根据id删除部门
+    * @Param: [dept]
+    * @return: java.lang.Integer
+    * @Author: Thanks
+    * @Date: 2020/6/4
+    */
+    @PostMapping("/deleteDeptId")
+    Integer deleteDeptId(@RequestBody Dept dept);
+
+    /**
+    * @Description: 查询所有部门
+    * @Param: []
+    * @return: java.util.List<com.mmz.model.Dept>
+    * @Author: Thanks
+    * @Date: 2020/6/4
+    */
+    @GetMapping("/selectAllDept")
+    List<Dept> selectAllDept();
+    /**
+    * @Description: 新增部门
+    * @Param: [dept]
+    * @return: boolean
+    * @Author: Thanks
+    * @Date: 2020/6/4
+    */
+    @PostMapping("/insertDept")
+    boolean insertDept(@RequestBody Dept dept);
+    /**
      *@Description: 批量删除部门
      *@Param: [depts]
      *@return: java.lang.Integer
@@ -250,4 +288,49 @@ public interface IUserService {
      */
     @PostMapping("/updateDept")
     Integer updateDept(@RequestBody Dept dept);
+
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  获取所有仪器设备信息
+     **/
+    @PostMapping("/selectEquipment")
+    List<Equipment> selectAllEquipment(@RequestBody Equipment userId);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  添加仪器设备信息
+     **/
+    @PostMapping("/insertEquipment")
+    Boolean insertEquipment(@RequestBody Equipment equipment);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  删除仪器设备信息
+     **/
+    @DeleteMapping("/deleteEquipment")
+    Boolean deleteEquipment(@RequestBody Equipment equipment);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  修改仪器设备信息
+     **/
+    @PostMapping("/updateEquipment")
+    Boolean updateEquipment(@RequestBody Equipment equipment);
 }
