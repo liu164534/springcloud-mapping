@@ -206,7 +206,7 @@ public interface IUserService {
     /**
     * @Description: 根据条件查询测绘成果
     * @Param: [resultCommit]
-    * @return: java.util.List<com.mmz.model.ResultCommit> 
+    * @return: java.util.List<com.mmz.model.ResultCommit>
     * @Author: Liu Xinpeng
     * @Date: 2020/6/3
     */
@@ -343,4 +343,48 @@ public interface IUserService {
     */
     @PostMapping("deleteUserById")
     Boolean deleteUserById(@RequestBody User user);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  根据uiseId获取所有技术人员信息
+     **/
+    @PostMapping("/selectAllTechnicist")
+    List<Technicist> selectAllTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  添加技术人员信息
+     **/
+    @PostMapping("/insertTechnicist")
+    Boolean insertTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  删除仪器设备信息
+     **/
+    @DeleteMapping("/deleteTechnicist")
+    Boolean deleteTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  修改仪器设备信息
+     **/
+    @PostMapping("/updateTechnicist")
+    Boolean updateTechnicist(@RequestBody Technicist technicist);
 }
