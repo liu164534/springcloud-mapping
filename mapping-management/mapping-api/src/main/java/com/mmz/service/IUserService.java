@@ -241,6 +241,67 @@ public interface IUserService {
     @GetMapping("selectAllRole")
     List<Role> selectAllRole();
 
+
+    /**
+     * @Description: 添加角色
+     * @Param: [role]
+     * @return: java.lang.Boolean
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
+    @PostMapping("insertRole")
+    Boolean insertRole(@RequestBody Role role) ;
+
+    /**
+     * @Description: 修改角色
+     * @Param: [role]
+     * @return: java.lang.Boolean
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
+    @PostMapping("updateRole")
+    Boolean updateRole(@RequestBody Role role) ;
+
+    /**
+     * @Description: 删除角色
+     * @Param: [role]
+     * @return: java.lang.Boolean
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
+    @PostMapping("deleteRole")
+    Boolean deleteRole(@RequestBody Role role) ;
+
+    /**
+     * @Description: 查询菜单
+     * @Param: []
+     * @return: java.util.List<com.mmz.model.Menu>
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
+    @GetMapping("getAllMenu")
+    List<Menu> getAllMenu();
+
+    /**
+     * @Description: 添加按钮
+     * @Param: [menu]
+     * @return: java.lang.Boolean
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
+    @PostMapping("insertMenu")
+    Boolean insertMenu(@RequestBody Menu menu);
+    /**
+     * 删除菜单
+     * @Description:
+     * @Param: [menu]
+     * @return: java.lang.Boolean
+     * @Author: Mr.miao
+     * @Date: 2020/6/4
+     */
+    @PostMapping("deleteMenu")
+    Boolean deleteMenu(Menu menu);
+
     /**
     * @Description: 根据id删除部门
     * @Param: [dept]
@@ -354,4 +415,79 @@ public interface IUserService {
     */
     @PutMapping("addMappingUnit")
     Integer addMappingUnit(@RequestBody MappingUnit mappingUnit);
+
+
+    /**
+     *@Description: 新增项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Boolean
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/insertMappingProject")
+    Boolean insertMappingProject(@RequestBody MappingProject mappingProject);
+
+    /**
+     *@Description: 修改项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/updateMappingProject")
+    Integer updateMappingProject(@RequestBody MappingProject mappingProject);
+
+    /**
+     *@Description: 删除项目
+     *@Param: [mappingProject]
+     *@return: java.lang.Integer
+     *@Author: Thanks
+     *@date: 2020/6/4
+     */
+    @PostMapping("/deleteMappingProject")
+    Integer deleteMappingProject(@RequestBody MappingProject mappingProject);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  根据uiseId获取所有技术人员信息
+     **/
+    @PostMapping("/selectAllTechnicist")
+    List<Technicist> selectAllTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  添加技术人员信息
+     **/
+    @PostMapping("/insertTechnicist")
+    Boolean insertTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  删除仪器设备信息
+     **/
+    @DeleteMapping("/deleteTechnicist")
+    Boolean deleteTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  修改仪器设备信息
+     **/
+    @PostMapping("/updateTechnicist")
+    Boolean updateTechnicist(@RequestBody Technicist technicist);
 }
