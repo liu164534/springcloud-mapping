@@ -490,4 +490,48 @@ public interface IUserService {
      **/
     @PostMapping("/updateTechnicist")
     Boolean updateTechnicist(@RequestBody Technicist technicist);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  根据uiseId获取单位负责人信息
+     **/
+    @PostMapping("/selectAllPrincipal")
+    List<Principal> selectAllPrincipal(@RequestBody Principal userId);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  添加单位负责人信息
+     **/
+    @PostMapping("/insertPrincipal")
+    Integer insertPrincipal(@RequestBody Principal principal);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  删除仪单位负责人信息
+     **/
+    @DeleteMapping("/deletePrincipal")
+    Integer deletePrincipal(@RequestBody Principal principal);
+
+    /**
+     * @author Jia Hao Hao
+     * @param
+     * @date 2020/6/2
+     * @return java.util.List<com.mmz.model.Equipment>
+     * @throws
+     * @description  修改单位负责人信息
+     **/
+    @PutMapping("/updatePrincipal")
+    Integer updatePrincipal(@RequestBody Principal principal);
 }
