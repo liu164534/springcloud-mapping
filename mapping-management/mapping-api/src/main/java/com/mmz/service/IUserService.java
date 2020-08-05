@@ -36,6 +36,8 @@ import java.util.Map;
 
 /**
  * 标识出当前调用的是服务场中的哪个服务，这个服务器名在目标服务器中的--》 “spring.application.name”属性
+ *
+ * 这里还有个path属性，相同服务名，可以通过不同的path来对接口的路径进行区分
  */
 @FeignClient(value = "system-interface-8081")
 @Component
